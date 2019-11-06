@@ -4,8 +4,15 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
-let indexRouter = require('./routes/index');
 let loginRouter = require('./routes/login');
+let indexRouter = require('./routes/index');
+
+let universityRouter = require('./routes/university');
+let schoolRouter = require('./routes/school');
+let universityAccountRouter = require('./routes/universityAccount');
+let companyRouter = require('./routes/company');
+let companyAccountRouter = require('./routes/companyAccount');
+let commonRouter = require('./routes/common');
 
 let app = express();
 
@@ -19,8 +26,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/index', indexRouter);
+
 app.use('/', loginRouter);
+app.use('/index', indexRouter);
+app.use('/university', universityRouter);
+app.use('/school', schoolRouter);
+app.use('/universityAccount', universityAccountRouter);
+app.use('/company', companyRouter);
+app.use('/companyAccount', companyAccountRouter);
+app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

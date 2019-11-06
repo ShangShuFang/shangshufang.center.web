@@ -1,0 +1,14 @@
+{
+  "StoreService": {
+    "host": "localhost",
+    "port": 8080,
+    "path": {
+      "chinaRegion": "/api/chinaRegion",
+      "university": "/api/university",
+      "checkUniversityCode": "/api/university/checkUniversityCode",
+      "checkUniversityName": "/api/university/checkUniversityName",
+      "changeUniversityStatus": "/api/university/changeStatus",
+      "school": "/api/university/school"
+    }
+  }
+}
