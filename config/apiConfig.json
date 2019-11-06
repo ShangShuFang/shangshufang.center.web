@@ -8,7 +8,10 @@
       "checkUniversityCode": "/api/university/checkUniversityCode",
       "checkUniversityName": "/api/university/checkUniversityName",
       "changeUniversityStatus": "/api/university/changeStatus",
-      "school": "/api/university/school"
+      "school": "/api/school",
+      "checkSchoolName": "/api/school/checkSchoolName",
+      "checkCellphone": "/api/school/checkCellphone",
+      "changeSchoolStatus": "/api/school/changeStatus"
     }
   }
 }
