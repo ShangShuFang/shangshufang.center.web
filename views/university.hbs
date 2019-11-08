@@ -306,10 +306,10 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" ng-click="onSubmit()" ng-disabled="(myForm.universityCode.$pristine && model.add)
                                                                           || (myForm.universityCode.$dirty && myForm.universityCode.$invalid)
-                                                                          || model.universityCodeIsInValid === 1
+                                                                          || model.universityCodeIsInValid !== 0
                                                                           || (myForm.universityName.$pristine && model.add)
                                                                           || (myForm.universityName.$dirty && myForm.universityName.$invalid)
-                                                                          || model.universityNameIsInValid === 1
+                                                                          || model.universityNameIsInValid !== 0
                                                                           || (myForm.address.$pristine && model.add)
                                                                           || model.selectedProvince4Edit.regionName == '请选择省份'
                                                                           || model.selectedCity4Edit.regionName == '请选择城市'

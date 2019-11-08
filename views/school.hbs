@@ -231,9 +231,10 @@
                   <div class="form-group row">
                     <label for="example-text-input" class="col-2 col-form-label">手机号码</label>
                     <div class="col-10">
-                      <input type="text"
+                      <input type="tel"
                              class="form-control"
                              name="cellphone"
+                             minlength="11"
                              maxlength="11"
                              ng-class="{'is-invalid': model.cellphoneIsInValid == 1, 'is-valid': model.cellphoneIsInValid == 0}"
                              ng-model="model.cellphone"
@@ -250,12 +251,12 @@
                                                                              model.selectedUniversity4Edit.universityCode == 0
                                                                           || (myForm.schoolName.$pristine && model.add)
                                                                           || (myForm.schoolName.$dirty && myForm.schoolName.$invalid)
-                                                                          || model.schoolNameIsInValid === 1
+                                                                          || model.schoolNameIsInValid !== 0
                                                                           || (myForm.contacts.$pristine && model.add)
                                                                           || (myForm.contacts.$dirty && myForm.contacts.$invalid)
                                                                           || (myForm.cellphone.$pristine && model.add)
                                                                           || (myForm.cellphone.$dirty && myForm.cellphone.$invalid)
-                                                                          || model.cellphoneIsInValid === 1">
+                                                                          || model.cellphoneIsInValid !== 0">
                   提交
                 </button>
               </div>

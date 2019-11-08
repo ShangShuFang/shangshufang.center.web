@@ -46,4 +46,27 @@ router.get('/university', (req, res, next) => {
   });
 });
 
+router.get('/school', (req, res, next) => {
+  let service = new commonService.commonInvoke('school');
+  let universityCode = req.query.universityCode;
+  let parameter = `1/9999/${universityCode}`;
+
+  service.queryWithParameter(parameter,  (result) => {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 module.exports = router;

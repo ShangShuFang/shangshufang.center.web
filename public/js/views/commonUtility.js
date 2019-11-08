@@ -9,12 +9,6 @@ commonUtility.setNavActive = function () {
     return false;
   }
 
-  if(pathname.includes('university')){
-    pathname = '/university'
-  }
-  if(pathname.includes('school')){
-    pathname = '/school'
-  }
   linkObj = $(`#kt_aside_menu_wrapper ul.kt-menu__nav li a[href="${pathname}"]`);
   linkObj.parent().addClass('kt-menu__item--active');
   linkObj.parent().parent().parent().parent().addClass('kt-menu__item--open');
