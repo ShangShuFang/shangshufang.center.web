@@ -26,8 +26,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+  let url = req.originalUrl;
+  if (url !== '/' && url.indexOf('/login') < 0 && req.cookies['shs.cms.user'] === undefined) {
+    return res.redirect("/");
+  }
+  next();
+});
 
 app.use('/', loginRouter);
+app.use('/login', loginRouter);
 app.use('/index', indexRouter);
 app.use('/university', universityRouter);
 app.use('/school', schoolRouter);

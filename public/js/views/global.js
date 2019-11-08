@@ -5,7 +5,13 @@ globalApp.controller('myCtrl', function ($scope, $http) {
   };
   
   $scope.initGlobalData = function () {
-    $scope.model.loginUser = '张强';
+    let loginUser = commonUtility.getLoginUser();
+    $scope.model.loginUser = loginUser.adminName;
+  };
+
+  $scope.onSignOut = function () {
+    commonUtility.delCookie(Constants.COOKIE_LOGIN_USER);
+    location.href = '/';
   };
 
   $scope.initGlobalData();

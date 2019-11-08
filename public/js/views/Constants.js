@@ -10,3 +10,4 @@ Constants.DATA_STATUS = {
   ACTIVE: 'A',
   DISABLED: 'D'
 };
+Constants.COOKIE_LOGIN_USER = 'shs.cms.user';

@@ -3,6 +3,7 @@
     "host": "localhost",
     "port": 8080,
     "path": {
+      "login": "/api/system/admin/login",
       "chinaRegion": "/api/chinaRegion",
       "university": "/api/university",
       "checkUniversityCode": "/api/university/checkUniversityCode",
@@ -12,13 +13,10 @@
       "checkSchoolName": "/api/school/checkSchoolName",
       "checkSchoolContactsCellphone": "/api/school/checkCellphone",
       "changeSchoolStatus": "/api/school/changeStatus",
-
       "account": "/api/university/account",
-      "login": "/api/university/account/login",
       "checkAccountCellphone": "/api/university/account/checkCellphone",
       "checkAccountEmail": "/api/university/account/checkEmail",
       "changeAccountStatus": "/api/university/account/changeStatus",
-
       "universityCustomer": "/api/university/customer",
       "checkUniversityCustomerCellphone": "/api/university/customer/checkCellphone",
       "checkUniversityCustomerEmail": "/api/university/customer/checkEmail"
