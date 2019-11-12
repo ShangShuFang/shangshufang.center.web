@@ -5,21 +5,30 @@
     "path": {
       "login": "/api/system/admin/login",
       "chinaRegion": "/api/chinaRegion",
+
       "university": "/api/university",
       "checkUniversityCode": "/api/university/checkUniversityCode",
       "checkUniversityName": "/api/university/checkUniversityName",
       "changeUniversityStatus": "/api/university/changeStatus",
+
       "school": "/api/school",
       "checkSchoolName": "/api/school/checkSchoolName",
       "checkSchoolContactsCellphone": "/api/school/checkCellphone",
       "changeSchoolStatus": "/api/school/changeStatus",
+
       "account": "/api/university/account",
       "checkAccountCellphone": "/api/university/account/checkCellphone",
       "checkAccountEmail": "/api/university/account/checkEmail",
       "changeAccountStatus": "/api/university/account/changeStatus",
+
       "universityCustomer": "/api/university/customer",
       "checkUniversityCustomerCellphone": "/api/university/customer/checkCellphone",
-      "checkUniversityCustomerEmail": "/api/university/customer/checkEmail"
+      "checkUniversityCustomerEmail": "/api/university/customer/checkEmail",
+
+      "company": "/api/company",
+      "checkCompanyNameExist": "/api/company/checkCompanyNameExist",
+      "checkCellphoneExist": "/api/company/checkCellphoneExist",
+      "changeCompanyNameStatus": "/api/company/changeStatus"
     }
   }
 }
