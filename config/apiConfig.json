@@ -16,10 +16,9 @@
       "checkSchoolContactsCellphone": "/api/school/checkCellphone",
       "changeSchoolStatus": "/api/school/changeStatus",
 
-      "account": "/api/university/account",
-      "checkAccountCellphone": "/api/university/account/checkCellphone",
-      "checkAccountEmail": "/api/university/account/checkEmail",
-      "changeAccountStatus": "/api/university/account/changeStatus",
+      "universityAccount": "/api/university/account",
+      "checkUniversityAccountCellphone": "/api/university/account/checkCellphone",
+      "changeUniversityAccountStatus": "/api/university/account/changeStatus",
 
       "universityCustomer": "/api/university/customer",
       "checkUniversityCustomerCellphone": "/api/university/customer/checkCellphone",
@@ -28,7 +27,11 @@
       "company": "/api/company",
       "checkCompanyNameExist": "/api/company/checkCompanyNameExist",
       "checkCellphoneExist": "/api/company/checkCellphoneExist",
-      "changeCompanyNameStatus": "/api/company/changeStatus"
+      "changeCompanyNameStatus": "/api/company/changeStatus",
+
+      "companyAccount": "/api/company/account",
+      "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",
+      "changeCompanyAccountStatus": "/api/company/account/changeStatus"
     }
   }
 }

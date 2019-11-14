@@ -113,6 +113,7 @@
                 <th>姓名</th>
                 <th>手机号码</th>
                 <th>邮箱地址</th>
+                <th>角色</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -126,6 +127,7 @@
                 <td ng-bind="data.customerName"></td>
                 <td ng-bind="data.cellphone"></td>
                 <td ng-bind="data.email"></td>
+                <td ng-bind="data.accountRoleText"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"

@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('account');
+  let service = new commonService.commonInvoke('universityAccount');
   let pageNumber = parseInt(req.query.pageNumber);
   let universityCode = req.query.universityCode === undefined ? 0 : req.query.universityCode;
   let schoolID = req.query.schoolID === undefined ? 0 : req.query.schoolID;
@@ -35,7 +35,7 @@ router.get('/dataList', (req, res, next) => {
 });
 
 router.get('/checkCellphone', function(req, res, next) {
-  let service = new commonService.commonInvoke('checkAccountCellphone');
+  let service = new commonService.commonInvoke('checkUniversityAccountCellphone');
   let cellphone = req.query.cellphone;
 
   service.queryWithParameter(cellphone, function (result) {
@@ -57,7 +57,7 @@ router.get('/checkCellphone', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('account');
+  let service = new commonService.commonInvoke('universityAccount');
   let data = {
     universityCode: req.body.universityCode,
     schoolID: req.body.schoolID,
@@ -86,7 +86,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('account');
+  let service = new commonService.commonInvoke('universityAccount');
   let data = {
     accountID: req.body.accountID,
     universityCode: req.body.universityCode,
@@ -114,7 +114,7 @@ router.put('/', (req, res, next) => {
 });
 
 router.put('/status', (req, res, next) => {
-  let service = new commonService.commonInvoke('changeAccountStatus');
+  let service = new commonService.commonInvoke('changeUniversityAccountStatus');
   let data = {
     accountID: req.body.accountID,
     universityCode: req.body.universityCode,
@@ -141,7 +141,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('account');
+  let service = new commonService.commonInvoke('universityAccount');
   let accountID = req.query.accountID;
   let universityCode = req.query.universityCode;
   let schoolID = req.query.schoolID;
