@@ -340,11 +340,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   //region 添加Brand
   $scope.onShowBrandModal = function (data){
     $scope.model.brandModalTitle = `${data.companyName}的Brand&Memo`;
+    $scope.model.add = false;
     $scope.model.brandUrl = data.brand;
     $scope.model.memo = data.memo;
     $scope.model.companyID_brand = data.companyID;
 
-    let uploadServerUrl = commonUtility.buildEnterpriseUploadRemoteUri(Constants.UPLOAD_SERVICE_URI, data.universityCode, 'brand');
+    let uploadServerUrl = commonUtility.buildEnterpriseUploadRemoteUri(Constants.UPLOAD_SERVICE_URI, data.companyName, 'brand');
 
     uploadUtils.destroyUploadPlugin('#file-upload-brand');
     uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {

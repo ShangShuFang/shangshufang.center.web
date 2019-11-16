@@ -21,6 +21,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: 数据列表
 
     //begin: Brand编辑
+    brandModalTitle: '',
     universityID_brand: 0,
     universityCode_brand: '',
     brandUrl: '',
@@ -280,7 +281,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onShowBrandModal = function (data){
-    $scope.model.brandUrl = '';
+    $scope.model.brandModalTitle = `${data.universityName}的Brand&Memo`;
+    $scope.model.add = false;
+    $scope.model.brandUrl = data.brand;
+    $scope.model.memo = data.memo;
     $scope.model.universityID_brand = data.universityID;
     $scope.model.universityCode_brand = data.universityCode;
 

@@ -225,7 +225,7 @@
                 <button type="button"
                         class="btn btn-primary"
                         ng-click="onChangeBrand()"
-                        ng-disabled="model.brandUrl == '' || brandForm.memo.$pristine || (brandForm.memo.$dirty && brandForm.memo.$invalid)">
+                        ng-disabled="model.brandUrl == '' || (brandForm.memo.$pristine && model.add) || (brandForm.memo.$dirty && brandForm.memo.$invalid)">
                   提交
                 </button>
               </div>
