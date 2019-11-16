@@ -28,6 +28,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: Brand编辑
 
     //region 信息编辑
+    loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
     companyID: 0,
     companyName: '',
@@ -359,7 +360,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       companyID: $scope.model.companyID_brand,
       brand: $scope.model.brandUrl,
       memo: $scope.model.memo,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -391,7 +392,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       address: $scope.model.address,
       contacts: $scope.model.contacts,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -444,7 +445,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       address: $scope.model.address,
       contacts: $scope.model.contacts,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -471,7 +472,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.put('/company/status', {
       companyID: $scope.model.statusCompanyID,
       status: $scope.model.status,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));

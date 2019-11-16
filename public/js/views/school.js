@@ -19,6 +19,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: 数据列表
 
     //begin: 信息编辑
+    loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
     schoolID: 0,
     universityList4Edit: [],
@@ -214,7 +215,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       universityCode: $scope.model.selectedUniversity4Edit.universityCode,
       contacts: $scope.model.contacts,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -261,7 +262,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       universityCode: $scope.model.selectedUniversity4Edit.universityCode,
       contacts: $scope.model.contacts,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -290,7 +291,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       schoolID: $scope.model.statusSchoolID,
       universityCode: $scope.model.statusUniversityCode,
       status: $scope.model.status,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));

@@ -19,6 +19,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: 数据列表
 
     //begin: 信息编辑
+    loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
     accountID: 0,
     companyList4Edit: [],
@@ -183,7 +184,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       companyID: $scope.model.selectedCompany4Edit.companyID,
       fullName: $scope.model.customerName,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -227,7 +228,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       companyID: $scope.model.selectedCompany4Edit.companyID,
       customerID: $scope.model.customerID,
       cellphone: $scope.model.cellphone,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -256,7 +257,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       companyID: $scope.model.statusCompanyID,
       accountID: $scope.model.statusAccountID,
       status: $scope.model.status,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));

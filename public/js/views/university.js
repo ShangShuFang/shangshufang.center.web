@@ -28,6 +28,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: Brand编辑
 
     //begin: 信息编辑
+    loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
     universityID: 0,
     universityCode: '',
@@ -333,7 +334,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       universityID: $scope.model.universityID_brand,
       brand: $scope.model.brandUrl,
       memo: $scope.model.memo,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -350,7 +351,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.put('/university/status', {
       universityID: $scope.model.statusUniversityID,
       status: $scope.model.status,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -417,7 +418,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       cityCode: $scope.model.selectedCity4Edit.regionCode,
       districtCode: $scope.model.selectedDistrict4Edit.regionCode,
       address: $scope.model.address,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -439,7 +440,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       cityCode: $scope.model.selectedCity4Edit.regionCode,
       districtCode: $scope.model.selectedDistrict4Edit.regionCode,
       address: $scope.model.address,
-      loginUser: '1'
+      loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
