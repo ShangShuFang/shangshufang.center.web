@@ -244,7 +244,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.schoolID = data.schoolID;
     $scope.model.schoolName = data.schoolName;
     $scope.model.schoolNameCompare = data.schoolName;
-    $scope.model.schoolNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
+    $scope.model.schoolNameIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.selectedUniversity4Edit = {universityCode: data.universityCode, universityName: data.universityName};
     $scope.model.contacts = data.contacts;
     $scope.model.cellphone = data.cellphone;

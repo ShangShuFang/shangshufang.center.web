@@ -107,6 +107,7 @@
                    id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
               <thead>
               <tr role="row">
+                <th>Brand</th>
                 <th>高校编码</th>
                 <th>高校名称</th>
                 <th>省</th>
@@ -120,6 +121,9 @@
 
               <tbody>
               <tr ng-repeat="data in model.dataList">
+                <td style="width: 120px">
+                  <img ng-src="\{{data.brand}}" class="img-table-cell" alt="">
+                </td>
                 <td ng-bind="data.universityCode"></td>
                 <td ng-bind="data.universityName"></td>
                 <td ng-bind="data.provinceName"></td>
@@ -128,8 +132,9 @@
                 <td ng-bind="data.address"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
-                        ng-class="{'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
-                        ng-bind="data.dataStatusText"></span>
+                        ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
+                        ng-bind="data.dataStatusText">
+                  </span>
                 </td>
                 <td>
                     <span class="dropdown">
@@ -138,8 +143,9 @@
                           <i class="la la-ellipsis-h"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-photo"></i> Brand</a>
                             <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)"><i class="la la-leaf"></i> 状态修改</a>
+                            <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
                             <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
                         </div>
                     </span>
@@ -185,6 +191,48 @@
         </div>
       </div>
       <!--end: Datatable -->
+
+      <!--begin: brand modal -->
+      <div class="modal fade" id="kt_modal_brand" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="brandForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Brand & Memo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">Brand</label>
+                    <div class="col-10">
+                      <div id="file-upload-brand" class="fileUploadContent"></div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">客户寄语</label>
+                    <div class="col-10">
+                      <textarea class="form-control" name="memo" rows="8" maxlength="256" ng-model="model.memo" required></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onChangeBrand()"
+                        ng-disabled="model.brandUrl == '' || brandForm.memo.$pristine || (brandForm.memo.$dirty && brandForm.memo.$invalid)">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: brand modal -->
 
       <!--begin: edit modal -->
       <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -324,12 +372,12 @@
       </div>
       <!--end: edit modal -->
 
-      <!--begin: edit modal -->
+      <!--begin: status modal -->
       <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
            aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <form class="kt-form kt-form--label-right" name="form-status" novalidat>
+            <form class="kt-form kt-form--label-right" name="form-status" novalidate>
               <div class="modal-header">
                 <h5 class="modal-title" ng-bind="model.statusModalTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -345,7 +393,7 @@
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.isActive">
+                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.status == 'A'">
                                 <span></span>
                               </span>
                             </span>
@@ -365,7 +413,7 @@
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="!model.isActive">
+                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="model.status == 'D'">
                                 <span></span>
                               </span>
                             </span>
@@ -397,7 +445,7 @@
           </div>
         </div>
       </div>
-      <!--end: edit modal -->
+      <!--end: status modal -->
     </div>
   </div>
 </div>

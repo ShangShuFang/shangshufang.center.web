@@ -166,6 +166,32 @@ router.put('/status', (req, res, next) => {
   });
 });
 
+router.put('/brand', (req, res, next) => {
+  let service = new commonService.commonInvoke('changeCompanyBrand');
+  let data = {
+    companyID: req.body.companyID,
+    brand: req.body.brand,
+    memo: req.body.memo,
+    loginUser: req.body.loginUser
+  };
+
+  service.change(data, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg
+      });
+    }
+  });
+});
+
 router.delete('/', (req, res, next) => {
   let service = new commonService.commonInvoke('company');
   let companyID = req.query.companyID;

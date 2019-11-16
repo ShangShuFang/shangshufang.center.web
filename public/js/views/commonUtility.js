@@ -49,3 +49,13 @@ commonUtility.getLoginUser = function () {
   }
   return JSON.parse(cookie);
 };
+
+commonUtility.buildUniversityUploadRemoteUri = function (serviceUrl, universityCode, dirName) {
+  let systemName = 'shs';
+  return `${serviceUrl}?system=${systemName}&customer=university&universityCode=${universityCode}&dirName=${dirName}`;
+};
+
+commonUtility.buildEnterpriseUploadRemoteUri = function (serviceUrl, companyName, dirName) {
+  let systemName = 'shs';
+  return `${serviceUrl}?system=${systemName}&customer=enterprise&companyName=${companyName}&dirName=${dirName}`;
+};

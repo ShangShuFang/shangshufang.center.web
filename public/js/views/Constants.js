@@ -11,3 +11,4 @@ Constants.DATA_STATUS = {
   DISABLED: 'D'
 };
 Constants.COOKIE_LOGIN_USER = 'shs.cms.user';
+Constants.UPLOAD_SERVICE_URI='http://localhost:8000/upload';

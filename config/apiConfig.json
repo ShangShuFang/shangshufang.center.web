@@ -10,6 +10,7 @@
       "checkUniversityCode": "/api/university/checkUniversityCode",
       "checkUniversityName": "/api/university/checkUniversityName",
       "changeUniversityStatus": "/api/university/changeStatus",
+      "changeUniversityBrand": "/api/university/changeBrand",
 
       "school": "/api/school",
       "checkSchoolName": "/api/school/checkSchoolName",
@@ -28,6 +29,7 @@
       "checkCompanyNameExist": "/api/company/checkCompanyNameExist",
       "checkCellphoneExist": "/api/company/checkCellphoneExist",
       "changeCompanyNameStatus": "/api/company/changeStatus",
+      "changeCompanyBrand": "/api/company/changeBrand",
 
       "companyAccount": "/api/company/account",
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",

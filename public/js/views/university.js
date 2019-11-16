@@ -20,6 +20,13 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     nextPageNum: -1,
     //end: 数据列表
 
+    //begin: Brand编辑
+    universityID_brand: 0,
+    universityCode_brand: '',
+    brandUrl: '',
+    memo: '',
+    //end: Brand编辑
+
     //begin: 信息编辑
     modalTitle: '',
     universityID: 0,
@@ -98,46 +105,6 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     });
   };
 
-  $scope.loadCityList4Edit = function (provinceCode){
-    $http.get(`/common/chinaRegion?parentCode=${provinceCode}`).then(function successCallback (response) {
-      if(response.data.err){
-        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
-        return false;
-      }
-      if(response.data.dataList === null){
-        $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
-        return false;
-      }
-      $scope.model.cityList4Edit = response.data.dataList;
-      if($scope.model.add){
-        $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
-      }else{
-        $scope.loadDistrictList($scope.model.selectedCity4Edit.regionCode);
-      }
-    }, function errorCallback(response) {
-      bootbox.alert(localMessage.NETWORK_ERROR);
-    });
-  };
-
-  $scope.loadDistrictList = function (cityCode){
-    $http.get(`/common/chinaRegion?parentCode=${cityCode}`).then(function successCallback (response) {
-      if(response.data.err){
-        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
-        return false;
-      }
-      if(response.data.dataList === null){
-        $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
-        return false;
-      }
-      $scope.model.districtList = response.data.dataList;
-      if($scope.model.add){
-        $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
-      }
-    }, function errorCallback(response) {
-      bootbox.alert(localMessage.NETWORK_ERROR);
-    });
-  };
-
   $scope.onProvinceChange = function(regionCode, regionName){
     if($scope.model.selectedProvince.regionCode === regionCode){
       return false;
@@ -167,26 +134,70 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.loadData();
   };
 
+  $scope.loadCityList4Edit = function (provinceCode){
+    $http.get(`/common/chinaRegion?parentCode=${provinceCode}`).then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(response.data.dataList === null){
+        $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
+        return false;
+      }
+      $scope.model.cityList4Edit = response.data.dataList;
+      if($scope.model.add){
+        $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
+      }else{
+        if($scope.model.selectedCity4Edit.regionCode !== 0){
+          $scope.loadDistrictList($scope.model.selectedCity4Edit.regionCode);
+        }
+      }
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
+  $scope.loadDistrictList = function (cityCode){
+    $http.get(`/common/chinaRegion?parentCode=${cityCode}`).then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(response.data.dataList === null){
+        $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
+        return false;
+      }
+      $scope.model.districtList = response.data.dataList;
+      if($scope.model.add){
+        $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
+      }
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
   $scope.onProvinceChange4Edit = function (regionCode, regionName){
     if($scope.model.selectedProvince4Edit.regionName === regionName){
       return false;
     }
     $scope.model.selectedProvince4Edit = {regionCode: regionCode, regionName: regionName};
     if(regionCode === 0){
-      $scope.model.selectedCity4Edit = {regionCode: regionCode, regionName: '请选择城市'};
+      $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
       $scope.model.cityList4Edit.splice(0, $scope.model.cityList4Edit.length);
-      $scope.model.selectedDistrict4Edit = {regionCode: regionCode, regionName: '请选择区县'};
+      $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
       $scope.model.districtList.splice(0, $scope.model.districtList.length);
       return false;
     }
     if(Constants.PROVINCE_LEVEL_MUNICIPALITY.includes(regionName)){
       $scope.model.selectedCity4Edit = {regionCode: 0, regionName: `${regionName}市`};
       $scope.model.cityList4Edit.splice(0, $scope.model.cityList4Edit.length);
+      $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
       $scope.loadDistrictList(regionCode);
       return false;
     }
 
-    $scope.model.selectedDistrict4Edit = {regionCode: regionCode, regionName: '请选择区县'};
+    $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
+    $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
     $scope.model.districtList.splice(0, $scope.model.districtList.length);
     $scope.loadCityList4Edit(regionCode);
   };
@@ -196,6 +207,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       return false;
     }
     $scope.model.selectedCity4Edit = {regionCode: regionCode, regionName: regionName};
+    $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
     $scope.loadDistrictList(regionCode);
   };
 
@@ -266,14 +278,30 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $('#kt_modal_edit').modal('show');
   };
 
+  $scope.onShowBrandModal = function (data){
+    $scope.model.brandUrl = '';
+    $scope.model.universityID_brand = data.universityID;
+    $scope.model.universityCode_brand = data.universityCode;
+
+    let uploadServerUrl = commonUtility.buildUniversityUploadRemoteUri(Constants.UPLOAD_SERVICE_URI, data.universityCode, 'brand');
+
+    uploadUtils.destroyUploadPlugin('#file-upload-brand');
+    uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {
+      $scope.model.brandUrl = data.fileUrlList[0];
+      layer.msg(localMessage.UPLOAD_SUCCESS);
+    });
+
+    $('#kt_modal_brand').modal('show');
+  };
+
   $scope.onShowChangeModal = function (data){
     $scope.setDefaultValue();
     $scope.model.modalTitle = '修改合作高校';
     $scope.model.universityID = data.universityID;
     $scope.model.universityCode = data.universityCode;
-    $scope.model.universityCodeIsInValid = Constants.CHECK_INVALID.DEFAULT;
+    $scope.model.universityCodeIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.universityName = data.universityName;
-    $scope.model.universityNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
+    $scope.model.universityNameIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.selectedProvince4Edit = {regionCode: data.provinceCode, regionName: data.provinceName};
     $scope.model.selectedCity4Edit = {regionCode: data.cityCode, regionName: data.cityName};
     $scope.model.selectedDistrict4Edit = {regionCode: data.districtCode, regionName: data.districtName};
@@ -298,6 +326,24 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.status = data.dataStatus;
     $scope.model.isActive = data.dataStatus === Constants.DATA_STATUS.ACTIVE;
     $('#kt_modal_status').modal('show');
+  };
+
+  $scope.onChangeBrand = function () {
+    $http.put('/university/brand', {
+      universityID: $scope.model.universityID_brand,
+      brand: $scope.model.brandUrl,
+      memo: $scope.model.memo,
+      loginUser: '1'
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_brand').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
   };
 
   $scope.onChangeStatus = function () {

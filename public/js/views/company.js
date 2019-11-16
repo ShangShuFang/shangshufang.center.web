@@ -20,6 +20,13 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     nextPageNum: -1,
     //endregion
 
+    //begin: Brand编辑
+    brandModalTitle: '',
+    companyID_brand: 0,
+    brandUrl: '',
+    memo: '',
+    //end: Brand编辑
+
     //region 信息编辑
     modalTitle: '',
     companyID: 0,
@@ -64,6 +71,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.address = '';
     $scope.model.contacts = '';
     $scope.model.cellphone = '';
+    $scope.model.cellphoneIsInValid = Constants.CHECK_INVALID.DEFAULT;
     $scope.model.cityList4Edit.splice(0, $scope.model.cityList4Edit.length);
     $scope.model.districtList.splice(0, $scope.model.districtList.length);
   };
@@ -199,7 +207,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       if($scope.model.add){
         $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
       }else{
-        $scope.loadDistrictList($scope.model.selectedCity4Edit.regionCode);
+        if($scope.model.selectedCity4Edit.regionCode !== 0){
+          $scope.loadDistrictList($scope.model.selectedCity4Edit.regionCode);
+        }
       }
     }, function errorCallback(response) {
       bootbox.alert(localMessage.NETWORK_ERROR);
@@ -231,20 +241,22 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     }
     $scope.model.selectedProvince4Edit = {regionCode: regionCode, regionName: regionName};
     if(regionCode === 0){
-      $scope.model.selectedCity4Edit = {regionCode: regionCode, regionName: '请选择城市'};
+      $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
       $scope.model.cityList4Edit.splice(0, $scope.model.cityList4Edit.length);
-      $scope.model.selectedDistrict4Edit = {regionCode: regionCode, regionName: '请选择区县'};
+      $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
       $scope.model.districtList.splice(0, $scope.model.districtList.length);
       return false;
     }
     if(Constants.PROVINCE_LEVEL_MUNICIPALITY.includes(regionName)){
       $scope.model.selectedCity4Edit = {regionCode: 0, regionName: `${regionName}市`};
       $scope.model.cityList4Edit.splice(0, $scope.model.cityList4Edit.length);
+      $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
       $scope.loadDistrictList(regionCode);
       return false;
     }
 
-    $scope.model.selectedDistrict4Edit = {regionCode: regionCode, regionName: '请选择区县'};
+    $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
+    $scope.model.selectedDistrict4Edit = {regionCode: 0, regionName: '请选择区县'};
     $scope.model.districtList.splice(0, $scope.model.districtList.length);
     $scope.loadCityList4Edit(regionCode);
   };
@@ -305,9 +317,6 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
             bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
             return false;
           }
-          // if(response.data.result){
-          //   $scope.model.cellphoneCompare = $scope.model.cellphone;
-          // }
 
           $scope.model.cellphoneIsInValid =
               response.data.result ?
@@ -325,6 +334,44 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       $scope.change();
     }
   };
+  //endregion
+
+  //region 添加Brand
+  $scope.onShowBrandModal = function (data){
+    $scope.model.brandModalTitle = `${data.companyName}的Brand&Memo`;
+    $scope.model.brandUrl = data.brand;
+    $scope.model.memo = data.memo;
+    $scope.model.companyID_brand = data.companyID;
+
+    let uploadServerUrl = commonUtility.buildEnterpriseUploadRemoteUri(Constants.UPLOAD_SERVICE_URI, data.universityCode, 'brand');
+
+    uploadUtils.destroyUploadPlugin('#file-upload-brand');
+    uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {
+      $scope.model.brandUrl = data.fileUrlList[0];
+      layer.msg(localMessage.UPLOAD_SUCCESS);
+    });
+
+    $('#kt_modal_brand').modal('show');
+  };
+
+  $scope.onChangeBrand = function () {
+    $http.put('/company/brand', {
+      companyID: $scope.model.companyID_brand,
+      brand: $scope.model.brandUrl,
+      memo: $scope.model.memo,
+      loginUser: '1'
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_brand').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
   //endregion
 
   //region 添加数据
@@ -372,7 +419,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.contacts = data.contacts;
     $scope.model.cellphone = data.cellphone;
     $scope.model.cellphoneCompare = data.cellphone;
-    $scope.model.cellphoneIsInValid = Constants.CHECK_INVALID.VALID;
+    $scope.model.cellphoneIsInValid = Constants.CHECK_INVALID.DEFAULT;
     $scope.model.add = false;
 
     if(Constants.PROVINCE_LEVEL_MUNICIPALITY.includes($scope.model.selectedProvince4Edit.regionName)){
