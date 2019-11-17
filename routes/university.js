@@ -167,6 +167,30 @@ router.put('/brand', (req, res, next) => {
   let data = {
     universityID: req.body.universityID,
     brand: req.body.brand,
+    loginUser: req.body.loginUser
+  };
+
+  service.change(data, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg
+      });
+    }
+  });
+});
+
+router.put('/memo', (req, res, next) => {
+  let service = new commonService.commonInvoke('changeUniversityMemo');
+  let data = {
+    universityID: req.body.universityID,
     memo: req.body.memo,
     loginUser: req.body.loginUser
   };

@@ -24,6 +24,11 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     brandModalTitle: '',
     companyID_brand: 0,
     brandUrl: '',
+    //end: Brand编辑
+
+    //begin: Memo编辑
+    memoModalTitle: '',
+    companyID_memo: 0,
     memo: '',
     //end: Brand编辑
 
@@ -339,17 +344,18 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   //region 添加Brand
   $scope.onShowBrandModal = function (data){
-    $scope.model.brandModalTitle = `${data.companyName}的Brand&Memo`;
-    $scope.model.add = false;
-    $scope.model.brandUrl = data.brand;
-    $scope.model.memo = data.memo;
+    $scope.model.brandModalTitle = `Brand:${data.companyName}`;
     $scope.model.companyID_brand = data.companyID;
+    $scope.model.brandUrl = data.brand;
+    // $scope.model.memo = data.memo;
+    $scope.model.add = false;
 
     let uploadServerUrl = commonUtility.buildEnterpriseUploadRemoteUri(Constants.UPLOAD_SERVICE_URI, data.companyName, 'brand');
 
     uploadUtils.destroyUploadPlugin('#file-upload-brand');
     uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {
       $scope.model.brandUrl = data.fileUrlList[0];
+      $scope.$apply();
       layer.msg(localMessage.UPLOAD_SUCCESS);
     });
 
@@ -374,6 +380,33 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     });
   };
 
+  //endregion
+
+  //region 添加Memo
+  $scope.onShowMemoModal = function(data){
+    $scope.model.memoModalTitle = `${data.companyName}客户寄语`;
+    $scope.model.companyID_memo = data.companyID;
+    $scope.model.add = commonUtility.isEmpty(data.memo);
+    $scope.model.memo = data.memo;
+    $('#kt_modal_memo').modal('show');
+  };
+
+  $scope.onChangeMemo = function () {
+    $http.put('/company/memo', {
+      companyID: $scope.model.companyID_memo,
+      memo: $scope.model.memo,
+      loginUser: $scope.model.loginUser.adminID
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_memo').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
   //endregion
 
   //region 添加数据

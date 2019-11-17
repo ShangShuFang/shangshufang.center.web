@@ -11,6 +11,7 @@
       "checkUniversityName": "/api/university/checkUniversityName",
       "changeUniversityStatus": "/api/university/changeStatus",
       "changeUniversityBrand": "/api/university/changeBrand",
+      "changeUniversityMemo": "/api/university/changeMemo",
 
       "school": "/api/school",
       "checkSchoolName": "/api/school/checkSchoolName",
@@ -30,6 +31,7 @@
       "checkCellphoneExist": "/api/company/checkCellphoneExist",
       "changeCompanyNameStatus": "/api/company/changeStatus",
       "changeCompanyBrand": "/api/company/changeBrand",
+      "changeCompanyMemo": "/api/company/changeMemo",
 
       "companyAccount": "/api/company/account",
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",

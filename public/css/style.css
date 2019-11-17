@@ -39,4 +39,22 @@ body{
 
 .img-table-cell{
   width: 100%;
+  cursor: pointer;
 }
+.customer-brand{
+  width: 120px;
+  text-align: center;
+}
+.cell-option{
+  color: #5d78ff;
+}
+.customer-memo {
+  width: 80px;
+  text-align: center;
+}
+
+/*begin: 上传文件组件样式*/
+.fileItem{
+  display: block !important;
+}
+/*end: 上传文件组件样式*/

@@ -108,12 +108,13 @@
               <thead>
               <tr role="row">
                 <th>Brand</th>
+                <th>客户寄语</th>
                 <th>高校编码</th>
                 <th>高校名称</th>
                 <th>省</th>
                 <th>市</th>
-                <th>区</th>
-                <th>详细地址</th>
+                <th>区县</th>
+                <th>地址</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -121,8 +122,22 @@
 
               <tbody>
               <tr ng-repeat="data in model.dataList">
-                <td style="width: 120px">
-                  <img ng-src="\{{data.brand}}" class="img-table-cell" alt="">
+                <td class="customer-brand">
+                  <a href="javascript:;" class="cell-option" ng-if="data.brand == ''" ng-click="onShowBrandModal(data)">
+                    <i class="la la-plus"></i>
+                    添加
+                  </a>
+                  <img ng-src="\{{data.brand}}" class="img-table-cell" ng-if="data.brand !== ''" ng-click="onShowBrandModal(data)">
+                </td>
+                <td class="customer-memo">
+                  <a href="javascript:;" class="cell-option" ng-if="data.memo == ''" ng-click="onShowMemoModal(data)">
+                    <i class="la la-plus"></i>
+                    添加
+                  </a>
+                  <a href="javascript:;" class="cell-option" ng-if="data.memo !== ''" ng-click="onShowMemoModal(data)">
+                    <i class="la la-edit"></i>
+                    编辑
+                  </a>
                 </td>
                 <td ng-bind="data.universityCode"></td>
                 <td ng-bind="data.universityName"></td>
@@ -137,18 +152,17 @@
                   </span>
                 </td>
                 <td>
-                    <span class="dropdown">
-                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown"
-                           aria-expanded="true">
-                          <i class="la la-ellipsis-h"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-photo"></i> Brand</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
-                        </div>
-                    </span>
+                  <span class="dropdown">
+                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown"
+                       aria-expanded="true">
+                      <i class="la la-ellipsis-h"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
+                    </div>
+                  </span>
                 </td>
               </tr>
               </tbody>
@@ -205,15 +219,39 @@
               </div>
               <div class="modal-body">
                 <div class="kt-portlet__body">
+                  <div id="file-upload-brand" class="fileUploadContent"></div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onChangeBrand()"
+                        ng-disabled="model.brandUrl == ''">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: brand modal -->
+
+      <!--begin: memo modal -->
+      <div class="modal fade" id="kt_modal_memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="memoForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.memoModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-2 col-form-label">Brand</label>
-                    <div class="col-10">
-                      <div id="file-upload-brand" class="fileUploadContent"></div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-2 col-form-label">客户寄语</label>
-                    <div class="col-10">
+                    <div class="col-12">
                       <textarea class="form-control" name="memo" rows="8" maxlength="256" ng-model="model.memo" required></textarea>
                     </div>
                   </div>
@@ -223,8 +261,8 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button"
                         class="btn btn-primary"
-                        ng-click="onChangeBrand()"
-                        ng-disabled="model.brandUrl == '' || (brandForm.memo.$pristine && model.add) || (brandForm.memo.$dirty && brandForm.memo.$invalid)">
+                        ng-click="onChangeMemo()"
+                        ng-disabled="(memoForm.memo.$pristine && model.add) || (memoForm.memo.$dirty && memoForm.memo.$invalid)">
                   提交
                 </button>
               </div>
@@ -232,7 +270,7 @@
           </div>
         </div>
       </div>
-      <!--end: brand modal -->
+      <!--end: memo modal -->
 
       <!--begin: edit modal -->
       <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
