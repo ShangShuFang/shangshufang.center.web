@@ -58,3 +58,25 @@ body{
   display: block !important;
 }
 /*end: 上传文件组件样式*/
+
+.form-group .fa-star{
+  margin-top: 7px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.technology-stars-select{
+  color: #f1b86f;
+}
+/*.table-fix{*/
+/*  table-layout: fixed;*/
+/*}*/
+
+.technology-memo {
+  width: 650px;
+}
+.technology-memo span {
+  display: block;
+  max-width: 650px;
+  white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+}
+

@@ -59,3 +59,8 @@ commonUtility.buildEnterpriseUploadRemoteUri = function (serviceUrl, companyName
   let systemName = 'shs';
   return `${serviceUrl}?system=${systemName}&customer=enterprise&companyName=${companyName}&dirName=${dirName}`;
 };
+
+commonUtility.buildSystemRemoteUri = function (serviceUrl, dirName) {
+  let systemName = 'shs';
+  return `${serviceUrl}?system=${systemName}&dirName=${dirName}`;
+};

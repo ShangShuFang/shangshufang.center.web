@@ -35,7 +35,12 @@
 
       "companyAccount": "/api/company/account",
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",
-      "changeCompanyAccountStatus": "/api/company/account/changeStatus"
+      "changeCompanyAccountStatus": "/api/company/account/changeStatus",
+
+      "technology": "/api/technology",
+      "checkTechnologyNameExist": "/api/technology/checkTechnologyName",
+      "changeTechnologyStatus": "/api/technology/changeStatus",
+      "changeTechnologyThumbnail": "/api/technology/changeThumbnail"
     }
   }
 }
