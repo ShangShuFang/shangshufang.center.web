@@ -67,16 +67,16 @@ body{
 .technology-stars-select{
   color: #f1b86f;
 }
-/*.table-fix{*/
-/*  table-layout: fixed;*/
-/*}*/
 
 .technology-memo {
-  width: 650px;
+  width: 500px;
 }
-.technology-memo span {
-  display: block;
-  max-width: 650px;
-  white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+.technology-memo p {
+  margin-top: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
