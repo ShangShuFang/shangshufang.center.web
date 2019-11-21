@@ -40,7 +40,11 @@
       "technology": "/api/technology",
       "checkTechnologyNameExist": "/api/technology/checkTechnologyName",
       "changeTechnologyStatus": "/api/technology/changeStatus",
-      "changeTechnologyThumbnail": "/api/technology/changeThumbnail"
+      "changeTechnologyThumbnail": "/api/technology/changeThumbnail",
+
+      "knowledge": "/api/technology/knowledge",
+      "checkKnowledgeNameExist": "/api/technology/knowledge/checkKnowledgeName",
+      "changeKnowledgeStatus": "/api/technology/knowledge/changeStatus"
     }
   }
 }

@@ -13,6 +13,7 @@ let universityAccountRouter = require('./routes/universityAccount');
 let companyRouter = require('./routes/company');
 let companyAccountRouter = require('./routes/companyAccount');
 let technologyRouter = require('./routes/technology');
+let knowledgeRouter = require('./routes/knowledge');
 let commonRouter = require('./routes/common');
 
 let app = express();
@@ -44,6 +45,7 @@ app.use('/universityAccount', universityAccountRouter);
 app.use('/company', companyRouter);
 app.use('/companyAccount', companyAccountRouter);
 app.use('/technology', technologyRouter);
+app.use('/knowledge', knowledgeRouter);
 app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
