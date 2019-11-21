@@ -61,6 +61,7 @@
                 <th>技术名称</th>
                 <th>技术热度</th>
                 <th>技术简介</th>
+                <th>技术点</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -96,6 +97,9 @@
                 </td>
                 <td class="technology-memo">
                   <p ng-bind="data.technologyMemo" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title="" data-original-title="Tooltip title"></p>
+                </td>
+                <td class="center">
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.knowledgeCount"></button>
                 </td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
