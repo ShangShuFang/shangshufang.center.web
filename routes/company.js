@@ -82,6 +82,7 @@ router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('company');
   let data = {
     companyName: req.body.companyName,
+    companyAbbreviation: req.body.companyAbbreviation,
     provinceCode: req.body.provinceCode,
     cityCode: req.body.cityCode,
     districtCode: req.body.districtCode,
@@ -114,6 +115,7 @@ router.put('/', (req, res, next) => {
   let data = {
     companyID: req.body.companyID,
     companyName: req.body.companyName,
+    companyAbbreviation: req.body.companyAbbreviation,
     provinceCode: req.body.provinceCode,
     cityCode: req.body.cityCode,
     districtCode: req.body.districtCode,

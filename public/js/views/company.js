@@ -37,6 +37,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     modalTitle: '',
     companyID: 0,
     companyName: '',
+    companyAbbreviation: '',
     companyNameIsInValid: Constants.CHECK_INVALID.DEFAULT,
     provinceList4Edit: [],
     selectedProvince4Edit: {regionCode: 0, regionName: '请选择省份'},
@@ -70,6 +71,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.setDefaultValue = function (){
     $scope.model.companyID = 0;
     $scope.model.companyName = '';
+    $scope.model.companyAbbreviation = '';
     $scope.model.companyNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
     $scope.model.selectedProvince4Edit = {regionCode: 0, regionName: '请选择省份'};
     $scope.model.selectedCity4Edit = {regionCode: 0, regionName: '请选择城市'};
@@ -420,6 +422,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.add = function(){
     $http.post('/company', {
       companyName: $scope.model.companyName,
+      companyAbbreviation: $scope.model.companyAbbreviation,
       provinceCode: $scope.model.selectedProvince4Edit.regionCode,
       cityCode: $scope.model.selectedCity4Edit.regionCode,
       districtCode: $scope.model.selectedDistrict4Edit.regionCode,
@@ -446,6 +449,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.modalTitle = '修改合作企业';
     $scope.model.companyID = data.companyID;
     $scope.model.companyName = data.companyName;
+    $scope.model.companyAbbreviation = data.companyAbbreviation;
     $scope.model.companyNameIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.selectedProvince4Edit = {regionCode: data.provinceCode, regionName: data.provinceName};
     $scope.model.selectedCity4Edit = {regionCode: data.cityCode, regionName: data.cityName};
@@ -473,6 +477,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.put('/company', {
       companyID: $scope.model.companyID,
       companyName: $scope.model.companyName,
+      companyAbbreviation: $scope.model.companyAbbreviation,
       provinceCode: $scope.model.selectedProvince4Edit.regionCode,
       cityCode: $scope.model.selectedCity4Edit.regionCode,
       districtCode: $scope.model.selectedDistrict4Edit.regionCode,
