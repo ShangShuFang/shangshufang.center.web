@@ -37,6 +37,11 @@
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",
       "changeCompanyAccountStatus": "/api/company/account/changeStatus",
 
+      "direction": "/api/direction",
+      "checkDirectionNameExist": "/api/direction/checkDirectionName",
+      "changeDirectionStatus": "/api/direction/changeStatus",
+      "changeDirectionThumbnail": "/api/direction/changeThumbnail",
+
       "technology": "/api/technology",
       "checkTechnologyNameExist": "/api/technology/checkTechnologyName",
       "changeTechnologyStatus": "/api/technology/changeStatus",
