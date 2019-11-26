@@ -19,6 +19,11 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     thumbnailUrl: '',
     //end: Brand编辑
 
+    //begin: 相关技术
+    relateTechnologyModalTitle: '',
+    relateTechnologyList: [],
+    //end: 相关技术
+
     //begin: 信息编辑
     loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
@@ -96,6 +101,27 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     }
     $scope.model.pageNumber++;
     $scope.loadData();
+  };
+
+  $scope.showRelateTechnology = function (data){
+    if(data.technologyCount === 0){
+      return false;
+    }
+    $http.get(`/direction/relateTechnology?directionID=${data.directionID}`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(response.data.dataList === null){
+            return false;
+          }
+          $scope.model.relateTechnologyList = response.data.dataList;
+          $scope.model.relateTechnologyModalTitle = `${data.directionName}涉及的技术`;
+          $('#kt_modal_relate_technology').modal('show');
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
   };
   //endregion
 

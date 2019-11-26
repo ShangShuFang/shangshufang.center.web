@@ -47,6 +47,9 @@
       "changeTechnologyStatus": "/api/technology/changeStatus",
       "changeTechnologyThumbnail": "/api/technology/changeThumbnail",
 
+      "technologyDirection4Technology": "/api/technology/direction/forTechnology",
+      "technologyDirection4Direction": "/api/technology/direction/forDirection",
+
       "knowledge": "/api/technology/knowledge",
       "checkKnowledgeNameExist": "/api/technology/knowledge/checkKnowledgeName",
       "changeKnowledgeStatus": "/api/technology/knowledge/changeStatus"

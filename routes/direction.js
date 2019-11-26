@@ -54,6 +54,28 @@ router.get('/checkDirectionName', function(req, res, next) {
   });
 });
 
+router.get('/relateTechnology', function(req, res, next) {
+  let service = new commonService.commonInvoke('technologyDirection4Direction');
+  let directionID = req.query.directionID;
+
+  service.queryWithParameter(directionID, function (result) {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('direction');
   let data = {
@@ -156,7 +178,6 @@ router.put('/thumbnail', (req, res, next) => {
     }
   });
 });
-
 
 router.delete('/', (req, res, next) => {
   let service = new commonService.commonInvoke('direction');

@@ -28,6 +28,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     technologyStars: 0,
     technologyThumbnail: '',
     technologyMemo: '',
+    directionList: [],
+    selectedDirectionArray: [],
+    technologyDirectionList: [],
     add: true,
     //end: 信息编辑
 
@@ -43,6 +46,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.initPage = function () {
     commonUtility.setNavActive();
     $scope.loadData();
+    $scope.loadDirection();
   };
 
   $scope.loadData = function(){
@@ -97,11 +101,45 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.pageNumber++;
     $scope.loadData();
   };
+
+  $scope.loadDirection = function(){
+    $http.get(`/common/direction`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(response.data.dataList === null){
+            return false;
+          }
+
+          response.data.dataList.forEach(function (data) {
+            $scope.model.directionList.push({
+              directionID: data.directionID,
+              directionName: data.directionName,
+              select: false,
+            });
+          });
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
+  };
   //endregion
 
   //region 添加及更新的公共方法
   $scope.onSelectStar = function(number) {
     $scope.model.technologyStars = number;
+  };
+
+  $scope.onChooseDirection = function(direction){
+    direction.select = !direction.select;
+
+    if(direction.select){
+      $scope.model.selectedDirectionArray.push(direction.directionID);
+    }else{
+      let index = $scope.model.selectedDirectionArray.indexOf(direction.directionID);
+      $scope.model.selectedDirectionArray.splice(index, 1);
+    }
   };
 
   $scope.onSubmit = function(){
@@ -121,6 +159,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.technologyStars = 0;
     $scope.model.technologyThumbnail = '';
     $scope.model.technologyMemo = '';
+    $scope.model.directionList.forEach(function (direction) {
+      direction.select = false;
+    });
   };
 
   $scope.onShowAddModal = function(){
@@ -158,6 +199,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       technologyName: $scope.model.technologyName,
       technologyStars: $scope.model.technologyStars,
       technologyMemo: $scope.model.technologyMemo,
+      directions: $scope.model.selectedDirectionArray.join(','),
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
@@ -182,7 +224,36 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.technologyStars = data.technologyStars;
     $scope.model.technologyMemo = data.technologyMemo;
     $scope.model.add = false;
+    $scope.setSelectedDirections(data.technologyID);
     $('#kt_modal_edit').modal('show');
+  };
+
+  $scope.setSelectedDirections = function (technologyID){
+    $http.get(`/technology/selectedDirections?technologyID=${technologyID}`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(response.data.dataList === null){
+            $scope.model.selectedDirectionArray.splice(0, $scope.model.selectedDirectionArray.length);
+            return false;
+          }
+          $scope.model.selectedDirectionArray.splice(0, $scope.model.selectedDirectionArray.length);
+          response.data.dataList.forEach(function (data) {
+            let index = -1;
+            $scope.model.directionList.forEach(function (direction, i) {
+              if(direction.directionID === data.directionID){
+                index = i;
+                return false;
+              }
+            });
+            $scope.model.selectedDirectionArray.push(data.directionID);
+            $scope.model.directionList[index].select = true;
+          });
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
   };
 
   $scope.change = function(){
@@ -191,6 +262,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       technologyName: $scope.model.technologyName,
       technologyStars: $scope.model.technologyStars,
       technologyMemo: $scope.model.technologyMemo,
+      directions: $scope.model.selectedDirectionArray.join(','),
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){
@@ -203,6 +275,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       bootbox.alert(localMessage.NETWORK_ERROR);
     });
   };
+
   //endregion
 
   //region 添加Brand

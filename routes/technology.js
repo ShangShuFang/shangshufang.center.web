@@ -54,12 +54,35 @@ router.get('/checkTechnologyName', function(req, res, next) {
   });
 });
 
+router.get('/selectedDirections', function(req, res, next) {
+  let service = new commonService.commonInvoke('technologyDirection4Technology');
+  let technologyID = req.query.technologyID;
+
+  service.queryWithParameter(technologyID, function (result) {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('technology');
   let data = {
     technologyName: req.body.technologyName,
     technologyStars: req.body.technologyStars,
     technologyMemo: req.body.technologyMemo,
+    directions: req.body.directions,
     loginUser: req.body.loginUser
   };
 
@@ -87,6 +110,7 @@ router.put('/', (req, res, next) => {
     technologyName: req.body.technologyName,
     technologyStars: req.body.technologyStars,
     technologyMemo: req.body.technologyMemo,
+    directions: req.body.directions,
     loginUser: req.body.loginUser
   };
 
