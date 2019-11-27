@@ -95,8 +95,8 @@
                     <i class="fa fa-star" ng-class="{'technology-stars-select': data.directionStars >= 5}"></i>
                   </span>
                 </td>
-                <td class="technology-memo">
-                  <p ng-bind="data.directionMemo" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title=""></p>
+                <td class="cell-memo">
+                  <p class="cell-memo-content" ng-bind="data.directionMemo" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title=""></p>
                 </td>
                 <td class="center">
                   <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.technologyCount" ng-click="showRelateTechnology(data)"></button>

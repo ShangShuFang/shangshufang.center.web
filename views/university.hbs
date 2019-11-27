@@ -123,21 +123,10 @@
               <tbody>
               <tr ng-repeat="data in model.dataList">
                 <td class="customer-brand">
-                  <a href="javascript:;" class="cell-option" ng-if="data.brand == ''" ng-click="onShowBrandModal(data)">
-                    <i class="la la-plus"></i>
-                    添加
-                  </a>
                   <img ng-src="\{{data.brand}}" class="img-table-cell" ng-if="data.brand !== ''" ng-click="onShowBrandModal(data)">
                 </td>
-                <td class="customer-memo">
-                  <a href="javascript:;" class="cell-option" ng-if="data.memo == ''" ng-click="onShowMemoModal(data)">
-                    <i class="la la-plus"></i>
-                    添加
-                  </a>
-                  <a href="javascript:;" class="cell-option" ng-if="data.memo !== ''" ng-click="onShowMemoModal(data)">
-                    <i class="la la-edit"></i>
-                    编辑
-                  </a>
+                <td class="cell-memo">
+                  <p class="cell-memo-content" ng-bind="data.memo"></p>
                 </td>
                 <td ng-bind="data.universityCode"></td>
                 <td ng-bind="data.universityName"></td>
@@ -159,6 +148,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-image"></i> Brand</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i class="la la-wechat"></i> 客户寄语</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
                     </div>

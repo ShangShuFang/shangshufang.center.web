@@ -48,9 +48,17 @@ body{
 .cell-option{
   color: #5d78ff;
 }
-.customer-memo {
-  width: 80px;
-  text-align: center;
+
+.cell-memo{
+  width: 300px;
+}
+.cell-memo-content{
+  margin-top: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 /*begin: 上传文件组件样式*/
@@ -68,17 +76,17 @@ body{
   color: #f1b86f;
 }
 
-.technology-memo {
-  width: 500px;
-}
-.technology-memo p {
-  margin-top: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
+/*.technology-memo {*/
+/*  width: 500px;*/
+/*}*/
+/*.technology-memo p {*/
+/*  margin-top: 6px;*/
+/*  overflow: hidden;*/
+/*  text-overflow: ellipsis;*/
+/*  display: -webkit-box;*/
+/*  -webkit-line-clamp: 3;*/
+/*  -webkit-box-orient: vertical;*/
+/*}*/
 .center{
   text-align: center;
 }
