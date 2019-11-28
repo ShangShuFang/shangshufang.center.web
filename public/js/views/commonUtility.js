@@ -18,6 +18,10 @@ commonUtility.isEmpty = function (value) {
   return value === '' || value === undefined;
 };
 
+commonUtility.isEmptyList = function (list) {
+  return list === null || list.length === 0;
+};
+
 commonUtility.setCookie = function (name, value, remember) {
   let days = remember ? 30 : 1;
   let exp = new Date();

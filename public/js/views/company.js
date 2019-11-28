@@ -20,17 +20,17 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     nextPageNum: -1,
     //endregion
 
-    //begin: Brand编辑
+    //region Brand编辑
     brandModalTitle: '',
     companyID_brand: 0,
     brandUrl: '',
-    //end: Brand编辑
+    //endregion
 
-    //begin: Memo编辑
+    //region Memo编辑
     memoModalTitle: '',
     companyID_memo: 0,
     memo: '',
-    //end: Brand编辑
+    //endregion
 
     //region 信息编辑
     loginUser: commonUtility.getLoginUser(),
@@ -51,6 +51,19 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     cellphoneIsInValid: Constants.CHECK_INVALID.DEFAULT,
     address: '',
     add: true,
+    //endregion
+
+    //region 使用技术
+    technologyModalTitle: '',
+    technologyCompanyID: 0,
+
+    technologyList: [],
+    selectedTechnologyID: 0,
+    selectedTechnology: null,
+
+    choiceTechnologyList: [],
+    choiceSelectedTechnologyID: 0,
+    choiceSelectedTechnology: null,
     //endregion
 
     //region 状态编辑
@@ -408,6 +421,145 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     }, function errorCallback(response) {
       bootbox.alert(localMessage.NETWORK_ERROR);
     });
+  };
+  //endregion
+
+  //region 使用技术
+  $scope.onShowTechnologyModal = function(data){
+    $scope.model.technologyModalTitle = `${data.companyName}使用技术`;
+    $scope.model.technologyCompanyID = data.companyID;
+
+    // 查询所有的技术信息
+    $http.get('/common/technology').then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(commonUtility.isEmptyList(response.data.dataList)){
+        $('#kt_modal_technology').modal('show');
+        return false;
+      }
+      $scope.model.technologyList = response.data.dataList;
+
+      //查询当前企业使用的技术信息
+      $http.get(`/company/usingTechnology?companyID=${$scope.model.technologyCompanyID}`).then(function successCallback (response) {
+        if(response.data.err){
+          bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+          return false;
+        }
+        $scope.model.choiceTechnologyList.splice(0, $scope.model.choiceTechnologyList.length);
+        if(commonUtility.isEmptyList(response.data.dataList)) {
+          $('#kt_modal_technology').modal('show');
+          return false;
+        }
+        response.data.dataList.forEach(function(data) {
+          $scope.model.technologyList.forEach(function(technology) {
+            if(data.technologyID === technology.technologyID){
+              let index = $scope.model.technologyList.indexOf(technology);
+              $scope.model.choiceTechnologyList.push(technology);
+              $scope.model.technologyList.splice(index, 1);
+            }
+          });
+        });
+        $('#kt_modal_technology').modal('show');
+      }, function errorCallback(response) {
+        bootbox.alert(localMessage.NETWORK_ERROR);
+      });
+
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
+  $scope.onTechnologyClick = function(technology){
+    $scope.model.selectedTechnologyID = technology.technologyID;
+    $scope.model.selectedTechnology = technology;
+  };
+
+  $scope.onTechnologyDbClick = function(technology){
+    let index = $scope.model.technologyList.indexOf(technology);
+    $scope.model.technologyList.splice(index, 1);
+    $scope.model.choiceTechnologyList.push(technology);
+  };
+
+  $scope.onChoiceTechnologyClick = function(technology){
+    $scope.model.choiceSelectedTechnologyID = technology.technologyID;
+    $scope.model.choiceSelectedTechnology = technology;
+  };
+
+  $scope.onChoiceTechnologyDbClick = function(technology){
+    let index = $scope.model.choiceTechnologyList.indexOf(technology);
+    $scope.model.choiceTechnologyList.splice(index, 1);
+    $scope.model.technologyList.push(technology);
+  };
+
+  $scope.onMoveAllTechnologyToChoiceTechnology = function(){
+    if($scope.model.technologyList.length === 0){
+      return false;
+    }
+    $scope.model.technologyList.forEach(function(technology) {
+      $scope.model.choiceTechnologyList.push(technology);
+    });
+    $scope.model.technologyList.splice(0, $scope.model.technologyList.length);
+  };
+
+  $scope.onMoveTechnologyToChoiceTechnology = function(){
+    if($scope.model.selectedTechnologyID === 0 || $scope.model.selectedTechnology === null){
+      return false;
+    }
+    let index = $scope.model.technologyList.indexOf($scope.model.selectedTechnology);
+    $scope.model.technologyList.splice(index, 1);
+    $scope.model.choiceTechnologyList.push($scope.model.selectedTechnology);
+    $scope.model.selectedTechnologyID = 0;
+    $scope.model.selectedTechnology = null;
+  };
+
+  $scope.onMoveAllChoiceTechnologyToTechnology = function(){
+    if($scope.model.choiceTechnologyList.length === 0){
+      return false;
+    }
+    $scope.model.choiceTechnologyList.forEach(function(technology) {
+      $scope.model.technologyList.push(technology);
+    });
+    $scope.model.choiceTechnologyList.splice(0, $scope.model.choiceTechnologyList.length);
+  };
+
+  $scope.onMoveChoiceTechnologyToTechnology = function(){
+    if($scope.model.choiceSelectedTechnologyID === 0 || $scope.model.choiceSelectedTechnology === null){
+      return false;
+    }
+    let index = $scope.model.choiceTechnologyList.indexOf($scope.model.choiceSelectedTechnology);
+    $scope.model.choiceTechnologyList.splice(index, 1);
+    $scope.model.technologyList.push($scope.model.choiceSelectedTechnology);
+    $scope.model.choiceSelectedTechnologyID = 0;
+    $scope.model.choiceSelectedTechnology = null;
+  };
+
+  $scope.onSaveUseTechnology = function() {
+    let choiceTechnologyIdList = [];
+    $scope.model.choiceTechnologyList.forEach(function(technology) {
+      choiceTechnologyIdList.push(technology.technologyID);
+    });
+    $http.post('/company/usingTechnology', {
+      companyID: $scope.model.technologyCompanyID,
+      technologyIdList: choiceTechnologyIdList.join(','),
+      loginUser: $scope.model.loginUser.adminID
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_technology').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+  //endregion
+
+  //region 使用技术点
+  $scope.onShowKnowledgeModal = function(data){
+
   };
   //endregion
 

@@ -111,12 +111,11 @@
                 <th>客户寄语</th>
                 <th>企业名称</th>
                 <th>简称</th>
-                <th>省</th>
-                <th>市</th>
-                <th>区</th>
                 <th>详细地址</th>
                 <th>联系人</th>
                 <th>手机号码</th>
+                <th>使用技术</th>
+                <th>使用技术点</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -125,20 +124,28 @@
               <tbody>
               <tr ng-repeat="data in model.dataList">
                 <td class="customer-brand">
-                  <img ng-src="\{{data.brand}}" class="img-table-cell" ng-if="data.brand !== ''" ng-click="onShowBrandModal(data)">
+                  <img ng-src="\{{data.brand}}" class="img-table-cell" ng-if="data.brand !== ''"
+                       ng-click="onShowBrandModal(data)">
                 </td>
-                <td class="cell-memo" style="width: 200px">
+                <td class="cell-memo" style="width: 150px">
                   <p class="cell-memo-content" ng-bind="data.memo"></p>
                 </td>
-
                 <td ng-bind="data.companyName"></td>
                 <td ng-bind="data.companyAbbreviation"></td>
-                <td ng-bind="data.provinceName"></td>
-                <td ng-bind="data.cityName"></td>
-                <td ng-bind="data.districtName"></td>
-                <td ng-bind="data.address"></td>
+                <td>
+                  <p class="cell-address" style="width: 150px">
+                    <span ng-bind="data.provinceName"></span>
+                    <span ng-bind="data.cityName"></span>
+                    <span ng-bind="data.districtName"></span>
+                    <span ng-bind="data.address"></span>
+                  </p>
+                </td>
                 <td ng-bind="data.contacts"></td>
                 <td ng-bind="data.cellphone"></td>
+                <td class="center">
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingTechnologyCount"></button>
+                </td>
+                <th></th>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
@@ -152,11 +159,22 @@
                           <i class="la la-ellipsis-h"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-image"></i> Brand</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i class="la la-wechat"></i> 客户寄语</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
-                            <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
+                            <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i
+                                    class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i
+                              class="la la-image"></i> Brand</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i
+                              class="la la-commenting"></i> 客户寄语</a>
+
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowTechnologyModal(data)"><i
+                              class="la la-cog"></i> 使用技术</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowKnowledgeModal(data)"><i
+                              class="la la-cogs"></i> 使用技术点</a>
+
+                            <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)"
+                               ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
+                            <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i
+                                    class="la la-remove"></i> 删除</a>
                         </div>
                     </span>
                 </td>
@@ -248,7 +266,8 @@
                 <div class="kt-portlet__body">
                   <div class="form-group row">
                     <div class="col-12">
-                      <textarea class="form-control" name="memo" rows="8" maxlength="256" ng-model="model.memo" required></textarea>
+                      <textarea class="form-control" name="memo" rows="8" maxlength="256" ng-model="model.memo"
+                                required></textarea>
                     </div>
                   </div>
                 </div>
@@ -270,10 +289,10 @@
 
       <!--begin: edit modal -->
       <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-              <form class="kt-form kt-form--label-right" name="myForm" novalidate>
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="myForm" novalidate>
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.modalTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -433,6 +452,70 @@
       </div>
       <!--end: edit modal -->
 
+      <!--begin: technology modal -->
+      <div class="modal fade" id="kt_modal_technology" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-lg-1" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="memoForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.technologyModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div class="dual-listbox kt-dual-listbox-1">
+                    <div class="dual-listbox__container">
+                      <div>
+                        <div class="dual-listbox__title">待选技术</div>
+                        <ul class="dual-listbox__available">
+                          <li ng-repeat="technology in model.technologyList"
+                              class="dual-listbox__item"
+                              ng-class="{'dual-listbox__item--selected': model.selectedTechnologyID == technology.technologyID}"
+                              ng-bind="technology.technologyName"
+                              ng-click="onTechnologyClick(technology)"
+                              ng-dblclick="onTechnologyDbClick(technology)">
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="dual-listbox__buttons">
+                        <button class="dual-listbox__button" ng-click="onMoveAllTechnologyToChoiceTechnology()"><i class="flaticon2-fast-next"></i></button>
+                        <button class="dual-listbox__button" ng-click="onMoveTechnologyToChoiceTechnology()"><i class="flaticon2-next"></i></button>
+                        <button class="dual-listbox__button" ng-click="onMoveChoiceTechnologyToTechnology()"><i class="flaticon2-back"></i></button>
+                        <button class="dual-listbox__button" ng-click="onMoveAllChoiceTechnologyToTechnology()" ><i class="flaticon2-fast-back"></i></button>
+                      </div>
+                      <div>
+                        <div class="dual-listbox__title">已选技术</div>
+                        <ul class="dual-listbox__selected">
+                          <li ng-repeat="technology in model.choiceTechnologyList"
+                              class="dual-listbox__item"
+                              ng-class="{'dual-listbox__item--selected': model.choiceSelectedTechnologyID == technology.technologyID}"
+                              ng-bind="technology.technologyName"
+                              ng-click="onChoiceTechnologyClick(technology)"
+                              ng-dblclick="onChoiceTechnologyDbClick(technology)">
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onSaveUseTechnology()"
+                        ng-disabled="model.choiceTechnologyList.length === 0">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: technology modal -->
+
       <!--begin: status modal -->
       <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
            aria-hidden="true">
@@ -454,7 +537,8 @@
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.status == 'A'">
+                                <input type="radio" name="status" value="A" ng-model="model.status"
+                                       ng-checked="model.status == 'A'">
                                 <span></span>
                               </span>
                             </span>
@@ -474,7 +558,8 @@
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="model.status == 'D'">
+                                <input type="radio" name="status" value="D" ng-model="model.status"
+                                       ng-checked="model.status == 'D'">
                                 <span></span>
                               </span>
                             </span>

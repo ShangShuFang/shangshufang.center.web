@@ -32,6 +32,7 @@
       "changeCompanyNameStatus": "/api/company/changeStatus",
       "changeCompanyBrand": "/api/company/changeBrand",
       "changeCompanyMemo": "/api/company/changeMemo",
+      "usingTechnology": "/api/technology/using",
 
       "companyAccount": "/api/company/account",
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",

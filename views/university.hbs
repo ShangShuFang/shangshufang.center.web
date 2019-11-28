@@ -111,9 +111,6 @@
                 <th>客户寄语</th>
                 <th>高校编码</th>
                 <th>高校名称</th>
-                <th>省</th>
-                <th>市</th>
-                <th>区县</th>
                 <th>地址</th>
                 <th>当前状态</th>
                 <th>操作</th>
@@ -130,10 +127,14 @@
                 </td>
                 <td ng-bind="data.universityCode"></td>
                 <td ng-bind="data.universityName"></td>
-                <td ng-bind="data.provinceName"></td>
-                <td ng-bind="data.cityName"></td>
-                <td ng-bind="data.districtName"></td>
-                <td ng-bind="data.address"></td>
+                <td>
+                  <p class="cell-address">
+                    <span ng-bind="data.provinceName"></span>
+                    <span ng-bind="data.cityName"></span>
+                    <span ng-bind="data.districtName"></span>
+                    <span ng-bind="data.address"></span>
+                  </p>
+                </td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"

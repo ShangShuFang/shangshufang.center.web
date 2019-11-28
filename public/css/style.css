@@ -60,6 +60,13 @@ body{
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+.cell-address {
+  width: 300px;
+  table-layout: fixed;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 /*begin: 上传文件组件样式*/
 .fileItem{
@@ -76,17 +83,6 @@ body{
   color: #f1b86f;
 }
 
-/*.technology-memo {*/
-/*  width: 500px;*/
-/*}*/
-/*.technology-memo p {*/
-/*  margin-top: 6px;*/
-/*  overflow: hidden;*/
-/*  text-overflow: ellipsis;*/
-/*  display: -webkit-box;*/
-/*  -webkit-line-clamp: 3;*/
-/*  -webkit-box-orient: vertical;*/
-/*}*/
 .center{
   text-align: center;
 }
@@ -97,4 +93,10 @@ body{
 .relate-technology li{
   margin-bottom: 5px;
 }
+.modal-lg-1{
+  width: 600px !important;
+}
 
+.dual-listbox__container ul li:hover{
+  background-color: #f9f9f9;
+}

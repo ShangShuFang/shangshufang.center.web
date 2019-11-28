@@ -78,6 +78,28 @@ router.get('/checkCellphoneExist', (req, res, next) => {
   });
 });
 
+router.get('/usingTechnology', (req, res, next) => {
+  let service = new commonService.commonInvoke('usingTechnology');
+  let companyID = req.query.companyID;
+
+  service.queryWithParameter(companyID, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('company');
   let data = {
@@ -90,6 +112,31 @@ router.post('/', (req, res, next) => {
     contacts: req.body.contacts,
     cellphone: req.body.cellphone,
     businessLicense: '',
+    loginUser: req.body.loginUser
+  };
+
+  service.create(data, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg
+      });
+    }
+  });
+});
+
+router.post('/usingTechnology', (req, res, next) => {
+  let service = new commonService.commonInvoke('usingTechnology');
+  let data = {
+    companyID: req.body.companyID,
+    technologyIdList: req.body.technologyIdList,
     loginUser: req.body.loginUser
   };
 
