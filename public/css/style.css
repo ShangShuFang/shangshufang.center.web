@@ -97,6 +97,15 @@ body{
   width: 600px !important;
 }
 
+.modal-lg-2{
+  width: 706px !important;
+}
+
 .dual-listbox__container ul li:hover{
   background-color: #f9f9f9;
+}
+.dual-listbox__item--disabled{
+  color: #a2a5b9;
+  pointer-events: none;
+  background-color: transparent;
 }

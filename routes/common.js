@@ -113,11 +113,53 @@ router.get('/technology', (req, res, next) => {
   });
 });
 
+router.get('/knowledge', (req, res, next) => {
+  let service = new commonService.commonInvoke('knowledge');
+  let technologyID = req.query.technologyID;
+  service.queryWithParameter(technologyID,  (result) => {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.get('/direction', (req, res, next) => {
   let service = new commonService.commonInvoke('direction');
   let parameter = `1/9999`;
 
   service.queryWithParameter(parameter,  (result) => {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
+router.get('/learningPhase', (req, res, next) => {
+  let service = new commonService.commonInvoke('learningPhase');
+
+  service.queryWithParameter('',  (result) => {
     if (result.err) {
       res.json({
         err: true,

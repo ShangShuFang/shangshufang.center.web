@@ -53,7 +53,14 @@
 
       "knowledge": "/api/technology/knowledge",
       "checkKnowledgeNameExist": "/api/technology/knowledge/checkKnowledgeName",
-      "changeKnowledgeStatus": "/api/technology/knowledge/changeStatus"
+      "changeKnowledgeStatus": "/api/technology/knowledge/changeStatus",
+
+      "learningPhase": "/api/learningPhase",
+
+      "learningPath": "/api/learningPath",
+      "usingLearningPhase": "/api/learningPath/usingLearningPhase",
+      "usingKnowledge": "/api/learningPath/usingKnowledge",
+      "changeLearningPathStatus": "/api/learningPath/changeStatus"
     }
   }
 }

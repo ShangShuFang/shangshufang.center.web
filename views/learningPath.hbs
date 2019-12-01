@@ -1,0 +1,373 @@
+<!-- begin: Subheader -->
+<div class="kt-subheader kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container&#45;&#45;fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        学习内容
+      </h3>
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          软件研发
+        </a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          路径规划
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end: Subheader -->
+
+<!-- begin: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" ng-app="pageApp"
+     ng-controller="pageCtrl">
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+      <div class="kt-portlet__head-label">
+      <span class="kt-portlet__head-icon">
+        <i class="kt-font-brand fab fa-python"></i>
+			</span>
+
+        <h3 class="kt-portlet__head-title">
+          路径规划
+        </h3>
+      </div>
+      <div class="kt-portlet__head-toolbar">
+        <div class="kt-portlet__head-wrapper">
+          <div class="kt-portlet__head-actions">
+            <button type="button" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal"
+                    ng-click="onShowAddModal()">
+              <i class="la la-plus"></i>
+              添加
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kt-portlet__body">
+      <!--begin: search form -->
+      <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+        <div class="row align-items-center">
+          <div class="col-xl-8 order-2 order-xl-1">
+            <div class="row align-items-center">
+              <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                <div class="kt-form__group kt-form__group--inline width-full">
+                  <div class="dropdown search-form-dropdown">
+                    <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                      <span ng-bind="model.selectedTechnology.technologyName"></span>
+                      <i class="flaticon2-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                      <a class="dropdown-item" href="javascript:;" ng-click="onTechnologyChange(0, '所有技术')">所有技术</a>
+                      <div class="dropdown-divider"></div>
+                      <a ng-repeat="data in model.technologyList"
+                         class="dropdown-item"
+                         href="javascript:;"
+                         ng-click="onTechnologyChange(data.technologyID, data.technologyName)"
+                         ng-bind="data.technologyName"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end: search form -->
+
+      <!--begin: Datatable -->
+      <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+        <div class="row">
+          <div class="col-sm-12">
+            <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline table-fix"
+                   id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
+              <thead>
+              <tr role="row">
+                <th>技术名称</th>
+                <th>学习阶段</th>
+                <th>知识点</th>
+                <th>当前状态</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-repeat="data in model.dataList">
+                <td ng-bind="data.technologyName"></td>
+                <td ng-bind="data.learningPhaseName"></td>
+                <td class="center">
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.knowledgeCount"></button>
+                </td>
+                <td class="center">
+                  <span class="kt-badge kt-badge--inline kt-badge--pill"
+                        ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
+                        ng-bind="data.dataStatusText">
+                  </span>
+                </td>
+                <td>
+                  <span class="dropdown">
+                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                      <i class="la la-ellipsis-h"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)"><i class="la la-leaf"></i> 状态修改</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
+                    </div>
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info" id="kt_table_1_info" role="status" aria-live="polite">
+              显示第 <span ng-bind="model.fromIndex"></span> 到第 <span ng-bind="model.toIndex"></span>条数据，共计<span
+                    ng-bind="model.totalCount"></span>条数据
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-7 dataTables_pager">
+            <div class="dataTables_paginate paging_simple_numbers" id="kt_table_1_paginate">
+              <ul class="pagination">
+
+                <li class="paginate_button page-item previous" ng-class="{'disabled': model.prePageNum == -1}"
+                    id="kt_table_1_previous" ng-click="onPrePage()">
+                  <a href="javascript:;" aria-controls="kt_table_1" data-dt-idx="0" tabindex="0" class="page-link">
+                    <i class="la la-angle-left"></i>
+                  </a>
+                </li>
+
+                <li ng-repeat="pageNumber in model.paginationArray" class="paginate_button page-item"
+                    ng-class="{'active': model.pageNumber == pageNumber}" ng-click="onPagination(pageNumber)">
+                  <a href="javascript:;" aria-controls="kt_table_1" data-dt-idx="1" tabindex="0" class="page-link"
+                     ng-bind="pageNumber"></a>
+                </li>
+
+                <li class="paginate_button page-item next" ng-class="{'disabled': model.nextPageNum == -1}"
+                    id="kt_table_1_next" ng-click="onNextPage()">
+                  <a href="javascript:;" aria-controls="kt_table_1" data-dt-idx="5" tabindex="0" class="page-link">
+                    <i class="la la-angle-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end: Datatable -->
+
+      <!--begin: edit modal -->
+      <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog  modal-lg modal-lg-2" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="myForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.modalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">所属技术</label>
+                    <div class="col-10">
+                      <div class="dropdown search-form-dropdown" ng-if="model.add">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedTechnology4Edit.technologyName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onTechnologyChange4Edit(0, '请选择所属技术')">请选择所属技术</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.technologyList4Edit"
+                             class="dropdown-item"
+                             href="javascript:;"
+                             ng-click="onTechnologyChange4Edit(data.technologyID, data.technologyName)"
+                             ng-bind="data.technologyName"></a>
+                        </div>
+                      </div>
+                      <input type="text"
+                             class="form-control"
+                             name="technologyName"
+                             maxlength="20"
+                             ng-model="model.selectedTechnology4Edit.technologyName"
+                             disabled
+                             ng-if="!model.add">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">学习阶段</label>
+                    <div class="col-10">
+                      <div class="dropdown search-form-dropdown" ng-if="model.add">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedLearningPhase.learningPhaseName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhase4Edit(0, '请选择学习阶段', true)">请选择学习阶段</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.learningPhaseList"
+                             class="dropdown-item"
+                             ng-class="{'disabled': data.enable === false}"
+                             href="javascript:;"
+                             ng-click="onLearningPhase4Edit(data.learningPhaseID, data.learningPhaseName, data.enable)"
+                             ng-bind="data.learningPhaseName"></a>
+                        </div>
+                      </div>
+                      <input type="text"
+                             class="form-control"
+                             name="learningPhaseName"
+                             maxlength="20"
+                             ng-model="model.selectedLearningPhase.learningPhaseName"
+                             disabled
+                             ng-if="!model.add">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">知识点</label>
+                    <div class="col-10">
+                      <div class="dual-listbox kt-dual-listbox-1">
+                        <div class="dual-listbox__container">
+                          <div>
+                            <div class="dual-listbox__title">待选知识点</div>
+                            <ul class="dual-listbox__available">
+                              <li ng-repeat="knowledge in model.knowledgeList"
+                                  class="dual-listbox__item"
+                                  ng-class="{'dual-listbox__item--selected': model.selectedKnowledge.knowledgeID == knowledge.knowledgeID, 'dual-listbox__item--disabled': knowledge.enable === false}"
+                                  ng-bind="knowledge.knowledgeName"
+                                  ng-click="onKnowledgeClick(knowledge)"
+                                  ng-dblclick="onKnowledgeDbClick(knowledge)">
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="dual-listbox__buttons">
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromSourceToChoice()"><i class="flaticon2-fast-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromSourceToChoice()"><i class="flaticon2-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromChoiceToSource()"><i class="flaticon2-back"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromChoiceToSource()" ><i class="flaticon2-fast-back"></i></button>
+                          </div>
+                          <div>
+                            <div class="dual-listbox__title">已选知识点</div>
+                            <ul class="dual-listbox__selected">
+                              <li ng-repeat="knowledge in model.choiceKnowledgeList"
+                                  class="dual-listbox__item"
+                                  ng-class="{'dual-listbox__item--selected': model.choiceSelectedKnowledge.knowledgeID == knowledge.knowledgeID}"
+                                  ng-bind="knowledge.knowledgeName"
+                                  ng-click="onChoiceKnowledgeClick(knowledge)"
+                                  ng-dblclick="onChoiceKnowledgeDbClick(knowledge)">
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onSubmit()"
+                        ng-disabled="model.selectedTechnology4Edit.technologyID === 0
+                                  || model.selectedLearningPhase.learningPhaseID === 0
+                                  || model.choiceKnowledgeList.length === 0">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: edit modal -->
+
+      <!--begin: status modal -->
+      <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="form-status" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" ng-bind="model.statusModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="form-group row form-group-marginless">
+                    <label class="col-1 col-form-label"> </label>
+                    <div class="col-10">
+                      <div class="row">
+                        <div class="col-6">
+                          <label class="kt-option kt-option--plain">
+                            <span class="kt-option__control">
+                              <span class="kt-radio kt-radio--brand">
+                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.status == 'A'">
+                                <span></span>
+                              </span>
+                            </span>
+                            <span class="kt-option__label">
+                              <span class="kt-option__head">
+                                <span class="kt-option__title">
+                                  正常
+                                </span>
+                              </span>
+                              <span class="kt-option__body">
+                                该阶段的学习路径可向站内用户显示
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                        <div class="col-6">
+                          <label class="kt-option kt-option--plain">
+                            <span class="kt-option__control">
+                              <span class="kt-radio kt-radio--brand">
+                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="model.status == 'D'">
+                                <span></span>
+                              </span>
+                            </span>
+                            <span class="kt-option__label">
+                              <span class="kt-option__head">
+                                <span class="kt-option__title">
+                                  禁用
+                                </span>
+                              </span>
+                              <span class="kt-option__body">
+                                该阶段的学习路径不能向站内用户显示
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="onChangeStatus()">
+                  修改
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: status modal -->
+    </div>
+  </div>
+</div>
+
+<script src="../js/views/learningPath.js" type="text/javascript"></script>
