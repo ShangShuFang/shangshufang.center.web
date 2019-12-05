@@ -66,6 +66,23 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     choiceSelectedTechnology: null,
     //endregion
 
+    //region 使用技术点
+    usingKnowledgeModalTitle: '',
+    usingKnowledgeCompanyID: 0,
+
+    usingTechnologyList: [],
+    selectedUsingTechnology: {technologyID: 0, technologyName: '请选择使用技术', isSelected: false},
+
+    learningPhaseList: [],
+    selectedLearningPhase: {learningPhaseID: 0, learningPhaseName: '请选择学习阶段', isSelected: false},
+
+    knowledgeList: [],
+    selectedKnowledge: {knowledgeID: 0, knowledgeName: ''},
+
+    choiceKnowledgeList: [],
+    choiceSelectedKnowledge: {knowledgeID: 0, knowledgeName: ''},
+    //endregion
+
     //region 状态编辑
     statusCompanyID: 0,
     statusModalTitle: '',
@@ -559,7 +576,282 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   //region 使用技术点
   $scope.onShowKnowledgeModal = function(data){
+    $scope.model.usingKnowledgeModalTitle = `【${data.companyName}】使用技术点`;
+    $scope.model.usingKnowledgeCompanyID = data.companyID;
+    $scope.loadCompanyUsingTechnology();
+  };
 
+  $scope.setDefaultKnowledgeModal = function(initType){
+    switch (initType) {
+      case 'init':
+        $scope.model.learningPhaseList.splice(0, $scope.model.learningPhaseList.length);
+        $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '请选择学习阶段', isSelected: false};
+
+        $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+
+        $scope.model.choiceKnowledgeList.splice(0, $scope.model.choiceKnowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+        break;
+      case 'technology':
+        $scope.model.learningPhaseList.splice(0, $scope.model.learningPhaseList.length);
+        $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '请选择学习阶段', isSelected: false};
+
+        $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+
+        $scope.model.choiceKnowledgeList.splice(0, $scope.model.choiceKnowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+        break;
+      case 'learningPhase':
+        $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+
+        $scope.model.choiceKnowledgeList.splice(0, $scope.model.choiceKnowledgeList.length);
+        $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+        break;
+    }
+  };
+
+  $scope.loadCompanyUsingTechnology = function(){
+    $scope.model.usingTechnologyList.splice(0, $scope.model.usingTechnologyList.length);
+    $http.get(`/company/usingTechnology?companyID=${$scope.model.usingKnowledgeCompanyID}`).then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(commonUtility.isEmptyList(response.data.dataList)) {
+        $('#kt_modal_knowledge').modal('show');
+        return false;
+      }
+      response.data.dataList.forEach(function(data) {
+        $scope.model.usingTechnologyList.push({
+          technologyID: data.technologyID,
+          technologyName: data.technologyName,
+          isSelected: false
+        });
+      });
+
+      //根据已经编辑技术点的技术，设置技术列表中不同选项的样式
+      $http.get(`/company/related/technology?companyID=${$scope.model.usingKnowledgeCompanyID}`).then(function successCallback (response) {
+        if(response.data.err){
+          bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+          return false;
+        }
+        if(commonUtility.isEmptyList(response.data.dataList)) {
+          return false;
+        }
+
+        response.data.dataList.forEach(function(data) {
+          $scope.model.usingTechnologyList.forEach(function (usingTechnology) {
+            if(data.technologyID === usingTechnology.technologyID){
+              usingTechnology.isSelected = true;
+            }
+          });
+        });
+      }, function errorCallback () {
+        bootbox.alert(localMessage.NETWORK_ERROR);
+      });
+
+      $('#kt_modal_knowledge').modal('show');
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
+  $scope.onUsingTechnologyChange = function(technologyID, technologyName){
+    $scope.model.selectedUsingTechnology = {technologyID: technologyID, technologyName: technologyName};
+    $scope.setDefaultKnowledgeModal('technology');
+    if($scope.model.selectedUsingTechnology.technologyID === 0){
+      return false;
+    }
+    $scope.loadUsingLearningPhase();
+  };
+
+  $scope.loadUsingLearningPhase = function(){
+    $http.get(`/learningPath/usingLearningPhase?technologyID=${$scope.model.selectedUsingTechnology.technologyID}`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(commonUtility.isEmptyList(response.data.dataList)){
+            return false;
+          }
+
+          response.data.dataList.forEach(function (data) {
+            $scope.model.learningPhaseList.push({
+              learningPhaseID: data.learningPhaseID,
+              learningPhaseName: data.learningPhaseName,
+              isSelected: false
+            });
+          });
+
+          //标记该公司已经选择了技术点的学习阶段
+          $http.get(`/company/related/learningPhase?companyID=${$scope.model.usingKnowledgeCompanyID}&technologyID=${$scope.model.selectedUsingTechnology.technologyID}`)
+              .then(function successCallback (response) {
+            if(response.data.err){
+              bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+              return false;
+            }
+            if(commonUtility.isEmptyList(response.data.dataList)) {
+              return false;
+            }
+
+            response.data.dataList.forEach(function(data) {
+              $scope.model.learningPhaseList.forEach(function (learningPhase) {
+                if(data.learningPhaseID === learningPhase.learningPhaseID){
+                  learningPhase.isSelected = true;
+                }
+              });
+            });
+          }, function errorCallback () {
+            bootbox.alert(localMessage.NETWORK_ERROR);
+          });
+
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
+  };
+
+  $scope.onLearningPhaseChange = function(learningPhaseID, learningPhaseName){
+    $scope.model.selectedLearningPhase = {learningPhaseID: learningPhaseID, learningPhaseName: learningPhaseName};
+    $scope.setDefaultKnowledgeModal('learningPhase');
+    if($scope.model.selectedLearningPhase.learningPhaseID === 0){
+      return false;
+    }
+    $scope.loadKnowledge();
+  };
+
+  $scope.loadKnowledge = function(){
+    $http.get(`/learningPath/usingKnowledge?technologyID=${$scope.model.selectedUsingTechnology.technologyID}&learningPhase=${$scope.model.selectedLearningPhase.learningPhaseID}`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(commonUtility.isEmptyList(response.data.dataList)){
+            return false;
+          }
+
+          response.data.dataList.forEach(function (data) {
+            $scope.model.knowledgeList.push({knowledgeID: data.knowledgeID, knowledgeName: data.knowledgeName});
+          });
+
+          //查询企业已经被认可的技术点
+          $http.get(`/company/related/knowledge?companyID=${$scope.model.usingKnowledgeCompanyID}&technologyID=${$scope.model.selectedUsingTechnology.technologyID}&learningPhaseID=${$scope.model.selectedLearningPhase.learningPhaseID}`)
+              .then(function successCallback (response) {
+                if(response.data.err){
+                  bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                  return false;
+                }
+                if(commonUtility.isEmptyList(response.data.dataList)) {
+                  return false;
+                }
+
+                response.data.dataList.forEach(function(data) {
+                  $scope.model.knowledgeList.forEach(function (knowledge, index) {
+                    if(data.knowledgeID === knowledge.knowledgeID){
+                      $scope.model.choiceKnowledgeList.push(knowledge);
+                      $scope.model.knowledgeList.splice(index, 1);
+                    }
+                  });
+                });
+              }, function errorCallback () {
+                bootbox.alert(localMessage.NETWORK_ERROR);
+              });
+
+
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
+  };
+
+  $scope.onKnowledgeClick = function(knowledge){
+    $scope.model.selectedKnowledge = knowledge;
+  };
+
+  $scope.onKnowledgeDbClick = function(knowledge){
+    let index = $scope.model.knowledgeList.indexOf(knowledge);
+    $scope.model.knowledgeList.splice(index, 1);
+    $scope.model.choiceKnowledgeList.push(knowledge);
+    $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: '', enable: true};
+  };
+
+  $scope.onChoiceKnowledgeClick = function(knowledge){
+    $scope.model.choiceSelectedKnowledge = knowledge;
+  };
+
+  $scope.onChoiceKnowledgeDbClick = function(knowledge){
+    let index = $scope.model.choiceKnowledgeList.indexOf(knowledge);
+    $scope.model.choiceKnowledgeList.splice(index, 1);
+    $scope.model.knowledgeList.push(knowledge);
+    $scope.model.choiceSelectedKnowledge = {knowledgeID: 0, knowledgeName: '', enable: true};
+  };
+
+  $scope.onMoveAllFromSourceToChoice = function(){
+    if($scope.model.knowledgeList.length === 0){
+      return false;
+    }
+    $scope.model.knowledgeList.forEach(function(knowledge) {
+      $scope.model.choiceKnowledgeList.push(knowledge);
+    });
+
+    $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
+  };
+
+  $scope.onMoveItemFromSourceToChoice = function(){
+    if($scope.model.selectedKnowledge.knowledgeID === 0){
+      return false;
+    }
+    let index = $scope.model.knowledgeList.indexOf($scope.model.selectedKnowledge);
+    $scope.model.knowledgeList.splice(index, 1);
+    $scope.model.choiceKnowledgeList.push($scope.model.selectedKnowledge);
+    $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: '', enable: true};
+  };
+
+  $scope.onMoveItemFromChoiceToSource = function(){
+    if($scope.model.choiceSelectedKnowledge.knowledgeID === 0){
+      return false;
+    }
+    let index = $scope.model.choiceKnowledgeList.indexOf($scope.model.choiceSelectedKnowledge);
+    $scope.model.choiceKnowledgeList.splice(index, 1);
+    $scope.model.knowledgeList.push($scope.model.choiceSelectedKnowledge);
+    $scope.model.choiceSelectedTechnologyID = 0;
+    $scope.model.choiceSelectedKnowledge = {knowledgeID: 0, knowledgeName: '', enable: true};
+  };
+
+  $scope.onMoveAllFromChoiceToSource = function(){
+    if($scope.model.choiceKnowledgeList.length === 0){
+      return false;
+    }
+    $scope.model.choiceKnowledgeList.forEach(function(knowledge) {
+      $scope.model.knowledgeList.push(knowledge);
+    });
+    $scope.model.choiceKnowledgeList.splice(0, $scope.model.choiceKnowledgeList.length);
+  };
+
+  $scope.onSaveUsingKnowledge = function(){
+    let choiceKnowledgeIdList = [];
+    $scope.model.choiceKnowledgeList.forEach(function(knowledge) {
+      choiceKnowledgeIdList.push(knowledge.knowledgeID);
+    });
+    $http.post('/company/usingKnowledge', {
+      companyID: $scope.model.usingKnowledgeCompanyID,
+      technologyID: $scope.model.selectedUsingTechnology.technologyID,
+      learningPhaseID: $scope.model.selectedLearningPhase.learningPhaseID,
+      knowledgeIdList: choiceKnowledgeIdList.join(','),
+      loginUser: $scope.model.loginUser.adminID
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_knowledge').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
   };
   //endregion
 

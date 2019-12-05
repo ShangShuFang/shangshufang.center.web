@@ -100,6 +100,77 @@ router.get('/usingTechnology', (req, res, next) => {
   });
 });
 
+router.get('/related/technology', (req, res, next) => {
+  let service = new commonService.commonInvoke('companyUsingKnowledgeRelatedTechnology');
+  let companyID = req.query.companyID;
+
+  service.queryWithParameter(companyID, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
+router.get('/related/learningPhase', (req, res, next) => {
+  let service = new commonService.commonInvoke('companyUsingKnowledgeRelatedLearningPhase');
+  let companyID = req.query.companyID;
+  let technologyID = req.query.technologyID;
+  let parameter = `${companyID}/${technologyID}`;
+
+  service.queryWithParameter(parameter, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
+router.get('/related/knowledge', (req, res, next) => {
+  let service = new commonService.commonInvoke('companyUsingKnowledgeRelatedList');
+  let companyID = req.query.companyID;
+  let technologyID = req.query.technologyID;
+  let learningPhaseID = req.query.learningPhaseID;
+  let parameter = `${companyID}/${technologyID}/${learningPhaseID}`;
+
+  service.queryWithParameter(parameter, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('company');
   let data = {
@@ -137,6 +208,33 @@ router.post('/usingTechnology', (req, res, next) => {
   let data = {
     companyID: req.body.companyID,
     technologyIdList: req.body.technologyIdList,
+    loginUser: req.body.loginUser
+  };
+
+  service.create(data, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg
+      });
+    }
+  });
+});
+
+router.post('/usingKnowledge', (req, res, next) => {
+  let service = new commonService.commonInvoke('companyUsingKnowledge');
+  let data = {
+    companyID: req.body.companyID,
+    technologyID: req.body.technologyID,
+    learningPhaseID: req.body.learningPhaseID,
+    knowledgeIdList: req.body.knowledgeIdList,
     loginUser: req.body.loginUser
   };
 

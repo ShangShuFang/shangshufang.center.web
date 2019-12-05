@@ -34,6 +34,11 @@
       "changeCompanyMemo": "/api/company/changeMemo",
       "usingTechnology": "/api/technology/using",
 
+      "companyUsingKnowledge": "/api/technology/knowledge/using",
+      "companyUsingKnowledgeRelatedTechnology": "/api/technology/knowledge/using/technology",
+      "companyUsingKnowledgeRelatedLearningPhase": "/api/technology/knowledge/using/learningPhase",
+      "companyUsingKnowledgeRelatedList": "/api/technology/knowledge/using/knowledge",
+
       "companyAccount": "/api/company/account",
       "checkCompanyAccountCellphone": "/api/company/account/checkCellphone",
       "changeCompanyAccountStatus": "/api/company/account/changeStatus",

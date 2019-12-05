@@ -145,7 +145,9 @@
                 <td class="center">
                   <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingTechnologyCount"></button>
                 </td>
-                <th></th>
+                <td class="center">
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingKnowledgeCount"></button>
+                </td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
@@ -515,6 +517,122 @@
         </div>
       </div>
       <!--end: technology modal -->
+
+      <!--begin: knowledge modal -->
+      <div class="modal fade" id="kt_modal_knowledge" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog  modal-lg modal-lg-2" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="myForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.usingKnowledgeModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">所属技术</label>
+                    <div class="col-10">
+                      <div class="dropdown search-form-dropdown">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedUsingTechnology.technologyName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onUsingTechnologyChange(0, '请选择使用技术')">请选择使用技术</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.usingTechnologyList"
+                             class="dropdown-item"
+                             ng-class="{'dropdown-item-using': data.isSelected === true}"
+                             href="javascript:;"
+                             ng-click="onUsingTechnologyChange(data.technologyID, data.technologyName)"
+                             ng-bind="data.technologyName"></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">学习阶段</label>
+                    <div class="col-10">
+                      <div class="dropdown search-form-dropdown">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedLearningPhase.learningPhaseName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhaseChange(0, '请选择学习阶段', false)">请选择学习阶段</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.learningPhaseList"
+                             class="dropdown-item"
+                             ng-class="{'dropdown-item-using': data.isSelected === true}"
+                             href="javascript:;"
+                             ng-click="onLearningPhaseChange(data.learningPhaseID, data.learningPhaseName, data.isSelected)"
+                             ng-bind="data.learningPhaseName"></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">知识点</label>
+                    <div class="col-10">
+                      <div class="dual-listbox kt-dual-listbox-1">
+                        <div class="dual-listbox__container">
+                          <div>
+                            <div class="dual-listbox__title">待选知识点</div>
+                            <ul class="dual-listbox__available">
+                              <li ng-repeat="knowledge in model.knowledgeList"
+                                  class="dual-listbox__item"
+                                  ng-class="{'dual-listbox__item--selected': model.selectedKnowledge.knowledgeID == knowledge.knowledgeID, 'dual-listbox__item--disabled': knowledge.enable === false}"
+                                  ng-bind="knowledge.knowledgeName"
+                                  ng-click="onKnowledgeClick(knowledge)"
+                                  ng-dblclick="onKnowledgeDbClick(knowledge)">
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="dual-listbox__buttons">
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromSourceToChoice()"><i class="flaticon2-fast-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromSourceToChoice()"><i class="flaticon2-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromChoiceToSource()"><i class="flaticon2-back"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromChoiceToSource()" ><i class="flaticon2-fast-back"></i></button>
+                          </div>
+                          <div>
+                            <div class="dual-listbox__title">已选知识点</div>
+                            <ul class="dual-listbox__selected">
+                              <li ng-repeat="knowledge in model.choiceKnowledgeList"
+                                  class="dual-listbox__item"
+                                  ng-class="{'dual-listbox__item--selected': model.choiceSelectedKnowledge.knowledgeID == knowledge.knowledgeID}"
+                                  ng-bind="knowledge.knowledgeName"
+                                  ng-click="onChoiceKnowledgeClick(knowledge)"
+                                  ng-dblclick="onChoiceKnowledgeDbClick(knowledge)">
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onSaveUsingKnowledge()"
+                        ng-disabled="model.selectedTechnology4Edit.technologyID === 0
+                                  || model.selectedLearningPhase.learningPhaseID === 0">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: knowledge modal -->
 
       <!--begin: status modal -->
       <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
