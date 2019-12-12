@@ -125,7 +125,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
   //endregion
 
-  //region 添加数据 todo
+  //region 添加数据
   $scope.setDefaultValue = function (){
     $scope.model.knowledgeID = 0;
     $scope.model.knowledgeName = '';

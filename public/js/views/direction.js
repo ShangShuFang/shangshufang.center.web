@@ -237,7 +237,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.thumbnailUrl = data.directionThumbnail;
     $scope.model.thumbnailModalTitle = `缩略图: ${data.directionName}`;
     $scope.model.add = false;
-    let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, `direction-${data.directionName}`);
+    let uploadDirectionDir = {"dir1": "direction", "dir2": data.directionName};
+    let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadDirectionDir);
 
     uploadUtils.destroyUploadPlugin('#file-upload-brand');
     uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {

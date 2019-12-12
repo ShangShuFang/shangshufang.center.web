@@ -284,7 +284,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.thumbnailUrl = data.technologyThumbnail;
     $scope.model.thumbnailModalTitle = `缩略图: ${data.technologyName}`;
     $scope.model.add = false;
-    let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, data.technologyName);
+    let uploadTechnologyDir = {"dir1": "technology", "dir2": data.technologyName};
+    let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadTechnologyDir);
 
     uploadUtils.destroyUploadPlugin('#file-upload-brand');
     uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png','jpg', 'jpeg'], false, function (opt,data) {

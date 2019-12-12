@@ -36,6 +36,27 @@ router.get('/dataList', (req, res, next) => {
   });
 });
 
+router.get('/usingTechnology', function(req, res, next) {
+  let service = new commonService.commonInvoke('usingTechnology4LearningPath');
+
+  service.queryWithParameter('', function (result) {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.get('/usingLearningPhase', function(req, res, next) {
   let service = new commonService.commonInvoke('usingLearningPhase');
   let technologyID = req.query.technologyID;

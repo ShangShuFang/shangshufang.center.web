@@ -117,3 +117,20 @@ body{
   color: #0db30d;
   font-weight: bold;
 }
+.image-list-horizontal{
+  list-style: none;
+}
+.image-list-horizontal li{
+  float: left;
+  margin-right: 10px;
+}
+/*.kt-avatar .kt-avatar__holder{*/
+/*  height: 160px;*/
+/*}*/
+.upload-file-name{
+  margin: 5px auto 0;
+}
+.kt-avatar__holder img{
+  width: 120px;
+  height: 120px;
+}

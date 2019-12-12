@@ -1,0 +1,277 @@
+<!-- begin: Subheader -->
+<div class="kt-subheader kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container&#45;&#45;fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        能力测评
+      </h3>
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          软件研发
+        </a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          测试习题编辑
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end: Subheader -->
+
+<!-- begin: Content -->
+<div ng-app="pageApp" ng-controller="pageCtrl">
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="alert alert-primary fade show" role="alert">
+      <div class="alert-text">
+        <p>单点练习：可以选一个技术、一个阶段、若干知识点（编码规则：s_ex_xxxx, 示例：s_ex_0001）</p>
+        <p>综合练习：可以选一个技术、若干阶段、若干知识点（编码规则：c_ex_xxxx, 示例：c_ex_0001）</p>
+        <p>项目练习：可以选若干技术、若干阶段、若干知识点（编码规则：p_ex_xxxx, 示例：p_ex_0001）</p>
+      </div>
+      <div class="alert-close">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true"><i class="la la-close"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form class="kt-form" name="myForm" novalidate>
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+      <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+              <i class="kt-font-brand fa fa-graduation-cap"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+              测试习题编辑
+            </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+              <div class="kt-portlet__head-actions">
+                <a href="javascript:;" class="btn btn-secondary btn-elevate btn-icon-sm" ng-click="onBack()">
+                  <i class="la la-reply"></i>
+                  返回
+                </a>
+                <button class="btn btn-brand btn-elevate btn-icon-sm"
+                        ng-disabled="(myForm.exercisesName.$pristine && model.isAdd)
+                                    || (myForm.exercisesName.$dirty && myForm.exercisesName.$invalid)
+                                    || (myForm.exercisesCode.$pristine && model.isAdd)
+                                    || (myForm.exercisesCode.$dirty && myForm.exercisesCode.$invalid)
+                                    || model.exercisesCodeIsInValid !== 0
+                                    || model.selectedExercisesType.exercisesTypeCode == ''
+                                    || model.knowledgeList.length === 0" ng-click="onSubmit()">
+                  <i class="la la-save"></i>
+                  提交
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <!--begin::Portlet-->
+          <div class="kt-portlet">
+            <div class="kt-portlet__head">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                  基本信息
+                </h3>
+              </div>
+            </div>
+
+            <div class="kt-portlet__body">
+              <div class="form-group">
+                <div class="dropdown search-form-dropdown">
+                  <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false" ng-disabled="!model.isAdd">
+                    <span ng-bind="model.selectedExercisesType.exercisesTypeName"></span>
+                    <i class="flaticon2-down"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                    <a class="dropdown-item" href="javascript:;" ng-click="onExercisesTypeChange('', '请选择习题类型')">请选择习题类型</a>
+                    <div class="dropdown-divider"></div>
+                    <a ng-repeat="data in model.exercisesTypeList"
+                       class="dropdown-item"
+                       href="javascript:;"
+                       ng-click="onExercisesTypeChange(data.exercisesTypeCode, data.exercisesTypeName)"
+                       ng-bind="data.exercisesTypeName"></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       name="exercisesCode"
+                       maxlength="25"
+                       ng-class="{'is-invalid': model.exercisesCodeIsInValid == 1, 'is-valid': model.exercisesCodeIsInValid == 0}"
+                       ng-model="model.exercisesCode"
+                       ng-blur="onExercisesCodeBlur()"
+                       placeholder="习题编码"
+                       ng-disabled="!model.isAdd"
+                       required>
+                <div class="invalid-feedback" ng-if="model.exercisesCodeIsInValid == 1" ng-bind="model.exercisesCodeIsInValidMessage"></div>
+              </div>
+              <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       name="exercisesName"
+                       maxlength="25"
+                       ng-model="model.exercisesName"
+                       placeholder="习题名称"
+                       required>
+              </div>
+              <div class="form-group" ng-if="model.imageList.length !== 0">
+                <div class="kt-portlet">
+                  <div class="kt-portlet__head kt-portlet__head--noborder">
+                    <div class="kt-portlet__head-label">
+                      <h3 class="kt-portlet__head-title">
+                        上传习题图片文件
+                      </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                      <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onUploadImage()">
+                        <i class="kt-nav__link-icon flaticon-upload"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="kt-portlet__body">
+                    <!--begin::Widget -->
+                    <div class="kt-widget__files">
+                      <ul class="image-list-horizontal">
+                        <li>
+                          <div class="kt-avatar kt-avatar--outline" id="kt_user_add_avatar">
+                            <div class="kt-avatar__holder"></div>
+                            <a href="javascript:;" class="kt-avatar__upload" data-toggle="dropdown" aria-expanded="true">
+                              <i class="flaticon-delete"></i>
+                            </a>
+                            <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="">
+                              <i class="fa fa-times"></i>
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <!--end::Widget -->
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="model.documentList.length !== 0">
+                <div class="kt-portlet">
+                  <div class="kt-portlet__head kt-portlet__head--noborder">
+                    <div class="kt-portlet__head-label">
+                      <h3 class="kt-portlet__head-title">
+                        上传习题PDF源文件
+                      </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                      <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onUploadDocument()">
+                        <i class="kt-nav__link-icon flaticon-upload"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="kt-portlet__body">
+                    <!--begin::Widget -->
+                    <div class="kt-widget__files">
+                      <div class="kt-widget__media">
+                        <img class="kt-widget__img kt-hidden-" src="../images/media/pdf.svg" alt="image">
+                      </div>
+                      <span class="kt-widget__desc">
+                          [习题编码].pdf
+                      </span>
+                    </div>
+
+                    <!--end::Widget -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--end::Portlet-->
+
+        </div>
+        <div class="col-md-6">
+          <!--begin::Portlet-->
+          <div class="kt-portlet">
+            <div class="kt-portlet__head">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                  相关技术及知识点
+                </h3>
+              </div>
+            </div>
+            <!--begin::Form-->
+            <form class="kt-form">
+              <div class="kt-portlet__body">
+                <div class="tree-demo jstree jstree-6 jstree-default">
+                  <ul class="jstree-container-ul jstree-children">
+                    <li ng-repeat="technology in model.technologyList"
+                        class="jstree-node"
+                        ng-class="{'jstree-open': technology.isOpen == true, 'jstree-closed': technology.isOpen == false}">
+
+                      <i class="jstree-icon jstree-ocl"></i>
+                      <input type="checkbox" ng-checked="learningPhase.isSelected" ng-click="onTreeNodeClick(technology);">
+                      <a class="jstree-anchor"
+                         ng-class="{'jstree-clicked': technology.isSelected == true}"
+                         ng-dblclick="onTreeNodeDbClick(technology, $event)"
+                         href="javascript:;"
+                         tabindex="-1">
+                        <i class="jstree-icon jstree-themeicon fa fa-folder icon-lg kt-font-warning jstree-themeicon-custom"></i>
+                        <span ng-bind="technology.technologyName"></span>
+                      </a>
+                      <ul class="jstree-children" ng-if="technology.isOpen == true">
+                        <li ng-repeat="learningPhase in technology.learningPhaseList"
+                            class="jstree-node"
+                            ng-class="{'jstree-open': learningPhase.isOpen == true, 'jstree-closed': learningPhase.isOpen == false}">
+                          <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                          <input type="checkbox" ng-checked="learningPhase.isSelected" ng-click="onTreeNodeClick(learningPhase, $event);">
+                          <a class="jstree-anchor"
+                             ng-class="{'jstree-clicked': learningPhase.isSelected == true}"
+                             ng-dblclick="onTreeNodeDbClick(learningPhase, $event)"
+                             href="javascript:;">
+                            <i class="jstree-icon jstree-themeicon fa fa-folder icon-lg kt-font-info jstree-themeicon-custom"></i>
+                            <span ng-bind="learningPhase.learningPhaseName"></span>
+                          </a>
+                          <ul class="jstree-children" ng-if="learningPhase.isOpen == true">
+                            <li ng-repeat="knowledge in learningPhase.knowledgeList"
+                                class="jstree-node jstree-leaf">
+                              <i class="jstree-icon jstree-ocl1"></i>
+                              <input type="checkbox" ng-checked="knowledge.isSelected" ng-click="onTreeNodeClick(knowledge, $event);">
+                              <a class="jstree-anchor"
+                                 ng-class="{'jstree-clicked': knowledge.isSelected == true}"
+                                 ng-dblclick="onTreeNodeDbClick(knowledge, $event)"
+                                 href="javascript:;"
+                                 tabindex="-1">
+                                <i class="jstree-icon jstree-themeicon fa fa-file icon-lg kt-font-danger jstree-themeicon-custom"></i>
+                                <span ng-bind="knowledge.knowledgeName"></span>
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+            <!--end::Form-->
+          </div>
+          <!--end::Portlet-->
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<script src="../js/views/softwareExercisesEdit.js" type="text/javascript"></script>

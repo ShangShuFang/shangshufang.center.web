@@ -63,9 +63,16 @@
       "learningPhase": "/api/learningPhase",
 
       "learningPath": "/api/learningPath",
+      "usingTechnology4LearningPath": "/api/learningPath/usingTechnology",
       "usingLearningPhase": "/api/learningPath/usingLearningPhase",
       "usingKnowledge": "/api/learningPath/usingKnowledge",
-      "changeLearningPathStatus": "/api/learningPath/changeStatus"
+      "changeLearningPathStatus": "/api/learningPath/changeStatus",
+
+      "exercises": "/api/exercises",
+      "checkExercisesCode": "/api/exercises/checkExercisesCode",
+      "exercisesKnowledgeList": "/api/exercises/knowledge",
+      "exercisesFile": "/api/exercises/file",
+      "changeExercisesStatus": "/api/exercises/changeStatus"
     }
   }
 }

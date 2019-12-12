@@ -8,6 +8,9 @@ commonUtility.setNavActive = function () {
     linkObj.parent().addClass('kt-menu__item--active');
     return false;
   }
+  if(pathname.includes('softwareExercises')){
+    pathname = '/softwareExercises';
+  }
 
   linkObj = $(`#kt_aside_menu_wrapper ul.kt-menu__nav li a[href="${pathname}"]`);
   linkObj.parent().addClass('kt-menu__item--active');
@@ -64,7 +67,12 @@ commonUtility.buildEnterpriseUploadRemoteUri = function (serviceUrl, companyName
   return `${serviceUrl}?system=${systemName}&customer=enterprise&companyName=${companyName}&dirName=${dirName}`;
 };
 
-commonUtility.buildSystemRemoteUri = function (serviceUrl, dirName) {
+commonUtility.buildSystemRemoteUri = function (serviceUrl, dirJson) {
   let systemName = 'shs';
-  return `${serviceUrl}?system=${systemName}&dirName=${dirName}`;
+  let remoteUri = `${serviceUrl}?system=${systemName}`;
+  for (let key in dirJson) {
+    remoteUri += `&${key}=${dirJson[key]}`;
+  }
+  //return `${serviceUrl}?system=${systemName}&dirName=${dirNames}`;
+  return remoteUri;
 };

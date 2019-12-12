@@ -16,6 +16,9 @@ let directionRouter = require('./routes/direction');
 let technologyRouter = require('./routes/technology');
 let knowledgeRouter = require('./routes/knowledge');
 let learningPathRouter = require('./routes/learningPath');
+let softwareExercisesRouter = require('./routes/softwareExercises');
+let softwareExercisesEditRouter = require('./routes/softwareExercisesEdit');
+let softwareExercisesUploadFilesRouter = require('./routes/softwareExercisesUploadFiles');
 let commonRouter = require('./routes/common');
 
 let app = express();
@@ -50,6 +53,9 @@ app.use('/direction', directionRouter);
 app.use('/technology', technologyRouter);
 app.use('/knowledge', knowledgeRouter);
 app.use('/learningPath', learningPathRouter);
+app.use('/softwareExercises', softwareExercisesRouter);
+app.use('/softwareExercisesEdit', softwareExercisesEditRouter);
+app.use('/softwareExercisesFiles', softwareExercisesUploadFilesRouter);
 app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
