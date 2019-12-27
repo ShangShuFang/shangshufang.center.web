@@ -313,7 +313,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   // region 更新状态
   $scope.onShowStatusModal = function (data) {
-    $scope.model.statusModalTitle = `修改${data.customerName}老师的账户状态`;
+    $scope.model.statusModalTitle = `修改${data.accountRoleText}【${data.customerName}】的账户状态`;
     $scope.model.statusAccountID = data.accountID;
     $scope.model.statusUniversityCode = data.universityCode;
     $scope.model.statusSchoolID = data.schoolID;

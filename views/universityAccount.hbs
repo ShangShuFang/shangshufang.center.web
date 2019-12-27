@@ -130,7 +130,7 @@
                 <td ng-bind="data.accountRoleText"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
-                        ng-class="{'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
+                        ng-class="{'kt-badge--brand': data.dataStatus == 'P', 'kt-badge--warning': data.dataStatus == 'N', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
                         ng-bind="data.dataStatusText"></span>
                 </td>
                 <td>
@@ -298,7 +298,7 @@
       </div>
       <!--end: edit modal -->
 
-      <!--begin: edit modal -->
+      <!--begin: status modal -->
       <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
            aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -319,7 +319,7 @@
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.isActive">
+                                <input type="radio" name="status" value="A" ng-model="model.status" ng-checked="model.status == 'A'">
                                 <span></span>
                               </span>
                             </span>
@@ -335,11 +335,11 @@
                             </span>
                           </label>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" ng-if="model.status == 'A' || model.status == 'D'">
                           <label class="kt-option kt-option--plain">
                             <span class="kt-option__control">
                               <span class="kt-radio kt-radio--brand">
-                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="!model.isActive">
+                                <input type="radio" name="status" value="D" ng-model="model.status" ng-checked="model.status == 'D'">
                                 <span></span>
                               </span>
                             </span>
@@ -351,6 +351,26 @@
                               </span>
                               <span class="kt-option__body">
                                 用户无法登陆产品并禁用所有功能
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                        <div class="col-6" ng-if="model.status == 'P' || model.status == 'N'">
+                          <label class="kt-option kt-option--plain">
+                            <span class="kt-option__control">
+                              <span class="kt-radio kt-radio--brand">
+                                <input type="radio" name="status" value="N" ng-model="model.status" ng-checked="model.status == 'N'">
+                                <span></span>
+                              </span>
+                            </span>
+                            <span class="kt-option__label">
+                              <span class="kt-option__head">
+                                <span class="kt-option__title">
+                                  不通过
+                                </span>
+                              </span>
+                              <span class="kt-option__body">
+                                驳回申请人的账户申请，申请人无法登陆产品
                               </span>
                             </span>
                           </label>

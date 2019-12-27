@@ -10,6 +10,17 @@ Constants.DATA_STATUS = {
   ACTIVE: 'A',
   DISABLED: 'D'
 };
+Constants.ACCOUNT_STATUS = {
+  WAITING: 'P',
+  ACTIVE: 'A',
+  NO_PASS: 'N',
+  DISABLED: 'D',
+};
+Constants.ACCOUNT_ROLE = {
+  ADMIN: 'A',
+  TEACHER: 'T',
+  STUDENT: 'S'
+};
 Constants.COOKIE_LOGIN_USER = 'shs.cms.user';
 Constants.UPLOAD_SERVICE_URI='http://localhost:8000/upload';
 

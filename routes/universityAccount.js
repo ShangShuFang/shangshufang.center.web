@@ -65,6 +65,7 @@ router.post('/', (req, res, next) => {
     cellphone: req.body.cellphone,
     password: req.body.cellphone.substr(5),
     accountRole: Constants.AccountRole.ADMIN,
+    dataStatus: Constants.ACCOUNT_WAITING,
     loginUser: req.body.loginUser
   };
 
@@ -114,6 +115,7 @@ router.put('/', (req, res, next) => {
 });
 
 router.put('/status', (req, res, next) => {
+  //todo 如果dataStatus为A，则发送通知短信
   let service = new commonService.commonInvoke('changeUniversityAccountStatus');
   let data = {
     accountID: req.body.accountID,
