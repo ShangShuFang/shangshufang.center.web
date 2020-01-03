@@ -13,8 +13,10 @@ router.get('/dataList', (req, res, next) => {
   let service = new commonService.commonInvoke('knowledge');
   let pageNumber = parameterUtils.processNumberParameter(req.query.pageNumber, Constants.PAGE_NUMBER_DEFAULT);
   let technologyID = parameterUtils.processNumberParameter(req.query.technologyID, Constants.TECHNOLOGY_DEFAULT_ID);
+  let learningPhaseID = parameterUtils.processNumberParameter(req.query.learningPhaseID, Constants.LEARNING_PHASE);
+  let dataStatus = req.query.dataStatus;
 
-  let parameter = `${pageNumber}/${sysConfig.pageSize}/${technologyID}`;
+  let parameter = `${pageNumber}/${sysConfig.pageSize}/${technologyID}/${learningPhaseID}/${dataStatus}`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {
@@ -63,6 +65,7 @@ router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('knowledge');
   let data = {
     technologyID: req.body.technologyID,
+    learningPhaseID: req.body.learningPhaseID,
     knowledgeName: req.body.knowledgeName,
     loginUser: req.body.loginUser
   };
@@ -89,6 +92,7 @@ router.put('/', (req, res, next) => {
   let data = {
     knowledgeID: req.body.knowledgeID,
     technologyID: req.body.technologyID,
+    learningPhaseID: req.body.learningPhaseID,
     knowledgeName: req.body.knowledgeName,
     loginUser: req.body.loginUser
   };
@@ -115,6 +119,7 @@ router.put('/status', (req, res, next) => {
   let data = {
     knowledgeID: req.body.knowledgeID,
     technologyID: req.body.technologyID,
+    learningPhaseID: req.body.learningPhaseID,
     dataStatus: req.body.status,
     loginUser: req.body.loginUser
   };
@@ -140,7 +145,8 @@ router.delete('/', (req, res, next) => {
   let service = new commonService.commonInvoke('knowledge');
   let technologyID = req.query.technologyID;
   let knowledgeID = req.query.knowledgeID;
-  let parameter = `${technologyID}/${knowledgeID}`;
+  let learningPhaseID = req.query.learningPhaseID;
+  let parameter = `${technologyID}/${learningPhaseID}/${knowledgeID}`;
 
   service.delete(parameter, function (result) {
     if(result.err){

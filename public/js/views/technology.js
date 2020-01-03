@@ -22,6 +22,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //begin: 信息编辑
     loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
+    programmingLanguageList: [],
+    selectedProgrammingLanguage: {languageID: 0, languageName: '请选择所属编程语言'},
     technologyID: 0,
     technologyName: '',
     technologyNameIsInValid: Constants.CHECK_INVALID.DEFAULT,
@@ -46,6 +48,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.initPage = function () {
     commonUtility.setNavActive();
     $scope.loadData();
+    $scope.loadProgrammingLanguage();
     $scope.loadDirection();
   };
 
@@ -102,6 +105,23 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.loadData();
   };
 
+  $scope.loadProgrammingLanguage = function(){
+    $http.get(`/technology/programmingLanguage`)
+        .then(function successCallback (response) {
+          if(response.data.err){
+            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+            return false;
+          }
+          if(response.data.dataList === null){
+            return false;
+          }
+
+          $scope.model.programmingLanguageList = response.data.dataList;
+        }, function errorCallback(response) {
+          bootbox.alert(localMessage.NETWORK_ERROR);
+        });
+  };
+
   $scope.loadDirection = function(){
     $http.get(`/common/direction`)
         .then(function successCallback (response) {
@@ -129,6 +149,13 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   //region 添加及更新的公共方法
   $scope.onSelectStar = function(number) {
     $scope.model.technologyStars = number;
+  };
+
+  $scope.onProgrammingLanguageChange = function (languageID, languageName){
+    $scope.model.selectedProgrammingLanguage = {
+      languageID: languageID,
+      languageName: languageName
+    };
   };
 
   $scope.onChooseDirection = function(direction){
@@ -196,6 +223,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   $scope.add = function(){
     $http.post('/technology', {
+      languageID: $scope.model.selectedProgrammingLanguage.languageID,
       technologyName: $scope.model.technologyName,
       technologyStars: $scope.model.technologyStars,
       technologyMemo: $scope.model.technologyMemo,
@@ -214,7 +242,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
   //endregion
 
-  //region 更新高校信息
+  //region 更新技术信息
   $scope.onShowChangeModal = function (data){
     $scope.setDefaultValue();
     $scope.model.modalTitle = '修改技术信息';
@@ -223,6 +251,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.technologyNameIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.technologyStars = data.technologyStars;
     $scope.model.technologyMemo = data.technologyMemo;
+    $scope.model.selectedProgrammingLanguage = {languageID: data.languageID, languageName: data.languageName};
+
     $scope.model.add = false;
     $scope.setSelectedDirections(data.technologyID);
     $('#kt_modal_edit').modal('show');

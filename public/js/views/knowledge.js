@@ -4,6 +4,16 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //begin: 数据查询
     selectedTechnology: {technologyID: 0, technologyName: '所有技术'},
     technologyList: [],
+
+    selectedLearningPhase: {learningPhaseID: 0, learningPhaseName: '所有阶段'},
+    learningPhaseList: [],
+
+    selectedDataStatus: {statusCode: 'N', statusName: '所有状态'},
+    dataStatusList: [
+      {statusCode: 'P', statusName: '待审核'},
+      {statusCode: 'A', statusName: '正常'},
+      {statusCode: 'D', statusName: '禁用'}
+    ],
     //end: 数据查询
 
     //begin: 数据列表
@@ -24,6 +34,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     knowledgeID: 0,
     technologyList4Edit: [],
     selectedTechnology4Edit: {technologyID: 0, technologyName: '请选择所属技术'},
+
+    selectedLearningPhase4Edit: {learningPhaseID: 0, learningPhaseName: '请选择学习阶段'},
+    learningPhaseList4Edit: [],
+
     knowledgeName: '',
     knowledgeNameCompare: '',
     knowledgeNameIsInValid: Constants.CHECK_INVALID.DEFAULT,
@@ -33,6 +47,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //begin: 状态编辑
     statusKnowledgeID: 0,
     statusTechnologyID: 0,
+    statusLearningPhaseID: 0,
 
     statusModalTitle: '',
     status: '',
@@ -43,11 +58,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   //region 页面初始化
   $scope.initPage = function () {
     commonUtility.setNavActive();
-    $scope.loadTechnologyList();
+    $scope.loadSearchTechnologyList();
+    $scope.loadLearningPhaseList();
     $scope.loadData();
   };
 
-  $scope.loadTechnologyList = function (){
+  $scope.loadSearchTechnologyList = function (){
     $http.get('/common/technology').then(function successCallback (response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -63,33 +79,48 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     });
   };
 
+  $scope.loadLearningPhaseList = function(){
+    $http.get('/common/learningPhase').then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(commonUtility.isEmptyList(response.data.dataList)){
+        return false;
+      }
+      $scope.model.learningPhaseList = response.data.dataList;
+      $scope.model.learningPhaseList4Edit = response.data.dataList;
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
   $scope.loadData = function(){
-    $http.get(`/knowledge/dataList?pageNumber=${$scope.model.pageNumber}&technologyID=${$scope.model.selectedTechnology.technologyID}`)
-        .then(function successCallback (response) {
-          if(response.data.err){
-            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
-            return false;
-          }
-          if(response.data.dataContent === null){
-            return false;
-          }
-          if(response.data.dataContent.dataList !== null && response.data.dataContent.dataList.length === 0 && $scope.model.pageNumber > 1){
-            $scope.model.pageNumber--;
-            $scope.loadData();
-            return false;
-          }
-          $scope.model.totalCount = response.data.dataContent.totalCount;
-          $scope.model.dataList = response.data.dataContent.dataList;
-          $scope.model.pageNumber = response.data.dataContent.currentPageNum;
-          $scope.model.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
-          $scope.model.paginationArray = response.data.dataContent.paginationArray;
-          $scope.model.prePageNum = response.data.dataContent.prePageNum === undefined ? -1 : response.data.dataContent.prePageNum;
-          $scope.model.nextPageNum = response.data.dataContent.nextPageNum === undefined ? -1 : response.data.dataContent.nextPageNum;
-          $scope.model.fromIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + 1;
-          $scope.model.toIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + $scope.model.dataList.length;
-        }, function errorCallback(response) {
-          bootbox.alert(localMessage.NETWORK_ERROR);
-        });
+    $http.get(`/knowledge/dataList?pageNumber=${$scope.model.pageNumber}&technologyID=${$scope.model.selectedTechnology.technologyID}&learningPhaseID=${$scope.model.selectedLearningPhase.learningPhaseID}&dataStatus=${$scope.model.selectedDataStatus.statusCode}`).then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      if(response.data.dataContent === null){
+        return false;
+      }
+      if(response.data.dataContent.dataList !== null && response.data.dataContent.dataList.length === 0 && $scope.model.pageNumber > 1){
+        $scope.model.pageNumber--;
+        $scope.loadData();
+        return false;
+      }
+      $scope.model.totalCount = response.data.dataContent.totalCount;
+      $scope.model.dataList = response.data.dataContent.dataList;
+      $scope.model.pageNumber = response.data.dataContent.currentPageNum;
+      $scope.model.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
+      $scope.model.paginationArray = response.data.dataContent.paginationArray;
+      $scope.model.prePageNum = response.data.dataContent.prePageNum === undefined ? -1 : response.data.dataContent.prePageNum;
+      $scope.model.nextPageNum = response.data.dataContent.nextPageNum === undefined ? -1 : response.data.dataContent.nextPageNum;
+      $scope.model.fromIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + 1;
+      $scope.model.toIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + $scope.model.dataList.length;
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
   };
 
   $scope.onPrePage = function(){
@@ -123,6 +154,17 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.selectedTechnology = {technologyID: technologyID, technologyName: technologyName};
     $scope.loadData();
   };
+
+  $scope.onLearningPhaseChange = function (learningPhaseID, learningPhaseName){
+    $scope.model.selectedLearningPhase = {learningPhaseID: learningPhaseID, learningPhaseName: learningPhaseName};
+    $scope.loadData();
+  };
+
+  $scope.onDataStatusChange = function (statusCode, statusName){
+    $scope.model.selectedDataStatus = {statusCode: statusCode, statusName: statusName};
+    $scope.loadData();
+  };
+
   //endregion
 
   //region 添加数据
@@ -145,6 +187,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.selectedTechnology4Edit = {technologyID: technologyID, technologyName: technologyName};
   };
 
+  $scope.onLearningPhase4Edit = function (learningPhaseID, learningPhaseName){
+    $scope.model.selectedLearningPhase4Edit = {learningPhaseID: learningPhaseID, learningPhaseName: learningPhaseName};
+  };
+
   $scope.onKnowledgeNameBlur = function(){
     if($scope.model.selectedTechnology4Edit.technologyID === 0 ){
       return false;
@@ -159,26 +205,26 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       return false;
     }
 
-    $http.get(`/knowledge/checkTechnologyName?technologyID=${$scope.model.selectedTechnology4Edit.technologyID}&knowledgeName=${$scope.model.knowledgeName}`)
-        .then(function successCallback (response) {
-          if(response.data.err){
-            $scope.model.knowledgeNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
-            bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
-            return false;
-          }
+    $http.get(`/knowledge/checkTechnologyName?technologyID=${$scope.model.selectedTechnology4Edit.technologyID}&knowledgeName=${$scope.model.knowledgeName}`).then(function successCallback (response) {
+      if(response.data.err){
+        $scope.model.knowledgeNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
 
-          $scope.model.knowledgeNameIsInValid =
-              response.data.result ?
-                  Constants.CHECK_INVALID.INVALID
-                  : Constants.CHECK_INVALID.VALID;
-        }, function errorCallback(response) {
-          bootbox.alert(localMessage.NETWORK_ERROR);
-        });
+      $scope.model.knowledgeNameIsInValid =
+          response.data.result ?
+              Constants.CHECK_INVALID.INVALID
+              : Constants.CHECK_INVALID.VALID;
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
   };
 
   $scope.add = function(){
     $http.post('/knowledge', {
       technologyID: $scope.model.selectedTechnology4Edit.technologyID,
+      learningPhaseID: $scope.model.selectedLearningPhase4Edit.learningPhaseID,
       knowledgeName: $scope.model.knowledgeName,
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
@@ -220,6 +266,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.put('/knowledge', {
       knowledgeID: $scope.model.knowledgeID,
       technologyID: $scope.model.selectedTechnology4Edit.technologyID,
+      learningPhaseID: $scope.model.selectedLearningPhase4Edit.learningPhaseID,
       knowledgeName: $scope.model.knowledgeName,
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
@@ -240,6 +287,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.statusModalTitle = `修改状态：${data.technologyName} ${data.knowledgeName}`;
     $scope.model.statusKnowledgeID = data.knowledgeID;
     $scope.model.statusTechnologyID = data.technologyID;
+    $scope.model.statusLearningPhaseID = data.learningPhaseID;
     $scope.model.status = data.dataStatus;
     $scope.model.isActive = data.dataStatus === Constants.DATA_STATUS.ACTIVE;
     $('#kt_modal_status').modal('show');
@@ -249,6 +297,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.put('/knowledge/status', {
       technologyID: $scope.model.statusTechnologyID,
       knowledgeID: $scope.model.statusKnowledgeID,
+      learningPhaseID: $scope.model.statusLearningPhaseID,
       status: $scope.model.status,
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
@@ -280,7 +329,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       },
       callback: function (result) {
         if(result) {
-          $http.delete(`knowledge?technologyID=${data.technologyID}&knowledgeID=${data.knowledgeID}`)
+          $http.delete(`knowledge?technologyID=${data.technologyID}&learningPhaseID=${data.learningPhaseID}&knowledgeID=${data.knowledgeID}`)
               .then(function successCallback(response) {
                 if(response.data.err){
                   bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));

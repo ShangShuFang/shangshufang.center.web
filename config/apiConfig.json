@@ -48,6 +48,7 @@
       "changeDirectionStatus": "/api/direction/changeStatus",
       "changeDirectionThumbnail": "/api/direction/changeThumbnail",
 
+      "programmingLanguage": "/api/programmingLanguage",
       "technology": "/api/technology",
       "checkTechnologyNameExist": "/api/technology/checkTechnologyName",
       "changeTechnologyStatus": "/api/technology/changeStatus",
