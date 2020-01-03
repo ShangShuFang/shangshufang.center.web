@@ -63,11 +63,9 @@
 
       "learningPhase": "/api/learningPhase",
 
-      "learningPath": "/api/learningPath",
-      "usingTechnology4LearningPath": "/api/learningPath/usingTechnology",
-      "usingLearningPhase": "/api/learningPath/usingLearningPhase",
-      "usingKnowledge": "/api/learningPath/usingKnowledge",
-      "changeLearningPathStatus": "/api/learningPath/changeStatus",
+      "usingTechnology4LearningPath": "/api/learningPath/technology",
+      "usingLearningPhase": "/api/learningPath/learningPhase",
+      "usingKnowledge": "/api/learningPath/knowledge",
 
       "exercises": "/api/exercises",
       "checkExercisesCode": "/api/exercises/checkExercisesCode",
