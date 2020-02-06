@@ -129,6 +129,10 @@ body{
 /*}*/
 .upload-file-name{
   margin: 5px auto 0;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .kt-avatar__holder img{
   width: 120px;

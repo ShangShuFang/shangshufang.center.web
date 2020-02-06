@@ -402,6 +402,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.checkChooseKnowledge = function(){
     let technology = [];
     let learningPhase = [];
+    let knowledgeArr = [];
 
     $scope.model.knowledgeList.forEach(function (knowledge) {
       if(!technology.includes(knowledge.technologyID)){
@@ -410,10 +411,13 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       if(!learningPhase.includes(knowledge.learningPhaseID)){
         learningPhase.push(knowledge.learningPhaseID);
       }
+      if(!knowledgeArr.includes(knowledge.knowledgeID)){
+        knowledgeArr.push(knowledge.knowledgeID);
+      }
     });
     switch ($scope.model.selectedExercisesType.exercisesTypeCode) {
       case 'S':
-        if(technology.length > 1 || learningPhase.length > 1){
+        if(technology.length > 1 || learningPhase.length > 1 || knowledgeArr.length > 1){
           bootbox.alert(localMessage.EXERCISES_TYPE_SINGLE_INVALID);
           return false;
         }

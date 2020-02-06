@@ -8,7 +8,7 @@ localMessage.DELETE_SUCCESS = '数据删除成功！';
 localMessage.NO_USING_LEARNING_PHASE = '未查询到该技术的学习路径！';
 localMessage.NO_USING_KNOWLEDGE = '未查询到该学习路径的知识点！';
 
-localMessage.EXERCISES_TYPE_SINGLE_INVALID = '单点练习只能选择一个技术的一个学习阶段的内容！';
+localMessage.EXERCISES_TYPE_SINGLE_INVALID = '单点练习只能选择一个技术，一个阶段的一个知识点！';
 localMessage.EXERCISES_TYPE_COMPREHENSIVE_INVALID = '综合练习只能选择一个技术的内容！';
 
 localMessage.EXERCISES_CODE_SINGLE_FORMAT_INVALID = '单点练习的习题编码格式不正确！';

@@ -5,7 +5,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     exercisesID: 0,
     loginUser: commonUtility.getLoginUser(),
     imageList: [],
-    documentList: []
+    documentList: [],
+    documentUrl: '',
+    breadcrumb: '',
+    answerGitUrl: '',
     //end: 信息编辑
   };
 
@@ -18,8 +21,31 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       return false;
     }
     $scope.model.exercisesID = parseInt(exercisesID);
+    $scope.setBreadCrumb();
     $scope.initUploadPlugin();
     $scope.loadFileList();
+  };
+
+  $scope.setBreadCrumb = function() {
+    let exercisesType = $('#hidden_exercisesType').val();
+    let technologyName = $('#hidden_technologyName').val();
+    let learningPhaseName = $('#hidden_learningPhaseName').val();
+    let knowledgeName = $('#hidden_knowledgeName').val();
+
+    switch (exercisesType) {
+      case 'S':
+        $scope.model.breadcrumb = `单点练习/${technologyName}/${learningPhaseName}/${knowledgeName}`;
+        break;
+      case 'C':
+        $scope.model.breadcrumb = `综合练习/${technologyName}`;
+        break;
+      case 'P':
+        $scope.model.breadcrumb = `项目练习/${technologyName}`;
+        break;
+      default:
+        break;
+    }
+
   };
 
   $scope.initUploadPlugin = function(){
@@ -39,13 +65,24 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     });
 
     uploadUtils.initUploadPlugin('#file-upload-document', uploadDocumentServerUrl, ['pdf'], false, function (opt,data) {
-      $scope.model.documentList.push({
-        documentUrl: data.fileUrlList[0],
-        documentName: data.fileUrlList[0].substr(data.fileUrlList[0].lastIndexOf('/') + 1)
-      });
+      $scope.model.documentUrl = data.fileUrlList[0];
+      // $scope.model.documentList.push({
+      //   documentUrl: data.fileUrlList[0],
+      //   documentName: data.fileUrlList[0].substr(data.fileUrlList[0].lastIndexOf('/') + 1)
+      // });
       $scope.$apply();
-      $('#kt_modal_document').modal('hide');
+      // $('#kt_modal_document').modal('hide');
     });
+  };
+
+  $scope.onChangeDocumentList = function() {
+    $scope.model.documentList.push({
+      documentUrl: $scope.model.documentUrl,
+      documentName: $scope.model.documentUrl.substr($scope.model.documentUrl.lastIndexOf('/') + 1),
+      answerGitUrl: $scope.model.answerGitUrl
+    });
+    // $scope.$apply();
+    $('#kt_modal_document').modal('hide');
   };
 
   $scope.loadFileList = function(){
@@ -71,7 +108,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
         response.data.files.documentList.forEach(function (document) {
           $scope.model.documentList.push({
             documentUrl: document.documentUrl,
-            documentName: document.documentUrl.substr(document.documentUrl.lastIndexOf('/') + 1)
+            documentName: document.documentUrl.substr(document.documentUrl.lastIndexOf('/') + 1),
+            answerUrl: document.answerUrl
           });
         })
       }
@@ -105,18 +143,23 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onSave = function(){
-    let imageList = [];
-    let documentList = [];
-    $scope.model.imageList.forEach(function (image) {
-      imageList.push(image.imageUrl);
-    });
+    // let imageList = [];
+    // $scope.model.imageList.forEach(function (image) {
+    //   imageList.push(image.imageUrl);
+    // });
+
+    let documentObjectArray = [];
+
     $scope.model.documentList.forEach(function (document) {
-      documentList.push(document.documentUrl);
+      documentObjectArray.push({
+        documentUrl: document.documentUrl,
+        answerUrl: document.answerGitUrl
+      });
     });
     $http.post('/softwareExercisesFiles', {
       exercisesID: $scope.model.exercisesID,
-      imageList: imageList.join(','),
-      documentList: documentList.join(','),
+      // imageList: imageList.join(','),
+      documentList: JSON.stringify(documentObjectArray),
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if(response.data.err){

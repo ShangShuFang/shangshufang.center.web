@@ -31,7 +31,7 @@
   <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="alert alert-primary fade show" role="alert">
       <div class="alert-text">
-        <p>习题图片：源文件的每一页作为一张图片，格式为：JPG</p>
+<!--        <p>习题图片：源文件的每一页作为一张图片，格式为：JPG</p>-->
         <p>习题文档：源文件转为PDF后上传，格式为：PDF</p>
       </div>
       <div class="alert-close">
@@ -50,7 +50,7 @@
           <i class="kt-font-brand fa fa-graduation-cap"></i>
         </span>
           <h3 class="kt-portlet__head-title">
-            测试习题文件上传
+            测试习题文件上传(\{{model.breadcrumb}})
           </h3>
         </div>
         <div class="kt-portlet__head-toolbar">
@@ -75,53 +75,55 @@
 
   <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="row">
-      <div class="col-md-6">
-        <!--begin::Portlet-->
-        <div class="kt-portlet">
-          <div class="kt-portlet__head kt-portlet__head--noborder">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                上传习题图片文件
-              </h3>
-            </div>
-            <div class="kt-portlet__head-toolbar">
-              <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onShowUploadImageModal()">
-                <i class="kt-nav__link-icon flaticon-upload"></i>
-              </a>
-            </div>
-          </div>
-          <div class="kt-portlet__body">
-            <!--begin::Widget -->
-            <div class="kt-widget__files">
-              <ul class="image-list-horizontal" ng-if="model.imageList.length !== 0">
-                <li ng-repeat="image in model.imageList">
-                  <div class="kt-avatar kt-avatar--outline" id="kt_user_add_avatar">
-                    <a ng-href="\{{image.imageUrl}}" target="_blank">
-                      <div class="kt-avatar__holder" ng-style="{'background-image': 'url(' + image.imageUrl + ')'}"></div>
-                    </a>
-                    <a href="javascript:;" class="kt-avatar__upload" ng-click="onRemoveImage(image)">
-                      <i class="flaticon-delete"></i>
-                    </a>
-                    <div class="upload-file-name" ng-bind="image.imageName"></div>
-                    <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="">
-                      <i class="fa fa-times"></i>
-                    </span>
-                  </div>
-                </li>
-              </ul>
-              <div class="kt-widget__media" ng-if="model.imageList.length === 0">
-                <img class="kt-widget__img kt-hidden-" src="../images/media/jpg.svg" alt="image">
-              </div>
-              <span class="kt-widget__desc" ng-if="model.imageList.length === 0">[习题编码]_[顺序编号].jpg</span>
-            </div>
+<!--      <div class="col-md-6">-->
+<!--        &lt;!&ndash;begin::Portlet&ndash;&gt;-->
+<!--        <div class="kt-portlet">-->
+<!--          <div class="kt-portlet__head kt-portlet__head--noborder">-->
+<!--            <div class="kt-portlet__head-label">-->
+<!--              <h3 class="kt-portlet__head-title">-->
+<!--                上传习题图片文件-->
+<!--              </h3>-->
+<!--            </div>-->
+<!--            <div class="kt-portlet__head-toolbar">-->
+<!--              <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onShowUploadImageModal()">-->
+<!--                <i class="kt-nav__link-icon flaticon-upload"></i>-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="kt-portlet__body">-->
+<!--            &lt;!&ndash;begin::Widget &ndash;&gt;-->
+<!--            <div class="kt-widget__files">-->
+<!--              <ul class="image-list-horizontal" ng-if="model.imageList.length !== 0">-->
+<!--                <li ng-repeat="image in model.imageList">-->
+<!--                  <div class="kt-avatar kt-avatar--outline" id="kt_user_add_avatar">-->
+<!--                    <a ng-href="\{{image.imageUrl}}" target="_blank">-->
+<!--                      <div class="kt-avatar__holder" ng-style="{'background-image': 'url(' + image.imageUrl + ')'}"></div>-->
+<!--                    </a>-->
+<!--                    <a href="javascript:;" class="kt-avatar__upload" ng-click="onRemoveImage(image)">-->
+<!--                      <i class="flaticon-delete"></i>-->
+<!--                    </a>-->
+<!--                    <div class="upload-file-name">-->
+<!--                      <a ng-href="\{{image.imageUrl}}" target="_blank" title="\{{image.imageName}}" ng-bind="image.imageName"></a>-->
+<!--                    </div>-->
+<!--                    <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="">-->
+<!--                      <i class="fa fa-times"></i>-->
+<!--                    </span>-->
+<!--                  </div>-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--              <div class="kt-widget__media" ng-if="model.imageList.length === 0">-->
+<!--                <img class="kt-widget__img kt-hidden-" src="../images/media/jpg.svg" alt="image">-->
+<!--              </div>-->
+<!--              <span class="kt-widget__desc" ng-if="model.imageList.length === 0">[习题编码]_[顺序编号].jpg</span>-->
+<!--            </div>-->
 
-            <!--end::Widget -->
-          </div>
-        </div>
-        <!--end::Portlet-->
+<!--            &lt;!&ndash;end::Widget &ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;end::Portlet&ndash;&gt;-->
 
-      </div>
-      <div class="col-md-6">
+<!--      </div>-->
+      <div class="col-md-12">
         <!--begin::Portlet-->
         <div class="kt-portlet">
           <div class="kt-portlet__head kt-portlet__head--noborder">
@@ -150,7 +152,11 @@
                     <a href="javascript:;" class="kt-avatar__upload" ng-click="onRemoveDocument(document)">
                       <i class="flaticon-delete"></i>
                     </a>
-                    <div class="upload-file-name" ng-bind="document.documentName"></div>
+                    <div class="upload-file-name text-center">
+                      <a ng-href="\{{document.documentUrl}}" target="_blank" title="\{{document.documentName}}" ng-bind="document.documentName"></a>
+                      <br>
+                      <a ng-href="\{{document.answerUrl}}" target="_blank" title="\{{document.answerUrl}}">参考示例</a>
+                    </div>
                     <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="">
                       <i class="fa fa-times"></i>
                     </span>
@@ -202,7 +208,7 @@
        aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <form class="kt-form kt-form--label-right" name="brandForm" novalidate>
+        <form class="kt-form kt-form--label-right" name="myForm" novalidate>
           <div class="modal-header">
             <h5 class="modal-title">上传PDF文档</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -211,18 +217,27 @@
           <div class="modal-body">
             <div class="kt-portlet__body">
               <div id="file-upload-document" class="fileUploadContent"></div>
+              <br>
+              <input type="url" class="form-control" name="answerGitUrl" ng-model="model.answerGitUrl" placeholder="习题参考答案Git地址" required>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary"
+                    ng-disabled="myForm.answerGitUrl.$pristine || (myForm.answerGitUrl.$dirty && myForm.answerGitUrl.$invalid) || model.documentUrl.length === 0"
+                    ng-click="onChangeDocumentList()" >确定</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!--end: document modal -->
-
 </div>
+
+<input type="hidden" value="{{exercisesType}}" id="hidden_exercisesType">
+<input type="hidden" value="{{technologyName}}" id="hidden_technologyName">
+<input type="hidden" value="{{learningPhaseName}}" id="hidden_learningPhaseName">
+<input type="hidden" value="{{knowledgeName}}" id="hidden_knowledgeName">
 
 
 <script src="../js/views/softwareExercisesUploadFiles.js" type="text/javascript"></script>

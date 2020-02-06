@@ -3,7 +3,13 @@ let router = express.Router();
 let commonService = require('../service/commonService');
 
 router.get('/', function(req, res, next) {
-  res.render('softwareExercisesUploadFiles', { title: '能力测评编辑' });
+  res.render('softwareExercisesUploadFiles', {
+    title: '能力测评编辑',
+    exercisesType: req.query.exercisesType,
+    technologyName: req.query.technologyName,
+    learningPhaseName: req.query.learningPhaseName,
+    knowledgeName: req.query.knowledgeName
+  });
 });
 
 router.get('/files', function(req, res, next) {
@@ -32,7 +38,7 @@ router.post('/', (req, res, next) => {
   let service = new commonService.commonInvoke('exercisesFile');
   let data = {
     exercisesID: req.body.exercisesID,
-    imageList: req.body.imageList,
+    // imageList: req.body.imageList,
     documentList: req.body.documentList,
     loginUser: req.body.loginUser
   };

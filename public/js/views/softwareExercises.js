@@ -3,7 +3,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.model = {
     //region 数据查询
     exercisesTypeList: [],
-    selectedExercisesType: {exercisesTypeCode: 'A', exercisesTypeName: '所有类型'},
+    selectedExercisesType: {},
 
     technologyList: [],
     selectedTechnology: {technologyID: 0, technologyName: '所有技术'},
@@ -13,15 +13,40 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //endregion 数据查询
 
     //region 数据列表
-    fromIndex : 0,
-    toIndex: 0,
-    pageNumber: 1,
-    totalCount: 0,
-    maxPageNumber: 0,
-    dataList: [],
-    paginationArray: [],
-    prePageNum: -1,
-    nextPageNum: -1,
+    singleData: {
+      fromIndex : 0,
+      toIndex: 0,
+      pageNumber: 1,
+      totalCount: 0,
+      maxPageNumber: 0,
+      dataList: [],
+      paginationArray: [],
+      prePageNum: -1,
+      nextPageNum: -1,
+    },
+    comprehensiveData: {
+      fromIndex : 0,
+      toIndex: 0,
+      pageNumber: 1,
+      totalCount: 0,
+      maxPageNumber: 0,
+      dataList: [],
+      paginationArray: [],
+      prePageNum: -1,
+      nextPageNum: -1,
+    },
+    projectData: {
+      fromIndex : 0,
+      toIndex: 0,
+      pageNumber: 1,
+      totalCount: 0,
+      maxPageNumber: 0,
+      dataList: [],
+      paginationArray: [],
+      prePageNum: -1,
+      nextPageNum: -1,
+    },
+
     //endregion 数据列表
 
     //region 状态编辑
@@ -39,13 +64,14 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     commonUtility.setNavActive();
     $scope.loadExercisesTypeList();
     $scope.loadTechnologyList();
-    $scope.loadData();
+    $scope.loadSingleData();
   };
 
   $scope.loadExercisesTypeList = function (){
     $scope.model.exercisesTypeList.push({exercisesTypeCode: 'S', exercisesTypeName: '单点练习'});
     $scope.model.exercisesTypeList.push({exercisesTypeCode: 'C', exercisesTypeName: '综合练习'});
     $scope.model.exercisesTypeList.push({exercisesTypeCode: 'P', exercisesTypeName: '项目练习'});
+    $scope.model.selectedExercisesType = $scope.model.exercisesTypeList[0];
   };
 
   $scope.onExercisesTypeChange = function(exercisesTypeCode, exercisesTypeName){
@@ -53,7 +79,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       return false;
     }
     $scope.model.selectedExercisesType = {exercisesTypeCode: exercisesTypeCode, exercisesTypeName: exercisesTypeName};
-    $scope.loadData();
+    $scope.loadSingleData();
   };
 
   $scope.loadTechnologyList = function (){
@@ -78,7 +104,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.selectedTechnology = {technologyID: technologyID, technologyName: technologyName};
     $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '所有阶段'};
     $scope.loadLearningPhase();
-    $scope.loadData();
+    $scope.loadSingleData();
   };
 
   $scope.loadLearningPhase = function(){
@@ -103,11 +129,15 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       return false;
     }
     $scope.model.selectedLearningPhase = {learningPhaseID: learningPhaseID, learningPhaseName: learningPhaseName};
-    $scope.loadData();
+    $scope.loadSingleData();
   };
 
-  $scope.loadData = function(){
-    $http.get(`/softwareExercises/dataList?pageNumber=${$scope.model.pageNumber}&exercisesTypeCode=${$scope.model.selectedExercisesType.exercisesTypeCode}&technologyID=${$scope.model.selectedTechnology.technologyID}&learningPhaseID=${$scope.model.selectedLearningPhase.learningPhaseID}`)
+
+  //endregion
+
+  //region single data
+  $scope.loadSingleData = function(){
+    $http.get(`/softwareExercises/dataList?pageNumber=${$scope.model.singleData.pageNumber}&exercisesTypeCode=${$scope.model.selectedExercisesType.exercisesTypeCode}&technologyID=${$scope.model.selectedTechnology.technologyID}&learningPhaseID=${$scope.model.selectedLearningPhase.learningPhaseID}`)
         .then(function successCallback (response) {
           if(response.data.err){
             bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -116,26 +146,26 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
           if(response.data.dataContent === null){
             return false;
           }
-          if(response.data.dataContent.dataList !== null && response.data.dataContent.dataList.length === 0 && $scope.model.pageNumber > 1){
-            $scope.model.pageNumber--;
-            $scope.loadData();
+          if(response.data.dataContent.dataList !== null && response.data.dataContent.dataList.length === 0 && $scope.model.singleData.pageNumber > 1){
+            $scope.model.singleData.pageNumber--;
+            $scope.loadSingleData();
             return false;
           }
-          $scope.model.totalCount = response.data.dataContent.totalCount;
-          $scope.model.dataList = response.data.dataContent.dataList;
-          $scope.model.pageNumber = response.data.dataContent.currentPageNum;
-          $scope.model.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
-          $scope.model.paginationArray = response.data.dataContent.paginationArray;
-          $scope.model.prePageNum = response.data.dataContent.prePageNum === undefined ? -1 : response.data.dataContent.prePageNum;
-          $scope.model.nextPageNum = response.data.dataContent.nextPageNum === undefined ? -1 : response.data.dataContent.nextPageNum;
-          $scope.model.fromIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + 1;
-          $scope.model.toIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.pageNumber - 1) * Constants.PAGE_SIZE + $scope.model.dataList.length;
+          $scope.model.singleData.totalCount = response.data.dataContent.totalCount;
+          $scope.model.singleData.dataList = response.data.dataContent.dataList;
+          $scope.model.singleData.pageNumber = response.data.dataContent.currentPageNum;
+          $scope.model.singleData.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
+          $scope.model.singleData.paginationArray = response.data.dataContent.paginationArray;
+          $scope.model.singleData.prePageNum = response.data.dataContent.prePageNum === undefined ? -1 : response.data.dataContent.prePageNum;
+          $scope.model.singleData.nextPageNum = response.data.dataContent.nextPageNum === undefined ? -1 : response.data.dataContent.nextPageNum;
+          $scope.model.singleData.fromIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.singleData.pageNumber - 1) * Constants.PAGE_SIZE + 1;
+          $scope.model.singleData.toIndex = response.data.dataContent.dataList === null ? 0 : ($scope.model.singleData.pageNumber - 1) * Constants.PAGE_SIZE + $scope.model.singleData.dataList.length;
         }, function errorCallback(response) {
           bootbox.alert(localMessage.NETWORK_ERROR);
         });
   };
 
-  $scope.onPrePage = function(){
+  $scope.onSinglePrePage = function(){
     if($scope.model.pageNumber === 1){
       return false;
     }
@@ -143,7 +173,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.loadData();
   };
 
-  $scope.onPagination = function(pageNumber){
+  $scope.onSinglePagination = function(pageNumber){
     if($scope.model.pageNumber === pageNumber){
       return false;
     }
@@ -151,7 +181,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.loadData();
   };
 
-  $scope.onNextPage = function(){
+  $scope.onSingleNextPage = function(){
     if($scope.model.pageNumber === $scope.model.maxPageNumber){
       return false;
     }
@@ -170,6 +200,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   //region 上传
   $scope.onRedirectToUpload = function(data){
     localStorage.setItem(Constants.KEY_UPLOAD_EXERCISES, data.exercisesID);
+    if(data.exercisesType === 'S'){
+      location.href = `/softwareExercisesFiles?exercisesType=${data.exercisesType}&technologyName=${data.technologyName}&learningPhaseName=${data.learningPhaseName}&knowledgeName=${data.knowledgeName}`;
+      return false;
+    }
     location.href = '/softwareExercisesFiles';
   };
   //endregion
