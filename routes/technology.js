@@ -11,7 +11,7 @@ router.get('/dataList', (req, res, next) => {
   let service = new commonService.commonInvoke('technology');
   let pageNumber = parseInt(req.query.pageNumber);
 
-  let parameter = `${pageNumber}/${sysConfig.pageSize}`;
+  let parameter = `${pageNumber}/${sysConfig.pageSize}/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {

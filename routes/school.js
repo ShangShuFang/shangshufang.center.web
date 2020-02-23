@@ -12,7 +12,7 @@ router.get('/dataList', (req, res, next) => {
   let pageNumber = parseInt(req.query.pageNumber);
   let universityCode = req.query.universityCode === undefined ? 0 : req.query.universityCode;
 
-  let parameter = `${pageNumber}/${sysConfig.pageSize}/${universityCode}`;
+  let parameter = `${pageNumber}/${sysConfig.pageSize}/${universityCode}/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {

@@ -1,7 +1,7 @@
 {
   "StoreService": {
     "host": "localhost",
-    "port": 8080,
+    "port": 8081,
     "path": {
       "login": "/api/system/admin/login",
       "chinaRegion": "/api/chinaRegion",
