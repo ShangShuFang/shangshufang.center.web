@@ -107,7 +107,7 @@
                    id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
               <thead>
               <tr role="row">
-                <th>Brand</th>
+                <th>Logo</th>
                 <th>客户寄语</th>
                 <th>高校编码</th>
                 <th>高校名称</th>
@@ -149,7 +149,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-image"></i> Brand</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowBrandModal(data)"><i class="la la-image"></i> Logo</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i class="la la-wechat"></i> 客户寄语</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.brand != ''"><i class="la la-leaf"></i> 状态修改</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
@@ -205,7 +205,7 @@
           <div class="modal-content">
             <form class="kt-form kt-form--label-right" name="brandForm" novalidate>
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.brandModalTitle"></h5>
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.logoModalTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
               </div>

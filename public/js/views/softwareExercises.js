@@ -166,27 +166,27 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onSinglePrePage = function(){
-    if($scope.model.pageNumber === 1){
+    if($scope.model.singleData.pageNumber === 1){
       return false;
     }
-    $scope.model.pageNumber--;
-    $scope.loadData();
+    $scope.model.singleData.pageNumber--;
+    $scope.loadSingleData();
   };
 
   $scope.onSinglePagination = function(pageNumber){
-    if($scope.model.pageNumber === pageNumber){
+    if($scope.model.singleData.pageNumber === pageNumber){
       return false;
     }
-    $scope.model.pageNumber = pageNumber;
-    $scope.loadData();
+    $scope.model.singleData.pageNumber = pageNumber;
+    $scope.loadSingleData();
   };
 
   $scope.onSingleNextPage = function(){
-    if($scope.model.pageNumber === $scope.model.maxPageNumber){
+    if($scope.model.singleData.pageNumber === $scope.model.singleData.maxPageNumber){
       return false;
     }
-    $scope.model.pageNumber++;
-    $scope.loadData();
+    $scope.model.singleData.pageNumber++;
+    $scope.loadSingleData();
   };
   //endregion
 

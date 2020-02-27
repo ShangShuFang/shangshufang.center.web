@@ -21,7 +21,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //end: 数据列表
 
     //begin: Brand编辑
-    brandModalTitle: '',
+    logoModalTitle: '',
     universityID_brand: 0,
     universityCode_brand: '',
     brandUrl: '',
@@ -419,7 +419,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   //region 添加Brand
   $scope.onShowBrandModal = function (data){
-    $scope.model.brandModalTitle = `Brand: ${data.universityName}`;
+    $scope.model.logoModalTitle = `上传${data.universityName}logo`;
     $scope.model.add = false;
     $scope.model.brandUrl = data.brand;
     $scope.model.memo = data.memo;

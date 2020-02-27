@@ -258,6 +258,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.knowledgeNameCompare = data.knowledgeName;
     $scope.model.knowledgeNameIsInValid = Constants.CHECK_INVALID.VALID;
     $scope.model.selectedTechnology4Edit = {technologyID: data.technologyID, technologyName: data.technologyName};
+    $scope.model.selectedLearningPhase4Edit = {learningPhaseID: data.learningPhaseID, learningPhaseName: data.learningPhaseName};
     $scope.model.add = false;
     $('#kt_modal_edit').modal('show');
   };

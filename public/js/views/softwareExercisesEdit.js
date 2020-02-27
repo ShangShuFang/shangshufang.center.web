@@ -55,10 +55,16 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onExercisesTypeChange = function(exercisesTypeCode, exercisesTypeName){
+    $scope.model.exercisesName = '';
     if($scope.model.selectedExercisesType.exercisesTypeCode === exercisesTypeCode){
       return false;
     }
+
     $scope.model.selectedExercisesType = {exercisesTypeCode: exercisesTypeCode, exercisesTypeName: exercisesTypeName};
+
+    if($scope.model.selectedExercisesType.exercisesTypeCode === 'S'){
+      $scope.removeAllChooseKnowledge();
+    }
   };
 
   $scope.loadTechnologyList = function(){
@@ -298,8 +304,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onTreeNodeClick = function(node){
-    node.isSelected = !node.isSelected;
+
     if(node.nodeType === 'T'){
+      if($scope.model.selectedExercisesType.exercisesTypeCode === 'S'){
+        return false;
+      }
+      node.isSelected = !node.isSelected;
       node.learningPhaseList.forEach(function (learningPhase) {
         learningPhase.isSelected = node.isSelected;
         learningPhase.knowledgeList.forEach(function (knowledge) {
@@ -310,6 +320,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     }
 
     if(node.nodeType === 'P'){
+      if($scope.model.selectedExercisesType.exercisesTypeCode === 'S'){
+        return false;
+      }
+      node.isSelected = !node.isSelected;
       node.knowledgeList.forEach(function (knowledge) {
         knowledge.isSelected = node.isSelected;
         $scope.setChooseKnowledgeList(node.technologyID, node.learningPhaseID, knowledge.knowledgeID, knowledge.isSelected);
@@ -317,6 +331,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     }
 
     if(node.nodeType === 'K'){
+      if($scope.model.selectedExercisesType.exercisesTypeCode === 'S'){
+        $scope.removeAllChooseKnowledge();
+        $scope.model.exercisesName = `${node.knowledgeName}习题集`;
+      }
+
+      node.isSelected = !node.isSelected;
       $scope.setChooseKnowledgeList(node.technologyID, node.learningPhaseID, node.knowledgeID, node.isSelected);
     }
   };
@@ -339,6 +359,20 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       $scope.loadKnowledge(node);
     }
     $event.stopPropagation();
+  };
+
+  $scope.removeAllChooseKnowledge = function () {
+    $('.tree-demo input[type="checkbox"]').prop("checked",false);
+    $scope.model.technologyList.forEach(function (technology) {
+      technology.isSelected = false;
+      technology.learningPhaseList.forEach(function (learningPhase) {
+        learningPhase.isSelected = false;
+        learningPhase.knowledgeList.forEach(function (knowledge) {
+          knowledge.isSelected = false;
+        })
+      });
+    });
+    $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
   };
 
   $scope.setChooseKnowledgeList = function(technologyID, learningPhaseID, knowledgeID, isSelected){

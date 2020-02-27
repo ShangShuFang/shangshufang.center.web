@@ -23,6 +23,9 @@ $.fn.extend({
     uploadTools.initWithUpload(opt);//初始化上传
     uploadTools.initWithCleanFile(opt);
     uploadFileList.initFileList(opt);
+  },
+  "cleanUploadedFile": function (opt) {
+    uploadEvent.cleanFileEvent(opt);
   }
 });
 /**

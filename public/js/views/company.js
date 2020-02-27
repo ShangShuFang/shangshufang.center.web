@@ -376,7 +376,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
   //region 添加Brand
   $scope.onShowBrandModal = function (data){
-    $scope.model.brandModalTitle = `Brand:${data.companyName}`;
+    $scope.model.brandModalTitle = `上传${data.companyName}的logo`;
     $scope.model.companyID_brand = data.companyID;
     $scope.model.brandUrl = data.brand;
     // $scope.model.memo = data.memo;
@@ -578,6 +578,16 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.onShowKnowledgeModal = function(data){
     $scope.model.usingKnowledgeModalTitle = `【${data.companyName}】使用技术点`;
     $scope.model.usingKnowledgeCompanyID = data.companyID;
+
+    $scope.model.selectedUsingTechnology = {technologyID: 0, technologyName: '请选择使用技术', isSelected: false};
+    $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '请选择学习阶段', isSelected: false};
+
+    $scope.model.selectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+    $scope.model.knowledgeList.splice(0, $scope.model.knowledgeList.length);
+
+    $scope.model.choiceSelectedKnowledge = {knowledgeID: 0, knowledgeName: ''};
+    $scope.model.choiceKnowledgeList.splice(0, $scope.model.choiceKnowledgeList.length);
+
     $scope.loadCompanyUsingTechnology();
   };
 
@@ -639,6 +649,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
           return false;
         }
         if(commonUtility.isEmptyList(response.data.dataList)) {
+          $('#kt_modal_knowledge').modal('show');
           return false;
         }
 
@@ -649,11 +660,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
             }
           });
         });
+        $('#kt_modal_knowledge').modal('show');
       }, function errorCallback () {
         bootbox.alert(localMessage.NETWORK_ERROR);
       });
-
-      $('#kt_modal_knowledge').modal('show');
     }, function errorCallback(response) {
       bootbox.alert(localMessage.NETWORK_ERROR);
     });

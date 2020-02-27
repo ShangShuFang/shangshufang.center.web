@@ -66,12 +66,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
     uploadUtils.initUploadPlugin('#file-upload-document', uploadDocumentServerUrl, ['pdf'], false, function (opt,data) {
       $scope.model.documentUrl = data.fileUrlList[0];
-      // $scope.model.documentList.push({
-      //   documentUrl: data.fileUrlList[0],
-      //   documentName: data.fileUrlList[0].substr(data.fileUrlList[0].lastIndexOf('/') + 1)
-      // });
       $scope.$apply();
-      // $('#kt_modal_document').modal('hide');
+      layer.msg(localMessage.UPLOAD_SUCCESS);
     });
   };
 
@@ -109,7 +105,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
           $scope.model.documentList.push({
             documentUrl: document.documentUrl,
             documentName: document.documentUrl.substr(document.documentUrl.lastIndexOf('/') + 1),
-            answerUrl: document.answerUrl
+            answerGitUrl: document.answerUrl
           });
         })
       }
@@ -123,6 +119,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onShowUploadDocumentModal = function(){
+    $('div.cleanFileBt').trigger("click");
+    $scope.model.answerGitUrl = '';
+    $scope.model.documentUrl = '';
     $('#kt_modal_document').modal('show');
   };
 
@@ -143,11 +142,6 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.onSave = function(){
-    // let imageList = [];
-    // $scope.model.imageList.forEach(function (image) {
-    //   imageList.push(image.imageUrl);
-    // });
-
     let documentObjectArray = [];
 
     $scope.model.documentList.forEach(function (document) {

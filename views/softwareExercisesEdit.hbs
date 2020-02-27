@@ -213,7 +213,7 @@
             <!--begin::Form-->
             <form class="kt-form">
               <div class="kt-portlet__body">
-                <div class="tree-demo jstree jstree-6 jstree-default">
+                <div class="tree-demo jstree jstree-6 jstree-default" ng-show="model.selectedExercisesType.exercisesTypeCode != ''">
                   <ul class="jstree-container-ul jstree-children">
                     <li ng-repeat="technology in model.technologyList"
                         class="jstree-node"
@@ -244,7 +244,7 @@
                           </a>
                           <ul class="jstree-children" ng-if="learningPhase.isOpen == true">
                             <li ng-repeat="knowledge in learningPhase.knowledgeList"
-                                class="jstree-node jstree-leaf">
+                                class="jstree-node jstree-leaf knowledge-node">
                               <i class="jstree-icon jstree-ocl1"></i>
                               <input type="checkbox" ng-checked="knowledge.isSelected" ng-click="onTreeNodeClick(knowledge, $event);">
                               <a class="jstree-anchor"

@@ -62,7 +62,7 @@
               </a>
               <button class="btn btn-brand btn-elevate btn-icon-sm"
                       ng-click="onSave()"
-                      ng-disabled="model.imageList.length === 0 || model.documentList.length === 0">
+                      ng-disabled="model.documentList.length === 0">
                 <i class="la la-save"></i>
                 提交
               </button>
@@ -155,7 +155,7 @@
                     <div class="upload-file-name text-center">
                       <a ng-href="\{{document.documentUrl}}" target="_blank" title="\{{document.documentName}}" ng-bind="document.documentName"></a>
                       <br>
-                      <a ng-href="\{{document.answerUrl}}" target="_blank" title="\{{document.answerUrl}}">参考示例</a>
+                      <a ng-href="\{{document.answerGitUrl}}" target="_blank">参考示例</a>
                     </div>
                     <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="">
                       <i class="fa fa-times"></i>
@@ -167,7 +167,7 @@
               <div class="kt-widget__media" ng-if="model.documentList.length === 0">
                 <img class="kt-widget__img kt-hidden-" src="../images/media/pdf.svg" alt="image">
               </div>
-              <span class="kt-widget__desc" ng-if="model.documentList.length === 0">[习题编码]_[顺序编号].pdf</span>
+              <span class="kt-widget__desc" ng-if="model.documentList.length === 0">[知识点名称/习题名称]_[顺序编号].pdf</span>
             </div>
 
             <!--end::Widget -->
