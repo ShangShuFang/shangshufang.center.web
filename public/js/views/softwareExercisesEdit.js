@@ -332,7 +332,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 
     if(node.nodeType === 'K'){
       if($scope.model.selectedExercisesType.exercisesTypeCode === 'S'){
-        $scope.removeAllChooseKnowledge();
+        //$scope.removeAllChooseKnowledge();
         $scope.model.exercisesName = `${node.knowledgeName}习题集`;
       }
 
@@ -467,9 +467,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
 
   $scope.checkData = function(){
-    if(!$scope.checkExercisesCodeFormat()){
-      return false;
-    }
+    // if(!$scope.checkExercisesCodeFormat()){
+    //   return false;
+    // }
     if(!$scope.checkChooseKnowledge()){
       return false;
     }
@@ -493,7 +493,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $http.post('/softwareExercisesEdit', {
       exercisesType: $scope.model.selectedExercisesType.exercisesTypeCode,
       exercisesName: $scope.model.exercisesName,
-      exercisesCode: $scope.model.exercisesCode,
+      // exercisesCode: $scope.model.exercisesCode,
+      exercisesCode: 0,
       knowledgeListJson: JSON.stringify($scope.model.knowledgeList),
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {

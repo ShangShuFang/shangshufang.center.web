@@ -134,6 +134,7 @@
                 <th>技术名称</th>
                 <th>学习阶段</th>
                 <th>技术点名称</th>
+                <th>习题数量</th>
                 <th>使用公司</th>
                 <th>当前状态</th>
                 <th>操作</th>
@@ -145,8 +146,9 @@
                 <td ng-bind="data.technologyName"></td>
                 <td ng-bind="data.learningPhaseName"></td>
                 <td ng-bind="data.knowledgeName"></td>
-                <td class="center">
-                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingCompanyCount"></button>
+                <td class="text-center" ng-bind="data.knowledgeExercisesCount"></td>
+                <td class="center" ng-bind="data.usingCompanyCount">
+<!--                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingCompanyCount"></button>-->
                 </td>
                 <td class="center">
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
@@ -161,6 +163,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onRedirectToUpload(data)"><i class="flaticon-upload"></i> 习题上传</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.technologyThumbnail != ''"><i class="la la-leaf"></i> 状态修改</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
                     </div>

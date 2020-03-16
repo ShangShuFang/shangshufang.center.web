@@ -283,6 +283,21 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   };
   //endregion
 
+  //region 习题上传
+  $scope.onRedirectToUpload = function(data){
+    let uploadExercisesParameter = {
+      technologyID: data.technologyID,
+      technologyName: data.technologyName,
+      learningPhaseID: data.learningPhaseID,
+      learningPhaseName: data.learningPhaseName,
+      knowledgeID: data.knowledgeID,
+      knowledgeName: data.knowledgeName
+    };
+    localStorage.setItem(Constants.KEY_UPLOAD_EXERCISES, JSON.stringify(uploadExercisesParameter));
+    location.href = '/knowledge/exercises';
+  };
+  //endregion
+
   // region 更新状态
   $scope.onShowStatusModal = function (data) {
     $scope.model.statusModalTitle = `修改状态：${data.technologyName} ${data.knowledgeName}`;

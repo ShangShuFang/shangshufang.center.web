@@ -8,8 +8,8 @@ commonUtility.setNavActive = function () {
     linkObj.parent().addClass('kt-menu__item--active');
     return false;
   }
-  if(pathname.includes('softwareExercises')){
-    pathname = '/softwareExercises';
+  if(pathname.includes('knowledge')){
+    pathname = '/knowledge';
   }
 
   linkObj = $(`#kt_aside_menu_wrapper ul.kt-menu__nav li a[href="${pathname}"]`);

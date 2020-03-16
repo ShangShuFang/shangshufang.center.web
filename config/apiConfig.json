@@ -70,7 +70,7 @@
       "exercises": "/api/exercises",
       "checkExercisesCode": "/api/exercises/checkExercisesCode",
       "exercisesKnowledgeList": "/api/exercises/knowledge",
-      "exercisesFile": "/api/exercises/file",
+      "knowledgeExercises": "/api/knowledge/exercises",
       "changeExercisesStatus": "/api/exercises/changeStatus"
     }
   }
