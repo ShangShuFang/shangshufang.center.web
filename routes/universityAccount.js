@@ -121,6 +121,9 @@ router.put('/status', (req, res, next) => {
     accountID: req.body.accountID,
     universityCode: req.body.universityCode,
     schoolID: req.body.schoolID,
+    customerID: req.body.customerID,
+    studentID: req.body.studentID,
+    accountRole: req.body.accountRole,
     dataStatus: req.body.status,
     loginUser: req.body.loginUser
   };

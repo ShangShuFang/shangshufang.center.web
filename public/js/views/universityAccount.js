@@ -41,6 +41,11 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     statusAccountID: 0,
     statusUniversityCode: 0,
     statusSchoolID: 0,
+
+    statusCustomerID: 0,
+    statusStudentID: 0,
+    statusAccountRole: '',
+
     statusModalTitle: '',
     status: '',
     isActive: true,
@@ -317,6 +322,10 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.statusAccountID = data.accountID;
     $scope.model.statusUniversityCode = data.universityCode;
     $scope.model.statusSchoolID = data.schoolID;
+
+    $scope.model.statusCustomerID = data.customerID;
+    $scope.model.statusSchoolID = data.customerID;
+    $scope.model.statusAccountRole = data.accountRole;
     $scope.model.status = data.dataStatus;
     $scope.model.isActive = data.dataStatus === Constants.DATA_STATUS.ACTIVE;
     $('#kt_modal_status').modal('show');
@@ -327,6 +336,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       universityCode: $scope.model.statusUniversityCode,
       schoolID: $scope.model.statusSchoolID,
       accountID: $scope.model.statusAccountID,
+      customerID: $scope.model.statusCustomerID,
+      studentID: $scope.model.statusSchoolID,
+      accountRole: $scope.model.statusAccountRole,
       status: $scope.model.status,
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
