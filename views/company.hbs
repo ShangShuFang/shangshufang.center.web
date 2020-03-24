@@ -116,6 +116,7 @@
                 <th>手机号码</th>
                 <th>使用技术</th>
                 <th>使用技术点</th>
+                <th>起步级别</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -148,6 +149,7 @@
                 <td class="center">
                   <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingKnowledgeCount"></button>
                 </td>
+                <td class="center" ng-bind="data.recruitLevel"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
