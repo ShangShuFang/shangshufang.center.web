@@ -324,7 +324,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.model.statusSchoolID = data.schoolID;
 
     $scope.model.statusCustomerID = data.customerID;
-    $scope.model.statusSchoolID = data.customerID;
+    $scope.model.statusStudentID = data.customerID;
     $scope.model.statusAccountRole = data.accountRole;
     $scope.model.status = data.dataStatus;
     $scope.model.isActive = data.dataStatus === Constants.DATA_STATUS.ACTIVE;
@@ -337,7 +337,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
       schoolID: $scope.model.statusSchoolID,
       accountID: $scope.model.statusAccountID,
       customerID: $scope.model.statusCustomerID,
-      studentID: $scope.model.statusSchoolID,
+      studentID: $scope.model.statusStudentID,
       accountRole: $scope.model.statusAccountRole,
       status: $scope.model.status,
       loginUser: $scope.model.loginUser.adminID
