@@ -169,7 +169,8 @@
                               class="la la-image"></i> Logo</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i
                               class="la la-commenting"></i> 客户寄语</a>
-
+                      <a class="dropdown-item" href="javascript:;" ng-click="onShowRecruitLevelModal(data)"><i
+                              class="flaticon-attachment"></i> 起步级别</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowTechnologyModal(data)"><i
                               class="la la-cog"></i> 使用技术</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowKnowledgeModal(data)"><i
@@ -290,6 +291,78 @@
         </div>
       </div>
       <!--end: memo modal -->
+
+      <!--begin: recruitLevel modal -->
+      <div class="modal fade" id="kt_modal_recruit_level" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="memoForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.recruitLevelModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="kt-radio-list">
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L1" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L1'"> Level 1
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L2" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L2'"> Level 2
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L3" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L3'"> Level 3
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L4" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L4'"> Level 4
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="kt-radio-list">
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L5" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L5'"> Level 5
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L6" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L6'"> Level 6
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L7" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L7'"> Level 7
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="recruitLevel" value="L8" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L8'"> Level 8
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onChangeRecruitLevel()">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: recruitLevel modal -->
 
       <!--begin: edit modal -->
       <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

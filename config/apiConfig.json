@@ -32,6 +32,7 @@
       "changeCompanyNameStatus": "/api/company/changeStatus",
       "changeCompanyBrand": "/api/company/changeBrand",
       "changeCompanyMemo": "/api/company/changeMemo",
+      "changeCompanyRecruitLevel": "/api/company/changeRecruitLevel",
       "usingTechnology": "/api/technology/using",
 
       "companyUsingKnowledge": "/api/technology/knowledge/using",

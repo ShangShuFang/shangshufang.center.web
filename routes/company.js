@@ -363,6 +363,31 @@ router.put('/memo', (req, res, next) => {
   });
 });
 
+router.put('/recruitLevel', (req, res, next) => {
+  let service = new commonService.commonInvoke('changeCompanyRecruitLevel');
+  let data = {
+    companyID: req.body.companyID,
+    recruitLevel: req.body.recruitLevel,
+    loginUser: req.body.loginUser
+  };
+
+  service.change(data, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg
+      });
+    }
+  });
+});
+
 router.delete('/', (req, res, next) => {
   let service = new commonService.commonInvoke('company');
   let companyID = req.query.companyID;

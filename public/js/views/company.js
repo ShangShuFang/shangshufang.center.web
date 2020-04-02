@@ -32,6 +32,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     memo: '',
     //endregion
 
+    //region Recruit Level编辑
+    recruitLevelModalTitle: '',
+    companyID_recruitLevel: 0,
+    recruitLevel: 'L3',
+    //endregion
+
     //region 信息编辑
     loginUser: commonUtility.getLoginUser(),
     modalTitle: '',
@@ -434,6 +440,32 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
         return false;
       }
       $('#kt_modal_memo').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+  //endregion
+
+  //region 添加最低接收的级别
+  $scope.onShowRecruitLevelModal = function(data){
+    $scope.model.recruitLevelModalTitle = `${data.companyName}要求的最低能力级别`;
+    $scope.model.companyID_recruitLevel = data.companyID;
+    $scope.model.recruitLevel = data.recruitLevel;
+    $('#kt_modal_recruit_level').modal('show');
+  };
+
+  $scope.onChangeRecruitLevel = function () {
+    $http.put('/company/recruitLevel', {
+      companyID: $scope.model.companyID_recruitLevel,
+      recruitLevel: $scope.model.recruitLevel,
+      loginUser: $scope.model.loginUser.adminID
+    }).then(function successCallback(response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_recruit_level').modal('hide');
       $scope.loadData();
     }, function errorCallback(response) {
       bootbox.alert(localMessage.NETWORK_ERROR);
