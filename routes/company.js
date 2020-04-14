@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('company');
+  let service = new commonService.commonInvoke('companyList');
   let pageNumber = parseInt(req.query.pageNumber);
   let provinceCode = req.query.provinceCode === undefined ? 0 : req.query.provinceCode;
   let cityCode = req.query.cityCode === undefined ? 0 : req.query.cityCode;
@@ -79,7 +79,7 @@ router.get('/checkCellphoneExist', (req, res, next) => {
 });
 
 router.get('/usingTechnology', (req, res, next) => {
-  let service = new commonService.commonInvoke('usingTechnology');
+  let service = new commonService.commonInvoke('usingTechnologyList');
   let companyID = req.query.companyID;
 
   service.queryWithParameter(companyID, (result) => {
@@ -172,7 +172,7 @@ router.get('/related/knowledge', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('company');
+  let service = new commonService.commonInvoke('addCompany');
   let data = {
     companyName: req.body.companyName,
     companyAbbreviation: req.body.companyAbbreviation,
@@ -204,7 +204,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.post('/usingTechnology', (req, res, next) => {
-  let service = new commonService.commonInvoke('usingTechnology');
+  let service = new commonService.commonInvoke('addUsingTechnology');
   let data = {
     companyID: req.body.companyID,
     technologyIdList: req.body.technologyIdList,
@@ -256,7 +256,7 @@ router.post('/usingKnowledge', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('company');
+  let service = new commonService.commonInvoke('changeCompany');
   let data = {
     companyID: req.body.companyID,
     companyName: req.body.companyName,
@@ -289,7 +289,7 @@ router.put('/', (req, res, next) => {
 });
 
 router.put('/status', (req, res, next) => {
-  let service = new commonService.commonInvoke('changeCompanyNameStatus');
+  let service = new commonService.commonInvoke('changeCompanyStatus');
   let data = {
     companyID: req.body.companyID,
     dataStatus: req.body.status,
@@ -314,7 +314,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.put('/brand', (req, res, next) => {
-  let service = new commonService.commonInvoke('changeCompanyBrand');
+  let service = new commonService.commonInvoke('changeCompanyLogo');
   let data = {
     companyID: req.body.companyID,
     brand: req.body.brand,
@@ -389,7 +389,7 @@ router.put('/recruitLevel', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('company');
+  let service = new commonService.commonInvoke('deleteCompany');
   let companyID = req.query.companyID;
 
   service.delete(companyID, (result) => {

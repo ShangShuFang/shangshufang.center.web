@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('companyAccount');
+  let service = new commonService.commonInvoke('companyAccountList');
   let pageNumber = parseInt(req.query.pageNumber);
   let companyID = req.query.companyID === undefined ? 0 : req.query.companyID;
   let parameter = `${pageNumber}/${sysConfig.pageSize}/${companyID}`;
@@ -56,7 +56,7 @@ router.get('/checkCellphone', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('companyAccount');
+  let service = new commonService.commonInvoke('addCompanyAccount');
   let data = {
     companyID: req.body.companyID,
     fullName: req.body.fullName,
@@ -84,7 +84,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('companyAccount');
+  let service = new commonService.commonInvoke('changeCompanyAccount');
   let data = {
     accountID: req.body.accountID,
     companyID: req.body.companyID,
@@ -137,7 +137,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('companyAccount');
+  let service = new commonService.commonInvoke('deleteCompanyAccount');
 
   let companyID = req.query.companyID;
   let customerID = req.query.customerID;

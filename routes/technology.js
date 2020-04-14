@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('technology');
+  let service = new commonService.commonInvoke('technologyList');
   let pageNumber = parseInt(req.query.pageNumber);
 
   let parameter = `${pageNumber}/${sysConfig.pageSize}/NULL`;
@@ -98,7 +98,7 @@ router.get('/selectedDirections', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('technology');
+  let service = new commonService.commonInvoke('addTechnology');
   let data = {
     languageID: req.body.languageID,
     technologyName: req.body.technologyName,
@@ -126,7 +126,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('technology');
+  let service = new commonService.commonInvoke('changeTechnology');
   let data = {
     technologyID: req.body.technologyID,
     technologyName: req.body.technologyName,
@@ -204,7 +204,7 @@ router.put('/thumbnail', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('technology');
+  let service = new commonService.commonInvoke('deleteTechnology');
   let technologyID = req.query.technologyID;
 
   service.delete(technologyID, function (result) {

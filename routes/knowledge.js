@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledge');
+  let service = new commonService.commonInvoke('knowledgeList');
   let pageNumber = parameterUtils.processNumberParameter(req.query.pageNumber, Constants.PAGE_NUMBER_DEFAULT);
   let technologyID = parameterUtils.processNumberParameter(req.query.technologyID, Constants.TECHNOLOGY_DEFAULT_ID);
   let learningPhaseID = parameterUtils.processNumberParameter(req.query.learningPhaseID, Constants.LEARNING_PHASE);
@@ -62,7 +62,7 @@ router.get('/checkTechnologyName', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledge');
+  let service = new commonService.commonInvoke('addKnowledge');
   let data = {
     technologyID: req.body.technologyID,
     learningPhaseID: req.body.learningPhaseID,
@@ -88,7 +88,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledge');
+  let service = new commonService.commonInvoke('changeKnowledge');
   let data = {
     knowledgeID: req.body.knowledgeID,
     technologyID: req.body.technologyID,
@@ -142,7 +142,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledge');
+  let service = new commonService.commonInvoke('deleteKnowledge');
   let technologyID = req.query.technologyID;
   let knowledgeID = req.query.knowledgeID;
   let learningPhaseID = req.query.learningPhaseID;

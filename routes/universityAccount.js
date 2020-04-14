@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('universityAccount');
+  let service = new commonService.commonInvoke('universityAccountList');
   let pageNumber = parseInt(req.query.pageNumber);
   let universityCode = req.query.universityCode === undefined ? 0 : req.query.universityCode;
   let schoolID = req.query.schoolID === undefined ? 0 : req.query.schoolID;
@@ -57,7 +57,7 @@ router.get('/checkCellphone', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('universityAccount');
+  let service = new commonService.commonInvoke('addUniversityAccount');
   let data = {
     universityCode: req.body.universityCode,
     schoolID: req.body.schoolID,
@@ -87,7 +87,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('universityAccount');
+  let service = new commonService.commonInvoke('changeUniversityAccount');
   let data = {
     accountID: req.body.accountID,
     universityCode: req.body.universityCode,
@@ -145,7 +145,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('universityAccount');
+  let service = new commonService.commonInvoke('deleteUniversityAccount');
   let accountID = req.query.accountID;
   let universityCode = req.query.universityCode;
   let schoolID = req.query.schoolID;

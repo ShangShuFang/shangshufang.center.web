@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('school');
+  let service = new commonService.commonInvoke('schoolList');
   let pageNumber = parseInt(req.query.pageNumber);
   let universityCode = req.query.universityCode === undefined ? 0 : req.query.universityCode;
 
@@ -81,7 +81,7 @@ router.get('/checkCellphone', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('school');
+  let service = new commonService.commonInvoke('addSchool');
   let data = {
     schoolName: req.body.schoolName,
     universityCode: req.body.universityCode,
@@ -108,7 +108,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('school');
+  let service = new commonService.commonInvoke('changeSchool');
   let data = {
     schoolID: req.body.schoolID,
     schoolName: req.body.schoolName,
@@ -162,7 +162,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('school');
+  let service = new commonService.commonInvoke('deleteSchool');
   let universityCode = req.query.universityCode;
   let schoolID = req.query.schoolID;
   let parameter = `${universityCode}/${schoolID}`;

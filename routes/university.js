@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('university');
+  let service = new commonService.commonInvoke('universityList');
   let pageNumber = parseInt(req.query.pageNumber);
   let provinceCode = req.query.provinceCode === undefined ? 0 : req.query.provinceCode;
   let cityCode = req.query.cityCode === undefined ? 0 : req.query.cityCode;
@@ -79,7 +79,7 @@ router.get('/checkUniversityName', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('university');
+  let service = new commonService.commonInvoke('addUniversity');
   let data = {
     universityCode: req.body.universityCode,
     universityName: req.body.universityName,
@@ -108,7 +108,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('university');
+  let service = new commonService.commonInvoke('changeUniversity');
   let data = {
     universityID: req.body.universityID,
     universityCode: req.body.universityCode,
@@ -163,7 +163,7 @@ router.put('/status', (req, res, next) => {
 });
 
 router.put('/brand', (req, res, next) => {
-  let service = new commonService.commonInvoke('changeUniversityBrand');
+  let service = new commonService.commonInvoke('changeUniversityLogo');
   let data = {
     universityID: req.body.universityID,
     brand: req.body.brand,
@@ -213,7 +213,7 @@ router.put('/memo', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('university');
+  let service = new commonService.commonInvoke('deleteUniversity');
   let universityID = req.query.universityID;
 
   service.delete(universityID, function (result) {

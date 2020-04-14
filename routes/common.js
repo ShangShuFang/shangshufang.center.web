@@ -25,7 +25,7 @@ router.get('/chinaRegion', (req, res, next) => {
 });
 
 router.get('/university', (req, res, next) => {
-  let service = new commonService.commonInvoke('university');
+  let service = new commonService.commonInvoke('universityList');
   let parameter = '1/9999/0/0/NULL';
 
   service.queryWithParameter(parameter,  (result) => {
@@ -47,7 +47,7 @@ router.get('/university', (req, res, next) => {
 });
 
 router.get('/school', (req, res, next) => {
-  let service = new commonService.commonInvoke('school');
+  let service = new commonService.commonInvoke('schoolList');
   let universityCode = req.query.universityCode;
   let parameter = `1/9999/${universityCode}/NULL`;
 
@@ -70,7 +70,7 @@ router.get('/school', (req, res, next) => {
 });
 
 router.get('/company', (req, res, next) => {
-  let service = new commonService.commonInvoke('company');
+  let service = new commonService.commonInvoke('companyList');
   let parameter = `1/9999/0/0`;
 
   service.queryWithParameter(parameter,  (result) => {
@@ -92,7 +92,7 @@ router.get('/company', (req, res, next) => {
 });
 
 router.get('/technology', (req, res, next) => {
-  let service = new commonService.commonInvoke('technology');
+  let service = new commonService.commonInvoke('technologyList');
   let parameter = `1/9999/A`;
 
   service.queryWithParameter(parameter,  (result) => {
@@ -114,7 +114,7 @@ router.get('/technology', (req, res, next) => {
 });
 
 router.get('/knowledge', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledge');
+  let service = new commonService.commonInvoke('knowledgeSimpleList');
   let technologyID = req.query.technologyID;
   service.queryWithParameter(technologyID,  (result) => {
     if (result.err) {
@@ -135,7 +135,7 @@ router.get('/knowledge', (req, res, next) => {
 });
 
 router.get('/direction', (req, res, next) => {
-  let service = new commonService.commonInvoke('direction');
+  let service = new commonService.commonInvoke('directionList');
   let parameter = `1/9999/A`;
 
   service.queryWithParameter(parameter,  (result) => {

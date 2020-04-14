@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dataList', (req, res, next) => {
-  let service = new commonService.commonInvoke('direction');
+  let service = new commonService.commonInvoke('directionList');
   let pageNumber = parseInt(req.query.pageNumber);
 
   let parameter = `${pageNumber}/${sysConfig.pageSize}/NULL`;
@@ -77,7 +77,7 @@ router.get('/relateTechnology', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('direction');
+  let service = new commonService.commonInvoke('addDirection');
   let data = {
     directionName: req.body.directionName,
     directionStars: req.body.directionStars,
@@ -103,7 +103,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('direction');
+  let service = new commonService.commonInvoke('changeDirection');
   let data = {
     directionID: req.body.directionID,
     directionName: req.body.directionName,
@@ -180,7 +180,7 @@ router.put('/thumbnail', (req, res, next) => {
 });
 
 router.delete('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('direction');
+  let service = new commonService.commonInvoke('deleteDirection');
   let directionID = req.query.directionID;
 
   service.delete(directionID, function (result) {

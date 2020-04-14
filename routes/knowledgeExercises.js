@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/files', function(req, res, next) {
-  let service = new commonService.commonInvoke('knowledgeExercises');
+  let service = new commonService.commonInvoke('knowledgeExercisesList');
   let technologyID = req.query.technologyID;
   let learningPhaseID = req.query.learningPhaseID;
   let knowledgeID = req.query.knowledgeID;
@@ -32,7 +32,7 @@ router.get('/files', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  let service = new commonService.commonInvoke('knowledgeExercises');
+  let service = new commonService.commonInvoke('addKnowledgeExercises');
   let data = {
     technologyID: req.body.technologyID,
     learningPhaseID: req.body.learningPhaseID,
