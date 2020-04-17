@@ -9,6 +9,7 @@ let indexRouter = require('./routes/index');
 
 let universityRouter = require('./routes/university');
 let schoolRouter = require('./routes/school');
+let majorRouter = require('./routes/major');
 let universityAccountRouter = require('./routes/universityAccount');
 let companyRouter = require('./routes/company');
 let companyAccountRouter = require('./routes/companyAccount');
@@ -16,10 +17,8 @@ let directionRouter = require('./routes/direction');
 let technologyRouter = require('./routes/technology');
 let knowledgeRouter = require('./routes/knowledge');
 let learningPathRouter = require('./routes/learningPath');
-// let softwareExercisesRouter = require('./routes/softwareExercises');
-// let softwareExercisesEditRouter = require('./routes/softwareExercisesEdit');
-// let softwareExercisesUploadFilesRouter = require('./routes/softwareExercisesUploadFiles');
 let knowledgeExercisesRouter = require('./routes/knowledgeExercises');
+let codeStandardRouter = require('./routes/codeStandard');
 let commonRouter = require('./routes/common');
 
 let app = express();
@@ -47,6 +46,7 @@ app.use('/login', loginRouter);
 app.use('/index', indexRouter);
 app.use('/university', universityRouter);
 app.use('/school', schoolRouter);
+app.use('/major', majorRouter);
 app.use('/universityAccount', universityAccountRouter);
 app.use('/company', companyRouter);
 app.use('/companyAccount', companyAccountRouter);
@@ -54,7 +54,7 @@ app.use('/direction', directionRouter);
 app.use('/technology', technologyRouter);
 app.use('/knowledge', knowledgeRouter);
 app.use('/knowledge/exercises', knowledgeExercisesRouter);
-
+app.use('/codeStandard', codeStandardRouter);
 app.use('/learningPath', learningPathRouter);
 
 // app.use('/softwareExercises', softwareExercisesRouter);

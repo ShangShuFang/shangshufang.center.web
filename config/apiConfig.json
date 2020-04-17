@@ -26,6 +26,12 @@
       "changeSchool": "/api/v1/customer/school/change",
       "deleteSchool": "/api/v1/customer/school/delete",
 
+      "majorList": "/api/v1/major/list",
+      "checkMajorName": "/api/v1/major/check/name",
+      "addMajor": "/api/v1/major/add",
+      "changeMajor": "/api/v1/major/change",
+      "deleteMajor": "/api/v1/major/delete",
+
       "universityAccountList": "/api/v1/account/teacher/list",
       "addUniversityAccount": "/api/v1/account/teacher/add",
       "changeUniversityAccount": "/api/v1/account/teacher/change",
@@ -90,7 +96,12 @@
       "usingLearningPhase": "api/v1/sys_parm/learning_phase/list/has_knowledge",
 
       "knowledgeExercisesList": "/api/v1/knowledge/exercises/list",
-      "addKnowledgeExercises": "/api/v1/knowledge/exercises/add"
+      "addKnowledgeExercises": "/api/v1/knowledge/exercises/add",
+
+      "codeStandardList": "/api/v1/code_standard/list",
+      "checkCodeStandardName": "/api/v1/code_standard/check/name",
+      "addCodeStandard": "/api/v1/code_standard/add",
+      "changeCodeStandard": "/api/v1/code_standard/change"
     }
   }
 }
