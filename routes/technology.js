@@ -10,8 +10,10 @@ router.get('/', function(req, res, next) {
 router.get('/dataList', (req, res, next) => {
   let service = new commonService.commonInvoke('technologyList');
   let pageNumber = parseInt(req.query.pageNumber);
+  let directionID = parseInt(req.query.directionID);
+  let categoryID = parseInt(req.query.categoryID);
 
-  let parameter = `${pageNumber}/${sysConfig.pageSize}/NULL`;
+  let parameter = `${pageNumber}/${sysConfig.pageSize}/${directionID}/${categoryID}/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {
@@ -83,6 +85,7 @@ router.post('/', (req, res, next) => {
     technologyStars: req.body.technologyStars,
     technologyMemo: req.body.technologyMemo,
     directionID: req.body.directionID,
+    categoryID: req.body.categoryID,
     difficultyLevel: req.body.difficultyLevel,
     loginUser: req.body.loginUser
   };
@@ -112,6 +115,7 @@ router.put('/', (req, res, next) => {
     technologyStars: req.body.technologyStars,
     technologyMemo: req.body.technologyMemo,
     directionID: req.body.directionID,
+    categoryID: req.body.categoryID,
     difficultyLevel: req.body.difficultyLevel,
     loginUser: req.body.loginUser
   };

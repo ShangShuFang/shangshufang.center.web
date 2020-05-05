@@ -2,7 +2,7 @@ let pageApp = angular.module('pageApp', []);
 pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.listModel = {
     directionList: [],
-    selectedDirection: {directionID: 0, directionName: '全部'},
+    selectedDirection: {directionID: 0, directionName: '全部研发方向'},
     fromIndex: 0,
     toIndex: 0,
     pageNumber: 1,

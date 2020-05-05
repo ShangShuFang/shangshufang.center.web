@@ -49,6 +49,57 @@
       </div>
     </div>
     <div class="kt-portlet__body">
+      <!--begin: search form -->
+      <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+        <div class="row align-items-center">
+          <div class="col-xl-8 order-2 order-xl-1">
+            <div class="row align-items-center">
+              <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                <div class="kt-form__group kt-form__group--inline width-full">
+                  <div class="dropdown search-form-dropdown">
+                    <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                      <span ng-bind="model.selectedDirection4Search.directionName"></span>
+                      <i class="flaticon2-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                      <a class="dropdown-item" href="javascript:;" ng-click="onSearchDirectionChange(0, '全部研发方向')">全部研发方向</a>
+                      <div class="dropdown-divider"></div>
+                      <a ng-repeat="data in model.directionList4Search"
+                         class="dropdown-item"
+                         href="javascript:"
+                         ng-click="onSearchDirectionChange(data.directionID, data.directionName)"
+                         ng-bind="data.directionName"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                <div class="kt-form__group kt-form__group--inline width-full">
+                  <div class="dropdown search-form-dropdown">
+                    <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                      <span ng-bind="model.selectedCategory4Search.technologyCategoryName"></span>
+                      <i class="flaticon2-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                      <a class="dropdown-item" href="javascript:;" ng-click="onSearchCategoryChange(0, '全部研发方向')">全部研发方向</a>
+                      <div class="dropdown-divider"></div>
+                      <a ng-repeat="data in model.categoryList4Search"
+                         class="dropdown-item"
+                         href="javascript:"
+                         ng-click="onSearchCategoryChange(data.technologyCategoryID, data.technologyCategoryName)"
+                         ng-bind="data.technologyCategoryName"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end: search form -->
+
       <!--begin: Datatable -->
       <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
         <div class="row">
@@ -63,6 +114,7 @@
                 <th>技术简介</th>
                 <th>技术点数量</th>
                 <th>研发方向</th>
+                <th>技术分类</th>
                 <th>学习难度</th>
                 <th>当前状态</th>
                 <th>操作</th>
@@ -104,6 +156,7 @@
                   <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.knowledgeCount"></button>
                 </td>
                 <td class="center" ng-bind="data.directionName"></td>
+                <td class="center" ng-bind="data.categoryName"></td>
                 <td class="center" ng-bind="data.difficultyLevelText"></td>
                 <td class="center">
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
@@ -261,22 +314,24 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-2 col-form-label">难度级别</label>
+                    <label for="example-text-input" class="col-2 col-form-label">技术分类</label>
                     <div class="col-10">
-                      <div class="kt-radio-inline">
-                          <label class="kt-radio">
-                            <input type="radio" name="difficulty" value="J" ng-checked="true" ng-model="model.selectedDifficulty"> 初级
-                            <span></span>
-                          </label>
-                          <label class="kt-radio">
-                            <input type="radio"  name="difficulty" value="M" ng-model="model.selectedDifficulty"> 中级
-                            <span></span>
-                          </label>
-                          <label class="kt-radio">
-                            <input type="radio" name="difficulty" value="S" ng-model="model.selectedDifficulty"> 高级
-                            <span></span>
-                          </label>
+                      <div class="dropdown search-form-dropdown">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedCategory.technologyCategoryName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onCategoryChange(0, '请选择技术类型')">请选择技术类型</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.categoryList"
+                             class="dropdown-item"
+                             href="javascript:;"
+                             ng-click="onCategoryChange(data.technologyCategoryID, data.technologyCategoryName)"
+                             ng-bind="data.technologyCategoryName"></a>
+                        </div>
                       </div>
+                      <div class="invalid-feedback" ng-if="model.technologyNameIsInValid == 1">您输入的技术名称已存在</div>
                     </div>
                   </div>
 
@@ -293,6 +348,26 @@
                              ng-disabled="!model.add"
                              required>
                       <div class="invalid-feedback" ng-if="model.technologyNameIsInValid == 1">您输入的技术名称已存在</div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">难度级别</label>
+                    <div class="col-10">
+                      <div class="kt-radio-inline">
+                        <label class="kt-radio">
+                          <input type="radio" name="difficulty" value="J" ng-checked="model.selectedDifficulty == 'J'" ng-model="model.selectedDifficulty"> 初级
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio"  name="difficulty" value="M" ng-checked="model.selectedDifficulty == 'M'" ng-model="model.selectedDifficulty"> 中级
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="difficulty" value="S" ng-checked="model.selectedDifficulty == 'S'" ng-model="model.selectedDifficulty"> 高级
+                          <span></span>
+                        </label>
+                      </div>
                     </div>
                   </div>
 
@@ -323,6 +398,7 @@
                         ng-click="onSubmit()"
                         ng-disabled=" model.selectedProgrammingLanguage.languageID == 0
                                   || model.selectedDirection.directionID == 0
+                                  || model.selectedCategory.technologyCategoryID == 0
                                   || (myForm.technologyName.$pristine && model.add)
                                   || (myForm.technologyName.$dirty && myForm.technologyName.$invalid)
                                   || model.technologyNameIsInValid !== 0

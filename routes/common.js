@@ -156,6 +156,30 @@ router.get('/direction', (req, res, next) => {
   });
 });
 
+router.get('/category', (req, res, next) => {
+  let service = new commonService.commonInvoke('technologyCategoryList');
+  let directionID = parseInt(req.query.directionID);
+
+  let parameter = `1/9999/${directionID}/NULL`;
+
+  service.queryWithParameter(parameter,  (result) => {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.get('/learningPhase', (req, res, next) => {
   let service = new commonService.commonInvoke('learningPhase');
 
