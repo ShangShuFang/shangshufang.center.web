@@ -61,8 +61,9 @@
                 <th>技术名称</th>
                 <th>技术热度</th>
                 <th>技术简介</th>
-                <th>技术点</th>
+                <th>技术点数量</th>
                 <th>研发方向</th>
+                <th>学习难度</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -102,9 +103,8 @@
                 <td class="center">
                   <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.knowledgeCount"></button>
                 </td>
-                <td class="center">
-                  <button type="button" class="btn btn-info btn-elevate btn-circle btn-icon" ng-bind="data.directionCount"></button>
-                </td>
+                <td class="center" ng-bind="data.directionName"></td>
+                <td class="center" ng-bind="data.difficultyLevelText"></td>
                 <td class="center">
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
@@ -239,6 +239,48 @@
                   </div>
 
                   <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">研发方向</label>
+                    <div class="col-10">
+                      <div class="dropdown search-form-dropdown">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span ng-bind="model.selectedDirection.directionName"></span>
+                          <i class="flaticon2-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                          <a class="dropdown-item" href="javascript:;" ng-click="onDirectionChange(0, '请选择研发方向')">请选择研发方向</a>
+                          <div class="dropdown-divider"></div>
+                          <a ng-repeat="data in model.directionList"
+                             class="dropdown-item"
+                             href="javascript:;"
+                             ng-click="onDirectionChange(data.directionID, data.directionName)"
+                             ng-bind="data.directionName"></a>
+                        </div>
+                      </div>
+                      <div class="invalid-feedback" ng-if="model.technologyNameIsInValid == 1">您输入的技术名称已存在</div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label">难度级别</label>
+                    <div class="col-10">
+                      <div class="kt-radio-inline">
+                          <label class="kt-radio">
+                            <input type="radio" name="difficulty" value="J" ng-checked="true" ng-model="model.selectedDifficulty"> 初级
+                            <span></span>
+                          </label>
+                          <label class="kt-radio">
+                            <input type="radio"  name="difficulty" value="M" ng-model="model.selectedDifficulty"> 中级
+                            <span></span>
+                          </label>
+                          <label class="kt-radio">
+                            <input type="radio" name="difficulty" value="S" ng-model="model.selectedDifficulty"> 高级
+                            <span></span>
+                          </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
                     <label for="example-text-input" class="col-2 col-form-label">技术名称</label>
                     <div class="col-10">
                       <input type="text"
@@ -271,17 +313,6 @@
                       <textarea class="form-control" name="technologyMemo" rows="8" maxlength="256" ng-model="model.technologyMemo" required></textarea>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-2 col-form-label">研发方向</label>
-                    <div class="col-10">
-                      <div class="kt-checkbox-list">
-                        <label class="kt-checkbox" ng-repeat="direction in model.directionList">
-                          <input type="checkbox" ng-checked="direction.select == true" ng-click="onChooseDirection(direction)"> \{{direction.directionName}}
-                          <span></span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
 
                 </div>
               </div>
@@ -291,13 +322,13 @@
                         class="btn btn-primary"
                         ng-click="onSubmit()"
                         ng-disabled=" model.selectedProgrammingLanguage.languageID == 0
+                                  || model.selectedDirection.directionID == 0
                                   || (myForm.technologyName.$pristine && model.add)
                                   || (myForm.technologyName.$dirty && myForm.technologyName.$invalid)
                                   || model.technologyNameIsInValid !== 0
                                   || model.technologyStars == 0
                                   || (myForm.technologyMemo.$pristine && model.add)
-                                  || (myForm.technologyMemo.$dirty && myForm.technologyMemo.$invalid)
-                                  || model.selectedDirectionArray.length == 0">
+                                  || (myForm.technologyMemo.$dirty && myForm.technologyMemo.$invalid)">
                   提交
                 </button>
               </div>

@@ -7,3 +7,11 @@ exports.processNumberParameter = function (parameter, defaultValue) {
   }
   return parameter;
 };
+exports.convertSpecialChar = function (v) {
+  return v.replace('+', '%2B')
+      .replace('/', '%2F')
+      .replace('?', '%3F')
+      .replace('#', '%23')
+      .replace('&', '%26')
+      .replace('=', '%3D');
+}

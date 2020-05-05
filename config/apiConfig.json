@@ -75,6 +75,13 @@
 
       "programmingLanguage": "/api/v1/sys_parm/prog_lan/list",
 
+      "technologyCategoryList": "/api/v1/technology/category/list",
+      "checkTechnologyCategoryNameExist": "/api/v1/technology/category/check/name",
+      "addTechnologyCategory": "/api/v1/technology/category/add",
+      "changeTechnologyCategory": "/api/v1/technology/category/change",
+      "changeTechnologyCategoryStatus": "/api/v1/technology/category/change/status",
+      "deleteTechnologyCategory": "/api/v1/technology/category/delete",
+
       "technologyList": "/api/v1/technology/list",
       "addTechnology": "/api/v1/technology/add",
       "changeTechnology": "/api/v1/technology/change",

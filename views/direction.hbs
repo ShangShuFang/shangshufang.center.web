@@ -57,26 +57,15 @@
                    id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
               <thead>
               <tr role="row">
-                <th>缩略图</th>
                 <th>研发方向</th>
                 <th>市场热度</th>
                 <th>简介</th>
-                <th>涉及技术</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
               </thead>
-
               <tbody>
               <tr ng-repeat="data in model.dataList">
-                <td class="customer-brand">
-                  <a href="javascript:;" class="cell-option" ng-if="data.directionThumbnail == ''" ng-click="onShowThumbnailModal(data)">
-                    <i class="la la-plus"></i>
-                    添加
-                  </a>
-                  <img ng-src="\{{data.directionThumbnail}}" class="img-table-cell" ng-if="data.directionThumbnail !== ''" ng-click="onShowThumbnailModal(data)">
-                </td>
-
                 <td ng-bind="data.directionName"></td>
                 <td>
                   <span class="kt-menu__link-icon">
@@ -97,9 +86,6 @@
                 </td>
                 <td class="cell-memo">
                   <p class="cell-memo-content" ng-bind="data.directionMemo" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title=""></p>
-                </td>
-                <td class="center">
-                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.technologyCount" ng-click="showRelateTechnology(data)"></button>
                 </td>
                 <td class="center">
                   <span class="kt-badge kt-badge--inline kt-badge--pill"

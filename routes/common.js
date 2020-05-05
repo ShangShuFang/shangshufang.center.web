@@ -136,7 +136,7 @@ router.get('/knowledge', (req, res, next) => {
 
 router.get('/direction', (req, res, next) => {
   let service = new commonService.commonInvoke('directionList');
-  let parameter = `1/9999/A`;
+  let parameter = `1/9999/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {
