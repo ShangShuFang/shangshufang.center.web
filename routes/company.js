@@ -13,7 +13,7 @@ router.get('/dataList', (req, res, next) => {
   let provinceCode = req.query.provinceCode === undefined ? 0 : req.query.provinceCode;
   let cityCode = req.query.cityCode === undefined ? 0 : req.query.cityCode;
 
-  let parameter = `${pageNumber}/${sysConfig.pageSize}/${provinceCode}/${cityCode}`;
+  let parameter = `${pageNumber}/${sysConfig.pageSize}/${provinceCode}/${cityCode}/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {

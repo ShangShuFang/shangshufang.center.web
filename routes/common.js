@@ -71,7 +71,7 @@ router.get('/school', (req, res, next) => {
 
 router.get('/company', (req, res, next) => {
   let service = new commonService.commonInvoke('companyList');
-  let parameter = `1/9999/0/0`;
+  let parameter = `1/9999/0/0/NULL`;
 
   service.queryWithParameter(parameter,  (result) => {
     if (result.err) {
