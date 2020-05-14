@@ -22,7 +22,13 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     //begin: 缩略图上传
     thumbnailModalTitle: '',
     technologyID_thumbnail: 0,
-    thumbnailUrl: '',
+    technologyThumbnailSquare: '',
+    //end: Brand编辑
+
+    //begin: 缩略图上传
+    thumbnailRectangleModalTitle: '',
+    technologyID_thumbnailRectangle: 0,
+    technologyThumbnailRectangle: '',
     //end: Brand编辑
 
     //begin: 信息编辑
@@ -376,17 +382,17 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   //endregion
 
   //region 添加Brand
-  $scope.onShowThumbnailModal = function (data) {
+  $scope.onShowThumbnailSquareModal = function (data) {
     $scope.model.technologyID_thumbnail = data.technologyID;
-    $scope.model.thumbnailUrl = data.technologyThumbnail;
-    $scope.model.thumbnailModalTitle = `缩略图: ${data.technologyName}`;
+    $scope.model.technologyThumbnailSquare = data.technologyThumbnailSquare;
+    $scope.model.thumbnailModalTitle = `缩略图(90*90): ${data.technologyName}`;
     $scope.model.add = false;
     let uploadTechnologyDir = {"dir1": "technology", "dir2": data.technologyName};
     let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadTechnologyDir);
 
     uploadUtils.destroyUploadPlugin('#file-upload-brand');
     uploadUtils.initUploadPlugin('#file-upload-brand', uploadServerUrl, ['png', 'jpg', 'jpeg'], false, function (opt, data) {
-      $scope.model.thumbnailUrl = data.fileUrlList[0];
+      $scope.model.technologyThumbnailSquare = data.fileUrlList[0];
       $scope.$apply();
       layer.msg(localMessage.UPLOAD_SUCCESS);
     });
@@ -397,7 +403,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.onChangeThumbnail = function () {
     $http.put('/technology/thumbnail', {
       technologyID: $scope.model.technologyID_thumbnail,
-      technologyThumbnail: $scope.model.thumbnailUrl,
+      technologyThumbnailSquare: $scope.model.technologyThumbnailSquare,
+      technologyThumbnailRectangle: $scope.model.technologyThumbnailRectangle,
       loginUser: $scope.model.loginUser.adminID
     }).then(function successCallback(response) {
       if (response.data.err) {
@@ -411,6 +418,47 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     });
   };
   //endregion
+
+
+  //region 添加Brand
+  $scope.onShowThumbnailRectangleModal = function (data) {
+    $scope.model.technologyID_thumbnailRectangle = data.technologyID;
+    $scope.model.technologyThumbnailRectangle = data.technologyThumbnailRectangle;
+    $scope.model.thumbnailRectangleModalTitle = `缩略图(315*177): ${data.technologyName}`;
+    $scope.model.add = false;
+    let uploadTechnologyDir = {"dir1": "technology", "dir2": data.technologyName};
+    let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadTechnologyDir);
+
+    uploadUtils.destroyUploadPlugin('#file-upload-brand_rectangle');
+    uploadUtils.initUploadPlugin('#file-upload-brand_rectangle', uploadServerUrl, ['png', 'jpg', 'jpeg'], false, function (opt, data) {
+      $scope.model.technologyThumbnailRectangle = data.fileUrlList[0];
+      $scope.$apply();
+      layer.msg(localMessage.UPLOAD_SUCCESS);
+    });
+
+    $('#kt_modal_brand_rectangle').modal('show');
+  };
+
+  $scope.onChangeThumbnailRectangle = function () {
+    $http.put('/technology/thumbnail', {
+      technologyID: $scope.model.technologyID_thumbnail,
+      technologyThumbnailSquare: $scope.model.technologyThumbnailSquare,
+      technologyThumbnailRectangle: $scope.model.technologyThumbnailRectangle,
+      loginUser: $scope.model.loginUser.adminID
+    }).then(function successCallback(response) {
+      if (response.data.err) {
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      $('#kt_modal_brand_rectangle').modal('hide');
+      $scope.loadData();
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+  //endregion
+
+
 
   //region 更新状态
   $scope.onShowStatusModal = function (data) {

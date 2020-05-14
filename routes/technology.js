@@ -166,7 +166,8 @@ router.put('/thumbnail', (req, res, next) => {
   let service = new commonService.commonInvoke('changeTechnologyThumbnail');
   let data = {
     technologyID: req.body.technologyID,
-    technologyThumbnail: req.body.technologyThumbnail,
+    technologyThumbnailSquare: req.body.technologyThumbnailSquare,
+    technologyThumbnailRectangle: req.body.technologyThumbnailRectangle,
     loginUser: req.body.loginUser
   };
 

@@ -108,7 +108,8 @@
                    id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
               <thead>
               <tr role="row">
-                <th>缩略图</th>
+                <th>缩略图(90*90)</th>
+                <th>缩略图(315*177)</th>
                 <th>技术名称</th>
                 <th>技术热度</th>
                 <th>技术简介</th>
@@ -124,11 +125,25 @@
               <tbody>
               <tr ng-repeat="data in model.dataList">
                 <td class="customer-brand">
-                  <a href="javascript:;" class="cell-option" ng-if="data.technologyThumbnail == ''" ng-click="onShowThumbnailModal(data)">
+                  <a href="javascript:" class="cell-option" ng-if="data.technologyThumbnailSquare == ''" ng-click="onShowThumbnailSquareModal(data)">
                     <i class="la la-plus"></i>
                     添加
                   </a>
-                  <img ng-src="\{{data.technologyThumbnail}}" class="img-table-cell" ng-if="data.technologyThumbnail !== ''" ng-click="onShowThumbnailModal(data)">
+                  <img ng-src="\{{data.technologyThumbnailSquare}}" 
+                       class="img-table-cell" 
+                       ng-if="data.technologyThumbnailSquare !== ''" 
+                       ng-click="onShowThumbnailSquareModal(data)" alt="">
+                </td>
+
+                <td class="customer-brand">
+                  <a href="javascript:" class="cell-option" ng-if="data.technologyThumbnailRectangle == ''" ng-click="onShowThumbnailRectangleModal(data)">
+                    <i class="la la-plus"></i>
+                    添加
+                  </a>
+                  <img ng-src="\{{data.technologyThumbnailRectangle}}"
+                       class="img-table-cell" 
+                       ng-if="data.technologyThumbnailRectangle !== ''"
+                       ng-click="onShowThumbnailRectangleModal(data)" alt="">
                 </td>
 
                 <td ng-bind="data.technologyName"></td>
@@ -171,9 +186,9 @@
                       <i class="la la-ellipsis-h"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)" ng-if="data.technologyThumbnail != ''"><i class="la la-leaf"></i> 状态修改</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onShowChangeModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onShowStatusModal(data)" ng-if="data.technologyThumbnailSquare != ''"><i class="la la-leaf"></i> 状态修改</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
                     </div>
                   </span>
                 </td>
@@ -240,7 +255,38 @@
                 <button type="button"
                         class="btn btn-primary"
                         ng-click="onChangeThumbnail()"
-                        ng-disabled="model.thumbnailUrl == ''">
+                        ng-disabled="model.technologyThumbnailSquare == ''">
+                  提交
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--end: brand modal -->
+
+      <!--begin: thumbnail modal -->
+      <div class="modal fade" id="kt_modal_brand_rectangle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="brandForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" ng-bind="model.thumbnailRectangleModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div id="file-upload-brand_rectangle" class="fileUploadContent"></div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-click="onChangeThumbnailRectangle()"
+                        ng-disabled="model.technologyThumbnailRectangle == ''">
                   提交
                 </button>
               </div>
