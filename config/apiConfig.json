@@ -50,9 +50,13 @@
       "changeCompany": "/api/v1/customer/company/change",
       "deleteCompany": "/api/v1/customer/company/delete",
       "usingTechnologyList": "/api/v1/customer/company/list/using/technology",
+
+
       "addUsingTechnology": "/api/v1/customer/company/add/using/technology",
       "companyUsingKnowledge": "/api/v1/customer/company/add/using/knowledge",
       "companyUsingKnowledgeRelatedTechnology": "/api/v1/customer/company/list/using/technology",
+
+
       "companyUsingKnowledgeRelatedLearningPhase": "/api/v1/customer/company/list/using/learning_phase",
       "companyUsingKnowledgeRelatedList": "/api/v1/customer/company/list/using/knowledge/learning_phase",
 
@@ -100,7 +104,7 @@
       "changeKnowledgeStatus": "/api/v1/knowledge/change/status",
 
       "learningPhase": "/api/v1/sys_parm/learning_phase/list",
-      "usingLearningPhase": "api/v1/sys_parm/learning_phase/list/has_knowledge",
+      "usingLearningPhase": "/api/v1/sys_parm/learning_phase/list/has_knowledge",
 
       "knowledgeExercisesList": "/api/v1/knowledge/exercises/list",
       "addKnowledgeExercises": "/api/v1/knowledge/exercises/add",

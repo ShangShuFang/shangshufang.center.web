@@ -207,7 +207,7 @@ router.post('/usingTechnology', (req, res, next) => {
   let service = new commonService.commonInvoke('addUsingTechnology');
   let data = {
     companyID: req.body.companyID,
-    technologyIdList: req.body.technologyIdList,
+    jsonData: req.body.jsonData,
     loginUser: req.body.loginUser
   };
 

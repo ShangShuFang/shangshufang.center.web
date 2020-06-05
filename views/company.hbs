@@ -116,7 +116,6 @@
                 <th>手机号码</th>
                 <th>使用技术</th>
                 <th>使用技术点</th>
-                <th>起步级别</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
@@ -144,12 +143,13 @@
                 <td ng-bind="data.contacts"></td>
                 <td ng-bind="data.cellphone"></td>
                 <td class="center">
-                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingTechnologyCount"></button>
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon"
+                          ng-bind="data.usingTechnologyCount"></button>
                 </td>
                 <td class="center">
-                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingKnowledgeCount"></button>
+                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon"
+                          ng-bind="data.usingKnowledgeCount"></button>
                 </td>
-                <td class="center" ng-bind="data.recruitLevel"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
@@ -169,8 +169,6 @@
                               class="la la-image"></i> Logo</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowMemoModal(data)"><i
                               class="la la-commenting"></i> 客户寄语</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowRecruitLevelModal(data)"><i
-                              class="flaticon-attachment"></i> 起步级别</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowTechnologyModal(data)"><i
                               class="la la-cog"></i> 使用技术</a>
                       <a class="dropdown-item" href="javascript:;" ng-click="onShowKnowledgeModal(data)"><i
@@ -292,8 +290,9 @@
       </div>
       <!--end: memo modal -->
 
-      <!--begin: recruitLevel modal -->
-      <div class="modal fade" id="kt_modal_recruit_level" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      <!--begin: recruitLevel modal delete -->
+      <div class="modal fade" id="kt_modal_recruit_level" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalLabel"
            aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -309,19 +308,23 @@
                     <div class="col-md-6">
                       <div class="kt-radio-list">
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L1" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L1'"> Level 1
+                          <input type="radio" name="recruitLevel" value="L1" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L1'"> Level 1
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L2" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L2'"> Level 2
+                          <input type="radio" name="recruitLevel" value="L2" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L2'"> Level 2
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L3" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L3'"> Level 3
+                          <input type="radio" name="recruitLevel" value="L3" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L3'"> Level 3
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L4" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L4'"> Level 4
+                          <input type="radio" name="recruitLevel" value="L4" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L4'"> Level 4
                           <span></span>
                         </label>
                       </div>
@@ -329,19 +332,23 @@
                     <div class="col-md-6">
                       <div class="kt-radio-list">
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L5" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L5'"> Level 5
+                          <input type="radio" name="recruitLevel" value="L5" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L5'"> Level 5
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L6" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L6'"> Level 6
+                          <input type="radio" name="recruitLevel" value="L6" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L6'"> Level 6
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L7" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L7'"> Level 7
+                          <input type="radio" name="recruitLevel" value="L7" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L7'"> Level 7
                           <span></span>
                         </label>
                         <label class="kt-radio">
-                          <input type="radio" name="recruitLevel" value="L8" ng-model="model.recruitLevel" ng-checked="model.recruitLevel == 'L8'"> Level 8
+                          <input type="radio" name="recruitLevel" value="L8" ng-model="model.recruitLevel"
+                                 ng-checked="model.recruitLevel == 'L8'"> Level 8
                           <span></span>
                         </label>
                       </div>
@@ -532,7 +539,7 @@
       <!--begin: technology modal -->
       <div class="modal fade" id="kt_modal_technology" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
            aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-lg-1" role="document">
+        <div class="modal-dialog modal-lg modal-lg-2" role="document">
           <div class="modal-content">
             <form class="kt-form kt-form--label-right" name="memoForm" novalidate>
               <div class="modal-header">
@@ -541,39 +548,80 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="kt-portlet__body">
-                  <div class="dual-listbox kt-dual-listbox-1">
-                    <div class="dual-listbox__container">
-                      <div>
-                        <div class="dual-listbox__title">待选技术</div>
-                        <ul class="dual-listbox__available">
-                          <li ng-repeat="technology in model.technologyList"
-                              class="dual-listbox__item"
-                              ng-class="{'dual-listbox__item--selected': model.selectedTechnologyID == technology.technologyID}"
-                              ng-bind="technology.technologyName"
-                              ng-click="onTechnologyClick(technology)"
-                              ng-dblclick="onTechnologyDbClick(technology)">
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="dual-listbox__buttons">
-                        <button class="dual-listbox__button" ng-click="onMoveAllTechnologyToChoiceTechnology()"><i class="flaticon2-fast-next"></i></button>
-                        <button class="dual-listbox__button" ng-click="onMoveTechnologyToChoiceTechnology()"><i class="flaticon2-next"></i></button>
-                        <button class="dual-listbox__button" ng-click="onMoveChoiceTechnologyToTechnology()"><i class="flaticon2-back"></i></button>
-                        <button class="dual-listbox__button" ng-click="onMoveAllChoiceTechnologyToTechnology()" ><i class="flaticon2-fast-back"></i></button>
-                      </div>
-                      <div>
-                        <div class="dual-listbox__title">已选技术</div>
-                        <ul class="dual-listbox__selected">
-                          <li ng-repeat="technology in model.choiceTechnologyList"
-                              class="dual-listbox__item"
-                              ng-class="{'dual-listbox__item--selected': model.choiceSelectedTechnologyID == technology.technologyID}"
-                              ng-bind="technology.technologyName"
-                              ng-click="onChoiceTechnologyClick(technology)"
-                              ng-dblclick="onChoiceTechnologyDbClick(technology)">
-                          </li>
-                        </ul>
-                      </div>
+                <div class="dual-listbox kt-dual-listbox-1">
+                  <div class="dual-listbox__container">
+                    <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded"
+                         id="local_data" style="">
+                      <table class="kt-datatable__table" style="display: block;">
+                        <thead class="kt-datatable__head">
+                          <tr class="kt-datatable__row">
+                          <th class="kt-datatable__cell--center kt-datatable__cell kt-datatable__cell--check">
+                            <span style="width: 20px;">
+                            </span>
+                          </th>
+                          <th class="kt-datatable__cell kt-datatable__cell--sort">
+                            <span style="width: 260px;">技术</span></th>
+                          <th class="kt-datatable__cell kt-datatable__cell--sort">
+                            <span style="width: 280px;">起始级别</span>
+                          </th>
+                        </tr>
+                        </thead>
+                        <tbody class="kt-datatable__body" style="">
+                          <tr class="kt-datatable__row" ng-repeat="data in model.technologyList">
+                            <td class="kt-datatable__cell--center kt-datatable__cell kt-datatable__cell--check">
+                              <span style="width: 20px;">
+                                <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid">
+                                  <input type="checkbox"
+                                         name="technology"
+                                         ng-value="data.technologyID"
+                                         ng-checked="data.usingTechnology == 1"
+                                         ng-click="onTechnologyUsingClick($event,data)">&nbsp;
+                                  <span></span>
+                                </label>
+                              </span>
+                            </td>
+                            <td class="kt-datatable__cell">
+                              <span style="width: 260px;" ng-bind="data.technologyName"></span>
+                            </td>
+                            <td class="kt-datatable__cell">
+                              <div class="kt-radio-inline" style="width: 280px;">
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L1" ng-checked="data.recruitLevel == 'L1'" ng-click="onLevelClick(data, 'L1')"> L1
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L2" ng-checked="data.recruitLevel == 'L2'" ng-click="onLevelClick(data, 'L2')"> L2
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L3" ng-checked="data.recruitLevel == 'L3'" ng-click="onLevelClick(data, 'L3')"> L3
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L4" ng-checked="data.recruitLevel == 'L4'" ng-click="onLevelClick(data, 'L4')"> L4
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L5" ng-checked="data.recruitLevel == 'L5'" ng-click="onLevelClick(data, 'L5')"> L5
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L6" ng-checked="data.recruitLevel == 'L6'" ng-click="onLevelClick(data, 'L6')"> L6
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L7" ng-checked="data.recruitLevel == 'L7'" ng-click="onLevelClick(data, 'L7')"> L7
+                                  <span></span>
+                                </label>
+                                <label class="kt-radio">
+                                  <input type="radio" name="\{{data.technologyID}}" value="L8" ng-checked="data.recruitLevel == 'L8'" ng-click="onLevelClick(data, 'L8')"> L8
+                                  <span></span>
+                                </label>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -582,8 +630,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button"
                         class="btn btn-primary"
-                        ng-click="onSaveUseTechnology()"
-                        ng-disabled="model.choiceTechnologyList.length === 0">
+                        ng-click="onSaveUseTechnology()">
                   提交
                 </button>
               </div>
@@ -596,7 +643,7 @@
       <!--begin: knowledge modal -->
       <div class="modal fade" id="kt_modal_knowledge" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
            aria-hidden="true">
-        <div class="modal-dialog  modal-lg modal-lg-2" role="document">
+        <div class="modal-dialog modal-lg modal-lg-2" role="document">
           <div class="modal-content">
             <form class="kt-form kt-form--label-right" name="myForm" novalidate>
               <div class="modal-header">
@@ -610,7 +657,8 @@
                     <label for="example-text-input" class="col-2 col-form-label">所属技术</label>
                     <div class="col-10">
                       <div class="dropdown search-form-dropdown">
-                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                           <span ng-bind="model.selectedUsingTechnology.technologyName"></span>
                           <i class="flaticon2-down"></i>
                         </button>
@@ -632,12 +680,14 @@
                     <label for="example-text-input" class="col-2 col-form-label">学习阶段</label>
                     <div class="col-10">
                       <div class="dropdown search-form-dropdown">
-                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                           <span ng-bind="model.selectedLearningPhase.learningPhaseName"></span>
                           <i class="flaticon2-down"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-                          <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhaseChange(0, '请选择学习阶段', false)">请选择学习阶段</a>
+                          <a class="dropdown-item" href="javascript:;"
+                             ng-click="onLearningPhaseChange(0, '请选择学习阶段', false)">请选择学习阶段</a>
                           <div class="dropdown-divider"></div>
                           <a ng-repeat="data in model.learningPhaseList"
                              class="dropdown-item"
@@ -668,10 +718,14 @@
                             </ul>
                           </div>
                           <div class="dual-listbox__buttons">
-                            <button class="dual-listbox__button" ng-click="onMoveAllFromSourceToChoice()"><i class="flaticon2-fast-next"></i></button>
-                            <button class="dual-listbox__button" ng-click="onMoveItemFromSourceToChoice()"><i class="flaticon2-next"></i></button>
-                            <button class="dual-listbox__button" ng-click="onMoveItemFromChoiceToSource()"><i class="flaticon2-back"></i></button>
-                            <button class="dual-listbox__button" ng-click="onMoveAllFromChoiceToSource()" ><i class="flaticon2-fast-back"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromSourceToChoice()"><i
+                                    class="flaticon2-fast-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromSourceToChoice()"><i
+                                    class="flaticon2-next"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveItemFromChoiceToSource()"><i
+                                    class="flaticon2-back"></i></button>
+                            <button class="dual-listbox__button" ng-click="onMoveAllFromChoiceToSource()"><i
+                                    class="flaticon2-fast-back"></i></button>
                           </div>
                           <div>
                             <div class="dual-listbox__title">已选知识点</div>
