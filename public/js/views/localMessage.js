@@ -17,6 +17,10 @@ localMessage.EXERCISES_CODE_PROJECT_FORMAT_INVALID = '项目练习的习题编�
 localMessage.EXERCISES_CODE_INVALID = '您输入的习题编码已存在！';
 localMessage.PARAMETER_ERROR = '参数错误，未能读取到对应参数，无法继续操作！';
 
+localMessage.GROWING_TARGET_EMPTY = '请输入职业目标。';
+localMessage.TARGET_MEMO_EMPTY = '请输入职业目标的描述信息。';
+localMessage.GROWING_MAP_EMPTY = '请选择成长路径。';
+
 
 localMessage.formatMessage = function (code, msg) {
   return `<strong>抱歉，系统发生异常，请联系我们</strong> </br>状态码:&nbsp ${code} </br> 详细信息:&nbsp ${msg}`;

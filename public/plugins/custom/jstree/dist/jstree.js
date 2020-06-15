@@ -2473,7 +2473,7 @@
 				}
 			}
 			if(!obj.a_attr.id) {
-				obj.a_attr.id = obj.id + '_anchor';
+				obj.a_attr.id = obj.id;
 			}
 			node.setAttribute('aria-selected', !!obj.state.selected);
 			node.setAttribute('aria-level', obj.parents.length);

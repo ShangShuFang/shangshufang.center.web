@@ -20,6 +20,8 @@ let knowledgeRouter = require('./routes/knowledge');
 let learningPathRouter = require('./routes/learningPath');
 let knowledgeExercisesRouter = require('./routes/knowledgeExercises');
 let codeStandardRouter = require('./routes/codeStandard');
+let growingMapRouter = require('./routes/growingMap');
+let growingMapEditRouter = require('./routes/growingMapEdit');
 let commonRouter = require('./routes/common');
 
 let app = express();
@@ -58,6 +60,8 @@ app.use('/knowledge', knowledgeRouter);
 app.use('/knowledge/exercises', knowledgeExercisesRouter);
 app.use('/codeStandard', codeStandardRouter);
 app.use('/learningPath', learningPathRouter);
+app.use('/growingMap', growingMapRouter);
+app.use('/growingMap/edit', growingMapEditRouter);
 
 // app.use('/softwareExercises', softwareExercisesRouter);
 // app.use('/softwareExercisesEdit', softwareExercisesEditRouter);

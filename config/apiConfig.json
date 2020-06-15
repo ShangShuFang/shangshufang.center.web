@@ -105,6 +105,7 @@
 
       "learningPhase": "/api/v1/sys_parm/learning_phase/list",
       "usingLearningPhase": "/api/v1/sys_parm/learning_phase/list/has_knowledge",
+      "allLearningPhase": "/api/v1/sys_parm/learning_phase/list/learningPhase",
 
       "knowledgeExercisesList": "/api/v1/knowledge/exercises/list",
       "addKnowledgeExercises": "/api/v1/knowledge/exercises/add",
@@ -112,7 +113,15 @@
       "codeStandardList": "/api/v1/code_standard/list",
       "checkCodeStandardName": "/api/v1/code_standard/check/name",
       "addCodeStandard": "/api/v1/code_standard/add",
-      "changeCodeStandard": "/api/v1/code_standard/change"
+      "changeCodeStandard": "/api/v1/code_standard/change",
+
+      "growingMapList": "/api/v1/growing_map/list/map",
+      "growingMap": "/api/v1/growing_map/any/map",
+      "growingMapDetailList": "/api/v1/growing_map/list/detail",
+      "growingMapChoseList": "/api/v1/growing_map//list/learningPhase",
+      "checkGrowingTarget": "/api/v1/growing_map/check/name",
+      "saveGrowingMap": "/api/v1/growing_map/save",
+      "detailGrowingMap": "/api/v1/growing_map/delete"
     }
   }
 }

@@ -1,0 +1,86 @@
+<!-- begin: Subheader -->
+<div class="kt-subheader kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container&#45;&#45;fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+        学习内容
+      </h3>
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          软件研发
+        </a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          成长路线
+        </a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a href="javascript:;" class="kt-subheader__breadcrumbs-link">
+          编辑
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end: Subheader -->
+
+<!-- begin: Content -->
+<div ng-app="pageApp" ng-controller="pageCtrl">
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+          <h3 class="kt-portlet__head-title">
+
+          </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+            <div class="kt-portlet__head-actions">
+              <a href="/growingMap" class="btn btn-secondary btn-elevate btn-icon-sm">
+                <i class="la la-reply"></i>
+                返回
+              </a>
+              <button class="btn btn-brand btn-elevate btn-icon-sm" ng-click="onSave()">
+                <i class="la la-save"></i>
+                提交
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kt-container kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="kt-portlet">
+          <form class="kt-form">
+            <div class="kt-portlet__body kt-padding-b-0">
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="model.growingTarget" placeholder="职业目标">
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" rows="5" ng-model="model.targetMemo" placeholder="信息描述，共识企业......"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="kt-portlet">
+          <div class="kt-portlet__body">
+            <div id="growing_tree" class="tree-demo jstree jstree-3 jstree-default jstree-checkbox-selection" role="tree">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/views/growingMapEdit.js" type="text/javascript"></script>

@@ -76,3 +76,42 @@ commonUtility.buildSystemRemoteUri = function (serviceUrl, dirJson) {
   //return `${serviceUrl}?system=${systemName}&dirName=${dirNames}`;
   return remoteUri;
 };
+
+commonUtility.isNumber = function (value) {
+  if (commonUtility.isEmpty(value)) {
+    return false;
+  }
+  return !isNaN(value);
+};
+
+commonUtility.getUriParameter = function (name) {
+  let url = window.location.search;
+  if (url.indexOf('?') !== 0) {
+    return null;
+  }
+  let parameters = url.substr(1);
+  let parameterArray = parameters.split('&');
+  // let name = name || '';
+  let value = '';
+  // 获取全部参数及其值
+  for (let i = 0; i < parameterArray.length; i++) {
+    let info = parameterArray[i].split('=');
+    let obj = {};
+    obj[info[0]] = decodeURI(info[1]);
+    parameterArray[i] = obj;
+  }
+  // 如果传入一个参数名称，就匹配其值
+  if (name) {
+    for (let i = 0; i < parameterArray.length; i++) {
+      for (const key in parameterArray[i]) {
+        if (key == name) {
+          value = parameterArray[i][key];
+        }
+      }
+    }
+  } else {
+    value = parameters;
+  }
+  // 返回结果
+  return value;
+};
