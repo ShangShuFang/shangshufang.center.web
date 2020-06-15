@@ -11,6 +11,9 @@ commonUtility.setNavActive = function () {
   if(pathname.includes('knowledge')){
     pathname = '/knowledge';
   }
+  if(pathname.includes('growingMap')){
+    pathname = '/growingMap';
+  }
 
   linkObj = $(`#kt_aside_menu_wrapper ul.kt-menu__nav li a[href="${pathname}"]`);
   linkObj.parent().addClass('kt-menu__item--active');
