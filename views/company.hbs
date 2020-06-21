@@ -552,7 +552,7 @@
                   <div class="dual-listbox__container">
                     <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded"
                          id="local_data" style="">
-                      <table class="kt-datatable__table" style="display: block;">
+                      <table class="kt-datatable__table" id="tb_technology_using">
                         <thead class="kt-datatable__head">
                           <tr class="kt-datatable__row">
                           <th class="kt-datatable__cell--center kt-datatable__cell kt-datatable__cell--check">
@@ -574,8 +574,7 @@
                                   <input type="checkbox"
                                          name="technology"
                                          ng-value="data.technologyID"
-                                         ng-checked="data.usingTechnology == 1"
-                                         ng-click="onTechnologyUsingClick($event,data)">&nbsp;
+                                         ng-checked="data.isUsing == 1">&nbsp;
                                   <span></span>
                                 </label>
                               </span>
@@ -586,35 +585,35 @@
                             <td class="kt-datatable__cell">
                               <div class="kt-radio-inline" style="width: 280px;">
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L1" ng-checked="data.recruitLevel == 'L1'" ng-click="onLevelClick(data, 'L1')"> L1
+                                  <input type="radio" name="\{{data.technologyID}}" value="L1" ng-checked="data.recruitLevel == 'L1'"> L1
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L2" ng-checked="data.recruitLevel == 'L2'" ng-click="onLevelClick(data, 'L2')"> L2
+                                  <input type="radio" name="\{{data.technologyID}}" value="L2" ng-checked="data.recruitLevel == 'L2'"> L2
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L3" ng-checked="data.recruitLevel == 'L3'" ng-click="onLevelClick(data, 'L3')"> L3
+                                  <input type="radio" name="\{{data.technologyID}}" value="L3" ng-checked="data.recruitLevel == 'L3'"> L3
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L4" ng-checked="data.recruitLevel == 'L4'" ng-click="onLevelClick(data, 'L4')"> L4
+                                  <input type="radio" name="\{{data.technologyID}}" value="L4" ng-checked="data.recruitLevel == 'L4'"> L4
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L5" ng-checked="data.recruitLevel == 'L5'" ng-click="onLevelClick(data, 'L5')"> L5
+                                  <input type="radio" name="\{{data.technologyID}}" value="L5" ng-checked="data.recruitLevel == 'L5'"> L5
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L6" ng-checked="data.recruitLevel == 'L6'" ng-click="onLevelClick(data, 'L6')"> L6
+                                  <input type="radio" name="\{{data.technologyID}}" value="L6" ng-checked="data.recruitLevel == 'L6'"> L6
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L7" ng-checked="data.recruitLevel == 'L7'" ng-click="onLevelClick(data, 'L7')"> L7
+                                  <input type="radio" name="\{{data.technologyID}}" value="L7" ng-checked="data.recruitLevel == 'L7'"> L7
                                   <span></span>
                                 </label>
                                 <label class="kt-radio">
-                                  <input type="radio" name="\{{data.technologyID}}" value="L8" ng-checked="data.recruitLevel == 'L8'" ng-click="onLevelClick(data, 'L8')"> L8
+                                  <input type="radio" name="\{{data.technologyID}}" value="L8" ng-checked="data.recruitLevel == 'L8'"> L8
                                   <span></span>
                                 </label>
                               </div>

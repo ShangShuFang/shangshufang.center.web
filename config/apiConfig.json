@@ -87,6 +87,7 @@
       "deleteTechnologyCategory": "/api/v1/technology/category/delete",
 
       "technologyList": "/api/v1/technology/list",
+      "technologySimpleList": "/api/v1/technology/simple",
       "addTechnology": "/api/v1/technology/add",
       "changeTechnology": "/api/v1/technology/change",
       "deleteTechnology": "/api/v1/technology/delete",

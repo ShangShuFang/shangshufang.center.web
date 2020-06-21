@@ -78,6 +78,28 @@ router.get('/checkCellphoneExist', (req, res, next) => {
   });
 });
 
+router.get('/list/technology/simple', (req, res, next) => {
+  let service = new commonService.commonInvoke('technologySimpleList');
+  let parameter = `0/0/A`;
+
+  service.queryWithParameter(parameter, (result) => {
+    if(result.err){
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    }else{
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.get('/usingTechnology', (req, res, next) => {
   let service = new commonService.commonInvoke('usingTechnologyList');
   let companyID = req.query.companyID;

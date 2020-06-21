@@ -64,8 +64,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     technologyCompanyID: 0,
 
     technologyList: [],
-    selectedTechnologyID: 0,
-    selectedTechnology: null,
+
+    technologyUsingList: [],
+
 
     choiceTechnologyList: [],
     choiceSelectedTechnologyID: 0,
@@ -451,86 +452,78 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
   $scope.onShowTechnologyModal = function(data){
     $scope.model.technologyModalTitle = `${data.companyName}使用技术`;
     $scope.model.technologyCompanyID = data.companyID;
-    //查询当前企业使用的技术信息
-    $http.get(`/company/usingTechnology?companyID=${$scope.model.technologyCompanyID}`).then(function successCallback (response) {
+    $scope.model.choiceTechnologyList.splice(0, $scope.model.choiceTechnologyList.length);
+
+    //1. 查询所有当前可用的技术
+    $http.get(`/company/list/technology/simple`)
+    .then(function successCallback (response) {
       if(response.data.err){
         bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
         return false;
       }
-      $scope.model.choiceTechnologyList.splice(0, $scope.model.choiceTechnologyList.length);
+      $scope.model.technologyList = response.data.dataList;
       if(commonUtility.isEmptyList(response.data.dataList)) {
         $('#kt_modal_technology').modal('show');
         return false;
       }
-      $scope.model.technologyList = response.data.dataList;
-      response.data.dataList.forEach(function(data) {
-        if(data.usingTechnology === 1){
-          $scope.model.choiceTechnologyList.push({
-            technologyID: data.technologyID,
-            technologyName: data.technologyName,
-            recruitLevel: data.recruitLevel
-          });
-        }
+      //2. 查询当前合作企业正在使用的技术
+      $scope.findUsingTechnology(data.companyID);
+    }, function errorCallback(response) {
+      bootbox.alert(localMessage.NETWORK_ERROR);
+    });
+  };
+
+  $scope.findUsingTechnology = function (companyID) {
+    $http.get(`/company/usingTechnology?companyID=${companyID}`)
+    .then(function successCallback (response) {
+      if(response.data.err){
+        bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+        return false;
+      }
+      //3. 根据当前合作企业正在使用的技术设置应选中项
+      $scope.model.technologyUsingList = response.data.dataList;
+      if(commonUtility.isEmptyList(response.data.dataList)) {
+        $('#kt_modal_technology').modal('show');
+        return false;
+      }
+
+      $scope.model.technologyList.forEach(function(technology) {
+        $scope.model.technologyUsingList.forEach(function(usingTechnology) {
+          if (technology.technologyID === usingTechnology.technologyID) {
+            technology.isUsing = 1;
+            technology.recruitLevel = usingTechnology.recruitLevel;
+          }
+        });
       });
+
       $('#kt_modal_technology').modal('show');
     }, function errorCallback(response) {
       bootbox.alert(localMessage.NETWORK_ERROR);
     });
   };
 
-  $scope.onTechnologyUsingClick = function ($event, data) {
-    let checkbox = $event.target;
-    if (checkbox.checked) {
-      let radioArray = $(`input[type="radio"][name=${data.technologyID}]`);
-      let levelKey = '';
-      for (let i = 0; i < radioArray.length; i++) {
-        if ($(radioArray[i]).is(':checked')) {
-          levelKey = $(radioArray[i]).val();
-        }
-      }
-      $scope.model.choiceTechnologyList.push({
-        technologyID: data.technologyID,
-        technologyName: data.technologyName,
-        recruitLevel: levelKey
-      });
-    } else {
-      //当取消选中的技术从choiceTechnologyList中移除
-      let removeIndex = -1;
-      for (let i = 0; i < $scope.model.choiceTechnologyList.length; i++) {
-        if ($scope.model.choiceTechnologyList[i].technologyID === data.technologyID) {
-          removeIndex = i;
-          break;
-        }
-      }
-      if (removeIndex > -1) {
-        $scope.model.choiceTechnologyList.splice(removeIndex, 1);
-      }
-      //将取消选中技术对应的recruitLevel也取消选中
-      $(`input[type="radio"][name=${data.technologyID}]`).prop('checked',false);
-    }
-  };
-
-  $scope.onLevelClick = function (data, level) {
-    $scope.model.choiceTechnologyList.forEach((choice) => {
-      if (data.technologyID === choice.technologyID) {
-        choice.recruitLevel = level;
-        return false;
+  $scope.getSelectedTechnology = function () {
+    $.each($('#tb_technology_using tbody tr'), function(index, tr) {
+      let checkbox = $(tr).find('input[type="checkbox"]:checked')[0];
+      let radio = $(tr).find('input[type="radio"]:checked')[0];
+      if (!commonUtility.isEmpty(checkbox) && !commonUtility.isEmpty(radio)) {
+        $scope.model.choiceTechnologyList.push({
+          technologyID: $(checkbox).attr('value'),
+          recruitLevel: $(radio).attr('value')
+        });
       }
     });
   };
 
   $scope.checkData = function () {
-    let invalidData = $scope.model.choiceTechnologyList.filter((choice) => {
-      return commonUtility.isEmpty(choice.recruitLevel);
-    });
-    if (invalidData.length > 0) {
-      let firstData = invalidData[0];
-      bootbox.alert(`请选择${firstData.technologyName}的起步级别`);
+    if ($scope.model.choiceTechnologyList.length === 0) {
+      bootbox.alert(`请选择使用的技术`);
       return false;
     }
     return true;
   }
   $scope.onSaveUseTechnology = function() {
+    $scope.getSelectedTechnology();
     if (!$scope.checkData()) {
       return false;
     }
