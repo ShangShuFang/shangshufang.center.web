@@ -20,6 +20,10 @@ let knowledgeRouter = require('./routes/knowledge');
 let learningPathRouter = require('./routes/learningPath');
 let knowledgeExercisesRouter = require('./routes/knowledgeExercises');
 let codeStandardRouter = require('./routes/codeStandard');
+let comprehensiveExercisesRouter = require('./routes/comprehensiveExercises');
+let projectExercisesRouter = require('./routes/projectExercises');
+
+
 let growingMapRouter = require('./routes/growingMap');
 let growingMapEditRouter = require('./routes/growingMapEdit');
 let commonRouter = require('./routes/common');
@@ -59,14 +63,11 @@ app.use('/technology/category', technologyCategoryRouter);
 app.use('/knowledge', knowledgeRouter);
 app.use('/knowledge/exercises', knowledgeExercisesRouter);
 app.use('/codeStandard', codeStandardRouter);
+app.use('/exercises/comprehensive', comprehensiveExercisesRouter);
+app.use('/exercises/project', projectExercisesRouter);
 app.use('/learningPath', learningPathRouter);
 app.use('/growingMap', growingMapRouter);
 app.use('/growingMap/edit', growingMapEditRouter);
-
-// app.use('/softwareExercises', softwareExercisesRouter);
-// app.use('/softwareExercisesEdit', softwareExercisesEditRouter);
-// app.use('/softwareExercisesFiles', softwareExercisesUploadFilesRouter);
-
 app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
