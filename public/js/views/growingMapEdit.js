@@ -98,20 +98,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
                   })
                 })
                 $scope.buildTreeData();
-
-
               }, function errorCallback(response) {
                 bootbox.alert(localMessage.NETWORK_ERROR);
               });
-
-
-
-
-
-
-
-
-
         }, function errorCallback(response) {
           bootbox.alert(localMessage.NETWORK_ERROR);
         });
