@@ -1,140 +1,175 @@
-body{
-  font-family: 'Hiragino Sans GB','\5b8b\4f53',sans-serif
+body {
+    font-family: 'Hiragino Sans GB', '\5b8b\4f53', sans-serif
 }
+
 
 /* begin： 查询表单的下拉列表*/
-.width-full{
-  width: 100%;
-}
-.search-form-dropdown button{
-  width: 100%;
+
+.width-full {
+    width: 100%;
 }
 
-.search-form-dropdown button span{
-  float: left
+.search-form-dropdown button {
+    width: 100%;
 }
 
-.search-form-dropdown button i{
-  float: right;
-  color: #8b8d9a;
-  font-size: 12px !important;
-  margin-right: -10px;
-  margin-top: 4px;
+.search-form-dropdown button span {
+    float: left
 }
-.search-form-dropdown .dropdown-menu{
-  width: 100%;
-  max-height: 360px;
-  overflow-y: auto;
-  position: absolute;
-  will-change: transform;
-  top: 0;
-  left: 0;
-  transform: translate3d(0px, 38px, 0px);
+
+.search-form-dropdown button i {
+    float: right;
+    color: #8b8d9a;
+    font-size: 12px !important;
+    margin-right: -10px;
+    margin-top: 4px;
 }
+
+.search-form-dropdown .dropdown-menu {
+    width: 100%;
+    max-height: 360px;
+    overflow-y: auto;
+    position: absolute;
+    will-change: transform;
+    top: 0;
+    left: 0;
+    transform: translate3d(0px, 38px, 0px);
+}
+
+
 /* end： 查询表单的下拉列表*/
 
-.font-color-success{
-  color: #0abb87 !important;
+.font-color-success {
+    color: #0abb87 !important;
 }
 
-.img-table-cell{
-  width: 80%;
-  cursor: pointer;
-}
-.customer-brand{
-  width: 120px;
-  text-align: center;
-}
-.cell-option{
-  color: #5d78ff;
+.img-table-cell {
+    width: 80%;
+    cursor: pointer;
 }
 
-.cell-memo{
-  width: 300px;
+.customer-brand {
+    width: 120px;
+    text-align: center;
 }
-.cell-memo-content{
-  margin-top: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+
+.cell-option {
+    color: #5d78ff;
 }
+
+.cell-memo {
+    width: 300px;
+}
+
+.cell-memo-content {
+    margin-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
 .cell-address {
-  width: 300px;
-  table-layout: fixed;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    width: 300px;
+    table-layout: fixed;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
+
 
 /*begin: 上传文件组件样式*/
-.fileItem{
-  display: block !important;
+
+.fileItem {
+    display: block !important;
 }
+
+
 /*end: 上传文件组件样式*/
 
-.form-group .fa-star{
-  margin-top: 7px;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.technology-stars-select{
-  color: #f1b86f;
+.form-group .fa-star {
+    margin-top: 7px;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-.center{
-  text-align: center;
-}
-.relate-technology{
-  font-size: 14px;
-  font-weight: bold;
-}
-.relate-technology li{
-  margin-bottom: 5px;
-}
-.modal-lg-1{
-  width: 600px !important;
+.technology-stars-select {
+    color: #f1b86f;
 }
 
-.modal-lg-2{
-  width: 706px !important;
+.center {
+    text-align: center;
 }
 
-.dual-listbox__container ul li:hover{
-  background-color: #f9f9f9;
+.relate-technology {
+    font-size: 14px;
+    font-weight: bold;
 }
-.dual-listbox__item--disabled{
-  color: #a2a5b9;
-  pointer-events: none;
-  background-color: transparent;
+
+.relate-technology li {
+    margin-bottom: 5px;
 }
-.dropdown-item-using{
-  color: #0db30d;
-  font-weight: bold;
+
+.modal-lg-1 {
+    width: 600px !important;
 }
-.dropdown-item-using:hover{
-  color: #0db30d;
-  font-weight: bold;
+
+.modal-lg-2 {
+    width: 706px !important;
 }
-.image-list-horizontal{
-  list-style: none;
+
+.dual-listbox__container ul li:hover {
+    background-color: #f9f9f9;
 }
-.image-list-horizontal li{
-  float: left;
-  margin-right: 10px;
+
+.dual-listbox__item--disabled {
+    color: #a2a5b9;
+    pointer-events: none;
+    background-color: transparent;
 }
+
+.dropdown-item-using {
+    color: #0db30d;
+    font-weight: bold;
+}
+
+.dropdown-item-using:hover {
+    color: #0db30d;
+    font-weight: bold;
+}
+
+.image-list-horizontal {
+    list-style: none;
+}
+
+.image-list-horizontal li {
+    float: left;
+    margin-right: 10px;
+}
+
+
 /*.kt-avatar .kt-avatar__holder{*/
+
+
 /*  height: 160px;*/
+
+
 /*}*/
-.upload-file-name{
-  margin: 5px auto 0;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+.upload-file-name {
+    margin: 5px auto 0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-.kt-avatar__holder img{
-  width: 120px;
-  height: 120px;
+
+.kt-avatar__holder img {
+    width: 120px;
+    height: 120px;
+}
+
+.retain-white-enter {
+    white-space: pre-wrap;
 }

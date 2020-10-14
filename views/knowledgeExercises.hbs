@@ -40,12 +40,12 @@
                 <i class="la la-reply"></i>
                 返回
               </a>
-              <button class="btn btn-brand btn-elevate btn-icon-sm"
+              {{!-- <button class="btn btn-brand btn-elevate btn-icon-sm"
                       ng-click="onSave()"
                       ng-disabled="model.documentList.length === 0">
                 <i class="la la-save"></i>
                 提交
-              </button>
+              </button> --}}
             </div>
           </div>
         </div>
@@ -56,94 +56,403 @@
   <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="row">
       <div class="col-md-12">
-        <!--begin::Portlet-->
         <div class="kt-portlet">
-          <div class="kt-portlet__head kt-portlet__head--noborder">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                上传习题PDF源文件
-              </h3>
-            </div>
-            <div class="kt-portlet__head-toolbar">
-              <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onShowUploadDocumentModal()">
-                <i class="kt-nav__link-icon flaticon-upload"></i>
-              </a>
-            </div>
-          </div>
           <div class="kt-portlet__body">
-            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-              <div class="row">
-                <div class="col-sm-12">
-                  <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline table-fix"
-                         role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
-                    <thead>
-                      <tr role="row">
-                        <th>练习题</th>
-                        <th>上传人</th>
-                        <th>上传时间</th>
-                        <th>参考示例</th>
-                        <th>当前状态</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="document in model.documentList">
-                        <td>
-                          <div class="kt-widget4">
-                            <div class="kt-widget4__item">
-                              <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                <img src="/media/files/pdf.svg" alt="">
-                              </div>
-                              <a ng-href="\{{document.documentUrl}}" target="_blank" class="kt-widget4__title kt-font-brand kt-font-bold" ng-bind="document.documentName"></a>
-                              <div class="kt-widget4__tools">
-                                <a href="javascript:;" class="btn btn-clean btn-icon btn-sm">
-                                  <i class="flaticon2-download-symbol-of-down-arrow-in-a-rectangle"></i>
-                                </a>
-                              </div>
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#kt_tabs_1">选择题</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_tabs_2" role="tab">填空题</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#kt_tabs_3" role="tab">编程题</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_tabs_1">
+                <div class="exercises-select-list">
+                  <div style="margin-left: 25px;">
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.choiceQuestion.dataStatus == 'NULL', 'btn-outline-hover-primary': model.choiceQuestion.dataStatus != 'NULL'}" 
+                            ng-click="onFilterChoiceQuestion('NULL')">全部</button>
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.choiceQuestion.dataStatus == 'P', 'btn-outline-hover-primary': model.choiceQuestion.dataStatus != 'P'}" 
+                            ng-click="onFilterChoiceQuestion('P')">待审批</button>
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.choiceQuestion.dataStatus == 'A', 'btn-outline-hover-primary': model.choiceQuestion.dataStatus != 'A'}" 
+                            ng-click="onFilterChoiceQuestion('A')">审批通过</button>
+                    <button type="button" 
+                            ng-class="{'btn-primary': model.choiceQuestion.dataStatus == 'D', 'btn-outline-hover-primary': model.choiceQuestion.dataStatus != 'D'}" 
+                            class="btn btn-sm" 
+                            ng-click="onFilterChoiceQuestion('D')">审批未通过</button>
+                  </div>
+                  
+                  <ol>
+                    <li class="kt-margin-t-10" ng-repeat = "choiceQuestion in model.choiceQuestion.dataList">
+                      <div class="form-group kt-margin-b-0  ">
+                        <strong ng-if="choiceQuestion.exercisesTitle == ''">请设置题目标题</strong>
+                        <strong ng-if="choiceQuestion.exercisesTitle != ''" ng-bind="choiceQuestion.exercisesTitle" class="retain-white-enter"></strong>
+                        <span ng-if="choiceQuestion.isNew == false" 
+                              class="kt-badge kt-badge--inline" 
+                              ng-class="{'kt-badge--primary': choiceQuestion.dataStatus == 'P', 'kt-badge--success': choiceQuestion.dataStatus == 'A', 'kt-badge--danger': choiceQuestion.dataStatus == 'D'}" 
+                              ng-bind="choiceQuestion.dataStatusText"></span>
+                        <div>
+                          <label ng-if="choiceQuestion.exercisesSource == ''" class="kt-font-sm">请设置题目来源</label>
+                          <label ng-if="choiceQuestion.exercisesSource != ''" class="kt-font-sm" ng-bind="choiceQuestion.exercisesSource">请设置题目来源</label>
+                        </div>
+                        <div class="kt-font-sm" ng-if="!choiceQuestion.isNew">
+                          <label ng-bind="choiceQuestion.createUser"></label>
+                          <label>于</label>
+                          <label ng-bind="choiceQuestion.createTime"></label>
+                          <label>添加</label>
+                          &nbsp;&nbsp;
+                          <label ng-bind="choiceQuestion.updateUser" ng-if="choiceQuestion.createTime != choiceQuestion.updateTime"></label>
+                          <label ng-if="choiceQuestion.createTime != choiceQuestion.updateTime">于</label>
+                          <label ng-bind="choiceQuestion.updateTime" ng-if="choiceQuestion.createTime != choiceQuestion.updateTime"></label>
+                          <label ng-if="choiceQuestion.createTime != choiceQuestion.updateTime">更新</label>
+                        </div>
+
+                        <div class="kt-radio-list kt-margin-t-10" ng-if="choiceQuestion.exercisesType == 'S'">
+                          <label class="kt-radio kt-radio--tick kt-radio--danger" ng-repeat = "option in choiceQuestion.choiceOptions">
+                            <input type="radio" name="radio\{{$parent.$index}}" ng-checked="option.rightAnswer" disabled="disabled">
+                            <label ng-if="option.optionText != ''">\{{option.optionText}}</label>
+                            <label ng-if="option.optionText == ''">请设置选项内容</label>
+                            <strong ng-if="option.rightAnswer == true" class=" kt-font-danger">（正确答案）</strong>
+                            <span></span>
+                          </label>
+                        </div>
+
+                        <div class="kt-checkbox-list kt-margin-t-10" ng-if="choiceQuestion.exercisesType == 'M'">
+                          <label class="kt-checkbox kt-checkbox--tick kt-checkbox--danger" ng-repeat = "option in choiceQuestion.choiceOptions">
+                            <input type="checkbox" name="radio\{{$parent.$index}}" ng-checked="option.rightAnswer" disabled="disabled">
+                            <label ng-if="option.optionText != ''">\{{option.optionText}}</label>
+                            <label ng-if="option.optionText == ''">请设置选项内容</label>
+                            <strong ng-if="option.rightAnswer == true" class=" kt-font-danger">（正确答案）</strong>
+                            <span></span>
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div class="kt-margin-t-10">
+                        <a href="javascript:" class="kt-link--brand" ng-if="choiceQuestion.isShowEdit == false" ng-click="toggleChoiceQuestionEdit(choiceQuestion, true)">编辑</a>
+                        <a href="javascript:" class="kt-link--brand" ng-if="choiceQuestion.isShowEdit == true" ng-click="toggleChoiceQuestionEdit(choiceQuestion, false)">取消编辑</a>
+                        <a href="javascript:" class="kt-link--brand" ng-if="choiceQuestion.isShowEdit == true" ng-click="saveChoiceQuestion(choiceQuestion)">保存</a>
+                        <a href="javascript:" class="kt-link--danger" ng-if="choiceQuestion.isNew == false" ng-click="onShowApproveDialog('C', choiceQuestion)">审批</a>
+                        <a href="javascript:" class="kt-link--danger" ng-click="onRemoveChoiceQuestion(choiceQuestion)">删除</a>
+                      </div>
+                      <div class="exercises-select-edit kt-margin-t-10" ng-if="choiceQuestion.isShowEdit == true">
+                        <form class="kt-form kt-form--label-right">
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">题目标题：</label>
+														<div class="col-10">
+                              <textarea class="form-control" name="" rows="3" maxlength="3000" placeholder="如果题目包含代码片段，你可使用Markdown语法进行编辑" ng-model="choiceQuestion.exercisesTitle"></textarea>
+														</div>
+													</div>
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">题目来源：</label>
+														<div class="col-10">
+                              <input type="text" class="form-control" maxlength="500" ng-model="choiceQuestion.exercisesSource" placeholder="请设置题目来源">
+														</div>
+													</div>
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">类型：</label>
+														<div class="col-10">
+															<div class="kt-radio-inline">
+																<label class="kt-radio">
+																	<input type="radio" name="select-type{{$index}}" value="S" ng-model="choiceQuestion.exercisesType" ng-checked = "choiceQuestion.exercisesType == 'S'"> 单选
+																	<span></span>
+																</label>
+																<label class="kt-radio">
+																	<input type="radio" name="select-type{{$index}}" value="M" ng-model="choiceQuestion.exercisesType" ng-checked = "choiceQuestion.exercisesType == 'M'"> 多选
+																	<span></span>
+																</label>
+															</div>
+														</div>
+													</div>
+                          <div class="form-group row kt-margin-b-0">
+														<label for="example-text-input" class="col-1 col-form-label text-left">选项：</label>
+														<div class="col-10">
+															<table class="table">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 60%;">选项内容</th>
+                                    <th style="width: 20%;">正确答案</th>
+                                    <th style="width: 20%;">操作</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr ng-repeat = "option in choiceQuestion.choiceOptions">
+                                    <td style="width: 70%;">
+                                      <input type="text" class="form-control" ng-model="option.optionText" maxlength="200" placeholder="请设置选项内容">
+                                    </td>
+                                    <td style="width: 20%;">
+                                      <label class="kt-checkbox kt-checkbox--tick kt-checkbox--danger">
+                                        <input type="checkbox" name="choise-question-answer{{$parent.$index}}" ng-click="onSetAnswer(choiceQuestion, option, $event)" ng-checked="option.rightAnswer">
+                                        <span></span>
+                                      </label>
+                                    </td>
+                                    <td style="width: 10%;">
+                                      <button type="button" class="btn btn-outline-hover-warning btn-sm btn-circle btn-icon" ng-click="onRemoveOption(choiceQuestion, option)"><i class="fa fa-times"></i></button>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="3" style="width: 100%;">
+                                      <a href="javascript:" ng-click="onCreateChoiceOption(choiceQuestion)">添加选项</a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+														  </table>
+														</div>
+													</div>
+                        </form>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+                <div class="kt-margin-t-15">
+                  <span style="margin-left: 25px;">该知识点当前共有</span>
+                  <span ng-bind="model.choiceQuestion.totalCount"></span>
+                  <span>个选择题</span>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-outline-hover-success" ng-if="model.choiceQuestion.pageNumber < model.choiceQuestion.maxPageNumber" ng-click="onLoadMoreChoiceQuestion()">加载更多</button>
+                    <button class="btn btn-warning" ng-if="model.choiceQuestion.dataStatus == 'NULL' || model.choiceQuestion.dataStatus == 'P'" ng-click="onCreateChoiceQuestion()">添加选择题</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="kt_tabs_2">
+                <div class="exercises-select-list">
+                  <ol>
+                    <li class="kt-margin-t-10" ng-repeat = "question in model.fillInBlankQuestionList">
+                      <div class="form-group kt-margin-b-0  ">
+                        <strong ng-if="question.exercisesTitle == ''">请设置题目标题</strong>
+                        <strong ng-if="question.exercisesTitle != ''" ng-bind="question.exercisesTitle" class="retain-white-enter"></strong>
+                        <div>
+                          <label ng-if="question.exercisesSource == ''" class="kt-font-sm">请设置题目来源</label>
+                          <label ng-if="question.exercisesSource != ''" class="kt-font-sm" ng-bind="question.exercisesSource">请设置题目来源</label>
+                        </div>
+
+                        <input type="text" class="form-control" style="width: 35%; display:inline" disabled="disabled" ng-model="question.answer" placeholder="请设置正确答案">
+                        <strong ng-if="question.answer != ''" class="kt-font-danger">（正确答案）</strong>
+
+                      </div>
+                      <div class="kt-margin-t-10">
+                        <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == false" ng-click="toggleFillInQuestionEdit(question, true)">编辑</a>
+                        <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == true" ng-click="toggleFillInQuestionEdit(question, false)">取消编辑</a>
+                        <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == true" ng-click="toggleFillInQuestionEdit(question, false)">提交</a>
+                        {{!-- <a href="javascript:" class="kt-link--danger" ng-click="onRemoveFillInQuestion(question)">删除</a> --}}
+                      </div>
+                      <div class="exercises-select-edit kt-margin-t-10" ng-if="question.isShowEdit == true">
+                        <form class="kt-form kt-form--label-right">
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">题目标题：</label>
+														<div class="col-10">
+                              <textarea class="form-control" name="" rows="3" maxlength="3000" placeholder="如果题目包含代码片段，你可使用Markdown语法进行编辑" ng-model="question.exercisesTitle"></textarea>
+														</div>
+													</div>
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">题目来源：</label>
+														<div class="col-10">
+                              <input type="text" class="form-control" maxlength="500" ng-model="question.exercisesSource" placeholder="请设置题目来源">
+														</div>
+													</div>
+                          <div class="form-group row kt-margin-b-0-">
+														<label for="example-text-input" class="col-1 col-form-label text-left">正确答案：</label>
+														<div class="col-10">
+                              <input type="text" class="form-control" maxlength="500" ng-model="question.answer" placeholder="请设置正确答案">
+														</div>
+													</div>
+                        </form>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-warning" ng-click="onCreateFillInQuestion()">添加填空题</button>
+                    <button class="btn btn-primary">提交填空题</button>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane" id="kt_tabs_3">
+                <!--begin::Portlet-->
+                <div class="kt-portlet" style="margin-top: -10px;">
+                  <div class="kt-portlet__head kt-portlet__head--noborder">
+                    <div class="kt-portlet__head-label">
+                      <h3 class="kt-portlet__head-title">
+                        上传习题PDF源文件
+                      </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                      {{!-- <a href="javascript:;" class="btn btn-clean btn-sm btn-icon btn-icon-md" ng-click="onShowUploadDocumentModal()">
+                        <i class="kt-nav__link-icon flaticon-upload"></i>
+                      </a> --}}
+                      <button class="btn btn-warning btn-elevate btn-icon-sm"
+                              ng-click="onShowUploadDocumentModal()">
+                        <i class="flaticon-upload"></i>
+                        上传
+                      </button> &nbsp;
+                      <button class="btn btn-brand btn-elevate btn-icon-sm"
+                              ng-click="onSave()"
+                              ng-disabled="model.documentList.length === 0">
+                        <i class="la la-save"></i>
+                        提交
+                      </button>
+                    </div>
+                  </div>
+                  <div class="kt-portlet__body" style="margin-top: -25px;">
+                    <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline table-fix"
+                                role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
+                            <thead>
+                              <tr role="row">
+                                <th>练习题</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                                <th>参考示例</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="document in model.documentList">
+                                <td>
+                                  <div class="kt-widget4">
+                                    <div class="kt-widget4__item">
+                                      <div class="kt-widget4__pic kt-widget4__pic--icon">
+                                        <img src="/media/files/pdf.svg" alt="">
+                                      </div>
+                                      <a ng-href="\{{document.documentUrl}}" target="_blank" class="kt-widget4__title kt-font-brand kt-font-bold" ng-bind="document.documentName"></a>
+                                      <div class="kt-widget4__tools">
+                                        <a href="javascript:;" class="btn btn-clean btn-icon btn-sm">
+                                          <i class="flaticon2-download-symbol-of-down-arrow-in-a-rectangle"></i>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td ng-bind="document.createUser"></td>
+                                <td ng-bind="document.createTime"></td>
+                                <td>
+                                  <div class="kt-widget4">
+                                    <div class="kt-widget4__item">
+                                      <div class="kt-widget4__pic kt-widget4__pic--icon">
+                                        <svg class="octicon octicon-mark-github v-align-middle" height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                                      </div>
+                                      <a ng-href="\{{document.answerGitUrl}}" target="_blank" class="kt-widget4__title kt-font-brand kt-font-bold">
+                                        参考示例
+                                      </a>
+                                      <div class="kt-widget4__tools">
+                                        <a href="javascript:;" class="btn btn-clean btn-icon btn-sm">
+                                          <i class="flaticon2-download-symbol-of-down-arrow-in-a-rectangle"></i>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="center">
+                                  <span class="kt-badge kt-badge--inline kt-badge--pill"
+                                        ng-class="{'kt-badge--primary': document.dataStatus == 'P', 'kt-badge--success': document.dataStatus == 'A', 'kt-badge--danger': document.dataStatus == 'D'}"
+                                        ng-bind="document.dataStatusText">
+                                  </span>
+                                </td>
+                                <td class="center">
+                                  <span style="overflow: visible; position: relative; width: 110px;">
+                                    <a href="javascript:;" title="删除" class="btn btn-sm btn-clean btn-icon btn-icon-md" ng-click="onRemoveDocument(document)">
+                                      <i class="la la-trash"></i>
+                                    </a>
+                                  </span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--end::Portlet-->
+              </div>
+
+              <div class="modal fade" id="kt_modal_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <form class="kt-form kt-form--label-right" name="form-status" novalidate>
+                      <div class="modal-header">
+                        <h5 class="modal-title" ng-bind="model.approveExercises.title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row kt-padding-l-5">
+                            <div class="col-md-6 ">
+                              <label class="kt-option kt-option--plain">
+                                <span class="kt-option__control">
+                                  <span class="kt-radio kt-radio--brand">
+                                    <input type="radio" name="status" value="A" ng-model="model.approveExercises.status" ng-checked="model.approveExercises.status == 'A'">
+                                    <span></span>
+                                  </span>
+                                </span>
+                                <span class="kt-option__label">
+                                  <span class="kt-option__head">
+                                    <span class="kt-option__title">
+                                      通过
+                                    </span>
+                                  </span>
+                                  <span class="kt-option__body">
+                                    前台可看到并使用该习题
+                                  </span>
+                                </span>
+                              </label>
                             </div>
-                          </div>
-                        </td>
-                        <td ng-bind="document.createUser"></td>
-                        <td ng-bind="document.createTime"></td>
-                        <td>
-                          <div class="kt-widget4">
-                            <div class="kt-widget4__item">
-                              <div class="kt-widget4__pic kt-widget4__pic--icon">
-                                <svg class="octicon octicon-mark-github v-align-middle" height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-                              </div>
-                              <a ng-href="\{{document.answerGitUrl}}" target="_blank" class="kt-widget4__title kt-font-brand kt-font-bold">
-                                参考示例
-                              </a>
-                              <div class="kt-widget4__tools">
-                                <a href="javascript:;" class="btn btn-clean btn-icon btn-sm">
-                                  <i class="flaticon2-download-symbol-of-down-arrow-in-a-rectangle"></i>
-                                </a>
-                              </div>
+                            <div class="col-md-6 ">
+                              <label class="kt-option kt-option--plain">
+                                <span class="kt-option__control">
+                                  <span class="kt-radio kt-radio--brand">
+                                    <input type="radio" name="status" value="D" ng-model="model.approveExercises.status" ng-checked="model.approveExercises.status == 'D'">
+                                    <span></span>
+                                  </span>
+                                </span>
+                                <span class="kt-option__label">
+                                  <span class="kt-option__head">
+                                    <span class="kt-option__title">
+                                      不通过
+                                    </span>
+                                  </span>
+                                  <span class="kt-option__body">
+                                    前台无法可看到该习题
+                                  </span>
+                                </span>
+                              </label>
                             </div>
-                          </div>
-                        </td>
-                        <td class="center">
-                          <span class="kt-badge kt-badge--inline kt-badge--pill"
-                                ng-class="{'kt-badge--primary': document.dataStatus == 'P', 'kt-badge--success': document.dataStatus == 'A', 'kt-badge--danger': document.dataStatus == 'D'}"
-                                ng-bind="document.dataStatusText">
-                          </span>
-                        </td>
-                        <td class="center">
-                          <span style="overflow: visible; position: relative; width: 110px;">
-                            <a href="javascript:;" title="删除" class="btn btn-sm btn-clean btn-icon btn-icon-md" ng-click="onRemoveDocument(document)">
-                              <i class="la la-trash"></i>
-                            </a>
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" 
+                                class="btn btn-primary" 
+                                ng-click="onChangeStatus()"
+                                ng-disabled="model.approveExercises.status == ''">
+                          提交
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!--end::Portlet-->
       </div>
     </div>
   </div>
