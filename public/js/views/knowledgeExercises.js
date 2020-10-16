@@ -27,7 +27,9 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             pageNumber: 1,
             totalCount: 0,
             maxPageNumber: 0,
-            dataStatus: 'NULL'
+            dataStatus: 'NULL',
+            documentUrl: '',
+            answerGitUrl: ''
         },
         approveExercises: {
             title: '',
@@ -35,13 +37,6 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             status: '',
             question: {}
         }
-        //choiceQuestionList: [],
-        // fillInBlankQuestionList: [],
-        // programmeQuestionList: [],
-
-        // documentList: [],
-        // documentUrl: '',
-        // answerGitUrl: '',
     };
 
     //#region 选择题
@@ -102,6 +97,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 $scope.changeChoiceStatus();
                 break;
             case 'B':
+                $scope.changeBlankStatus();
                 break;
             case 'P':
                 break;
@@ -134,17 +130,8 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 $('#kt_modal_status').modal('hide');
                 return false;
             }
-            let removeIndex = -1;
-            for (let i = 0; i < $scope.model.choiceQuestion.dataList.length; i++) {
-                if ($scope.model.choiceQuestion.dataList[i].exercisesID === $scope.model.question.exercisesID) {
-                    removeIndex = i;
-                    break;
-                }
-            }
-            if (removeIndex >= 0) {
-                $scope.model.choiceQuestion.dataList.splice(removeIndex, 1);
-            }
 
+            $scope.removeChoiceQuestion($scope.model.question);
             $('#kt_modal_status').modal('hide');
             
         }, function errorCallback(response) {
@@ -249,7 +236,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
                 return false;
             }
-            //隐藏编辑区
+            
             let currentTime = new Date().toLocaleString('chinese', { hour12: false });
             choiceQuestion.isNew = false;
             choiceQuestion.exercisesID = response.data.exercisesID;
@@ -260,6 +247,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             choiceQuestion.updateUser = $scope.model.loginUser.adminName;
             choiceQuestion.updateTime = currentTime.replaceAll('/', '-');
 
+            //隐藏编辑区
             $scope.toggleChoiceQuestionEdit(choiceQuestion, false);
             layer.msg('保存成功！');
         }, function errorCallback(response) {
@@ -284,6 +272,10 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
                 return false;
             }
+            let currentTime = new Date().toLocaleString('chinese', { hour12: false });
+            choiceQuestion.isNew = false;
+            choiceQuestion.updateUser = $scope.model.loginUser.adminName;
+            choiceQuestion.updateTime = currentTime.replaceAll('/', '-');
             //隐藏编辑区
             $scope.toggleChoiceQuestionEdit(choiceQuestion, false);
             layer.msg('保存成功！');
@@ -293,7 +285,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     };
 
     $scope.onRemoveChoiceQuestion = function(question) {
-        if (question.exercisesTitle.length === 0) {
+        if (question.isNew && question.exercisesTitle.length === 0) {
             $scope.removeChoiceQuestion(question);
             return false;
         }
@@ -384,37 +376,196 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         $scope.loadChoiceQuestionList();
     }
 
-    
-
     //#endregion
 
     //#region 填空题
-    $scope.initFillInBlankQuestionList = function() {
-        //取得当前知识点的填空题
 
-        //如果当前知识点没有已保存的填空题，则进行初始化
-        $scope.model.fillInBlankQuestionList.push($scope.buildFillInBlankQuestion());
+    $scope.onFilterBlankQuestion = function(dataStatus) {
+        if ($scope.model.fillInBlankQuestion.dataStatus === dataStatus) {
+            return false;
+        }
+        $scope.model.fillInBlankQuestion.dataStatus = dataStatus;
+        $scope.model.fillInBlankQuestion.pageNumber = 1;
+        $scope.model.fillInBlankQuestion.dataList = [];
+        $scope.loadFillInBlankQuestionList();
+    };
+
+    $scope.onLoadMoreBlankQuestion = function() {
+        $scope.model.fillInBlankQuestion.pageNumber++;
+        $scope.loadFillInBlankQuestionList();
+    };
+
+    $scope.loadFillInBlankQuestionList = function() {
+        //取得当前知识点的填空题
+        $http.get('/knowledge/exercises/blank/list?'
+                .concat(`pageNumber=${$scope.model.fillInBlankQuestion.pageNumber}`)
+                .concat(`&technologyID=${$scope.model.technologyID}`)
+                .concat(`&knowledgeID=${$scope.model.knowledgeID}`)
+                .concat(`&dataStatus=${$scope.model.fillInBlankQuestion.dataStatus}`))
+            .then(function successCallback(response) {
+                if (response.data.err) {
+                    bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                    return false;
+                }
+                
+                $scope.model.fillInBlankQuestion.totalCount = response.data.dataContent.totalCount;
+                $scope.model.fillInBlankQuestion.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
+
+                if (response.data.dataContent.totalCount > 0) {
+                    response.data.dataContent.dataList.forEach((data) => {
+                        data.isNew = false;
+                        data.isShowEdit = false;
+                        $scope.model.fillInBlankQuestion.dataList.push(data);
+                    });
+                    return false;
+                }
+                $scope.model.fillInBlankQuestion.dataList = [];
+            }, function errorCallback(response) {
+                bootbox.alert(localMessage.NETWORK_ERROR);
+            });
     };
 
     $scope.buildFillInBlankQuestion = function() {
         let question = {};
         question.exercisesTitle = '';
         question.exercisesSource = '';
-        question.answer = '';
+        question.rightAnswer = '';
+        question.isNew = true;
         question.isShowEdit = false;
         return question;
     };
 
+    
     $scope.onCreateFillInQuestion = function() {
-        $scope.model.fillInBlankQuestionList.push($scope.buildFillInBlankQuestion());
+        $scope.model.fillInBlankQuestion.dataList.push($scope.buildFillInBlankQuestion());
     };
 
     $scope.toggleFillInQuestionEdit = function(question, isShow) {
         question.isShowEdit = isShow;
     };
 
+    $scope.checkBlankQuestion = function(question) {
+        if(question.exercisesTitle.length === 0) {
+            layer.msg('请填写题目标题！');
+            return false;
+        };
+        if(question.exercisesSource.length === 0) {
+            layer.msg('请填写题目来源！');
+            return false;
+        };
+        if(question.rightAnswer.length === 0) {
+            layer.msg('请填写正确答案！');
+            return false;
+        };
+        return true;
+    };
+
+    $scope.addFillInQuestion = function(question) {
+        $http.post('/knowledge/exercises/blank/add', {
+            technologyID: $scope.model.technologyID,
+            knowledgeID: $scope.model.knowledgeID,
+            exercisesTitle: question.exercisesTitle,
+            exercisesSource: question.exercisesSource,
+            rightAnswer: question.rightAnswer,
+            loginUser: $scope.model.loginUser.adminID
+        }).then(function successCallback(response) {
+            if (response.data.err) {
+                bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                return false;
+            }
+            //隐藏编辑区
+            let currentTime = new Date().toLocaleString('chinese', { hour12: false });
+            question.isNew = false;
+            question.exercisesID = response.data.exercisesID;
+            question.dataStatus = 'P';
+            question.dataStatusText = '待审批';
+            question.createUser = $scope.model.loginUser.adminName;
+            question.createTime = currentTime.replaceAll('/', '-');
+            question.updateUser = $scope.model.loginUser.adminName;
+            question.updateTime = currentTime.replaceAll('/', '-');
+
+            $scope.toggleFillInQuestionEdit(question, false);
+            layer.msg('保存成功！');
+        }, function errorCallback(response) {
+            bootbox.alert(localMessage.NETWORK_ERROR);
+        }); 
+    }
+
+    $scope.changeFillInQuestion = function(question) {
+        $http.put('/knowledge/exercises/blank/change', {
+            exercisesID: question.exercisesID,
+            technologyID: $scope.model.technologyID,
+            knowledgeID: $scope.model.knowledgeID,
+            exercisesTitle: question.exercisesTitle,
+            exercisesSource: question.exercisesSource,
+            rightAnswer: question.rightAnswer,
+            loginUser: $scope.model.loginUser.adminID
+        }).then(function successCallback(response) {
+            if (response.data.err) {
+                bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                return false;
+            }
+            let currentTime = new Date().toLocaleString('chinese', { hour12: false });
+            question.isNew = false;
+            question.updateUser = $scope.model.loginUser.adminName;
+            question.updateTime = currentTime.replaceAll('/', '-');
+            //隐藏编辑区
+            $scope.toggleFillInQuestionEdit(question, false);
+            layer.msg('保存成功！');
+        }, function errorCallback(response) {
+            bootbox.alert(localMessage.NETWORK_ERROR);
+        }); 
+    }
+
+    $scope.saveFillInQuestion = function(question) {
+        if (!$scope.checkBlankQuestion(question)) {
+            return false;
+        }
+
+        if (question.isNew) {
+            $scope.addFillInQuestion(question);
+            return false; 
+        }
+        $scope.changeFillInQuestion(question);        
+    }
+
+    $scope.changeBlankStatus = function() {
+        if ($scope.model.question.dataStatus === $scope.model.approveExercises.status) {
+            layer.msg('修改的状态不能和当前状态相同！');
+            return false;
+        }
+        $http.put('/knowledge/exercises/blank/change/status', {
+            exercisesID: $scope.model.question.exercisesID,
+            technologyID: $scope.model.technologyID,
+            knowledgeID: $scope.model.knowledgeID,
+            dataStatus: $scope.model.approveExercises.status,
+            loginUser: $scope.model.loginUser.adminID
+        }).then(function successCallback(response) {
+            if (response.data.err) {
+                bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                return false;
+            }
+            let currentTime = new Date().toLocaleString('chinese', { hour12: false });
+            $scope.model.question.dataStatus = $scope.model.approveExercises.status;
+            $scope.model.question.dataStatusText = $scope.model.approveExercises.status === 'A' ? '审批通过' : '审批未通过';
+            $scope.model.question.updateUser = $scope.model.loginUser.adminName;
+            $scope.model.question.updateTime = currentTime.replaceAll('/', '-');
+            
+            if ($scope.model.fillInBlankQuestion.dataStatus === 'NULL') {
+                $('#kt_modal_status').modal('hide');
+                return false;
+            }
+
+            $scope.removeFillInQuestion($scope.model.question);
+            $('#kt_modal_status').modal('hide');
+            
+        }, function errorCallback(response) {
+            bootbox.alert(localMessage.NETWORK_ERROR);
+        }); 
+    };
+
     $scope.onRemoveFillInQuestion = function(question) {
-        if (question.exercisesTitle.length === 0) {
+        if (question.isNew && question.exercisesTitle.length === 0) {
             $scope.removeFillInQuestion(question);
             return false;
         }
@@ -432,22 +583,43 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             },
             callback: function(result) {
                 if (result) {
-                    $scope.removeFillInQuestion(question);
-                    $scope.$apply();
+                    if(question.isNew) {
+                        $scope.removeFillInQuestion(question);
+                        $scope.$apply();
+                        return false;
+                    }
+                    $scope.deleteBlankQuestion(question);
                 }
             }
         });
     };
 
+    $scope.deleteBlankQuestion = function(question) {
+        $http.delete('/knowledge/exercises/blank/delete'
+                    .concat(`?technologyID=${question.technologyID}`)
+                    .concat(`&knowledgeID=${question.knowledgeID}`)
+                    .concat(`&exercisesID=${question.exercisesID}`))
+        .then(function successCallback(response) {
+            if(response.data.err){
+                bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
+                return false;
+            }
+            $scope.removeFillInQuestion(question);
+            layer.msg('删除成功！');
+        }, function errorCallback(response) {
+            bootbox.alert(localMessage.NETWORK_ERROR);
+        });
+    };
+
     $scope.removeFillInQuestion = function(question) {
         let removeIndex = -1;
-        $scope.model.fillInBlankQuestionList.forEach(function(fillInQuestion, index) {
+        $scope.model.fillInBlankQuestion.dataList.forEach(function(fillInQuestion, index) {
             if (fillInQuestion === question) {
                 removeIndex = index;
             }
         });
         if (removeIndex >= 0) {
-            $scope.model.fillInBlankQuestionList.splice(removeIndex, 1);
+            $scope.model.fillInBlankQuestion.dataList.splice(removeIndex, 1);
         }
     }
 
@@ -458,35 +630,36 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         let uploadDocumentDir = { "dir1": "exercises", "dir2": `T${$scope.model.technologyID}`, "dir3": `K${$scope.model.knowledgeID}` };
         let uploadDocumentServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadDocumentDir);
         uploadUtils.initUploadPlugin('#file-upload-document', uploadDocumentServerUrl, ['pdf'], false, function(opt, data) {
-            $scope.model.documentUrl = data.fileUrlList[0];
+            $scope.model.programmeQuestion.documentUrl = data.fileUrlList[0];
             $scope.$apply();
             layer.msg(localMessage.UPLOAD_SUCCESS);
         });
     };
 
     $scope.onChangeDocumentList = function() {
-        $scope.model.documentList.push({
-            documentUrl: $scope.model.documentUrl,
-            documentName: $scope.model.documentUrl.substr($scope.model.documentUrl.lastIndexOf('/') + 1),
-            answerGitUrl: $scope.model.answerGitUrl,
+        $scope.model.programmeQuestion.dataList.push({
+            documentUrl: $scope.model.programmeQuestion.documentUrl,
+            documentName: $scope.model.programmeQuestion.documentUrl.substr($scope.model.programmeQuestion.documentUrl.lastIndexOf('/') + 1),
+            answerGitUrl: $scope.model.programmeQuestion.answerGitUrl,
         });
         $('#kt_modal_document').modal('hide');
     };
 
     $scope.loadFileList = function() {
-        $http.get(`/knowledge/exercises/files?technologyID=${$scope.model.technologyID}&knowledgeID=${$scope.model.knowledgeID}`).then(function successCallback(response) {
+        $http.get(`/knowledge/exercises/program/files?technologyID=${$scope.model.technologyID}&knowledgeID=${$scope.model.knowledgeID}`).then(function successCallback(response) {
             if (response.data.err) {
                 bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
                 return false;
             }
             if (response.data.files === null) {
+                $scope.model.programmeQuestion.totalCount = 0;
                 return false;
             }
 
-            $scope.model.documentList.splice(0, response.data.files.length);
+            $scope.model.programmeQuestion.dataList.splice(0, response.data.files.length);
             if (response.data.files !== null) {
                 response.data.files.forEach(function(file) {
-                    $scope.model.documentList.push({
+                    $scope.model.programmeQuestion.dataList.push({
                         documentUrl: file.documentUrl,
                         documentName: file.documentUrl.substr(file.documentUrl.lastIndexOf('/') + 1),
                         answerGitUrl: file.answerUrl,
@@ -497,6 +670,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                     });
                 })
             }
+            $scope.model.programmeQuestion.totalCount = $scope.model.programmeQuestion.dataList.length;
         }, function errorCallback(response) {
             bootbox.alert(localMessage.NETWORK_ERROR);
         });
@@ -504,15 +678,15 @@ pageApp.controller('pageCtrl', function($scope, $http) {
 
     $scope.onShowUploadDocumentModal = function() {
         $('div.cleanFileBt').trigger("click");
-        $scope.model.answerGitUrl = '';
-        $scope.model.documentUrl = '';
+        $scope.model.programmeQuestion.answerGitUrl = '';
+        $scope.model.programmeQuestion.documentUrl = '';
         $('#kt_modal_document').modal('show');
     };
 
     $scope.onRemoveDocument = function(data) {
-        $scope.model.documentList.forEach(function(image, index) {
+        $scope.model.programmeQuestion.dataList.forEach(function(image, index) {
             if (image.documentUrl === data.documentUrl) {
-                $scope.model.documentList.splice(index, 1);
+                $scope.model.programmeQuestion.dataList.splice(index, 1);
             }
         })
     };
@@ -520,13 +694,13 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     $scope.onSave = function() {
         let documentObjectArray = [];
 
-        $scope.model.documentList.forEach(function(document) {
+        $scope.model.programmeQuestion.dataList.forEach(function(document) {
             documentObjectArray.push({
                 documentUrl: document.documentUrl,
                 answerUrl: document.answerGitUrl
             });
         });
-        $http.post('/knowledge/exercises', {
+        $http.post('/knowledge/exercises/program/add', {
             technologyID: $scope.model.technologyID,
             learningPhaseID: $scope.model.learningPhaseID,
             knowledgeID: $scope.model.knowledgeID,
@@ -554,9 +728,9 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             return false;
         }
         $scope.loadChoiceQuestionList();
-        // $scope.initFillInBlankQuestionList();
-        // $scope.initUploadPlugin();
-        // $scope.loadFileList();
+        $scope.loadFillInBlankQuestionList();
+        $scope.initUploadPlugin();
+        $scope.loadFileList();
     };
 
     $scope.getParameter = function() {

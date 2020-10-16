@@ -166,11 +166,12 @@ router.get('/blank/list', function(req, res, next) {
                 msg: result.msg
             });
         } else {
+            let dataContent = commonService.buildRenderData('知识点练习（填空题）', pageNumber, result);
             res.json({
                 err: false,
                 code: result.code,
                 msg: result.msg,
-                dataList: result.content.responseData
+                dataContent: dataContent
             });
         }
     });
@@ -183,7 +184,7 @@ router.post('/blank/add', function(req, res, next) {
         knowledgeID: req.body.knowledgeID,
         exercisesTitle: req.body.exercisesTitle,
         exercisesSource: req.body.exercisesSource,
-        rightAnswers: req.body.rightAnswers,
+        rightAnswer: req.body.rightAnswer,
         loginUser: req.body.loginUser
     };
 
@@ -212,7 +213,7 @@ router.put('/blank/change', function(req, res, next) {
         knowledgeID: req.body.knowledgeID,
         exercisesTitle: req.body.exercisesTitle,
         exercisesSource: req.body.exercisesSource,
-        rightAnswers: req.body.rightAnswers,
+        rightAnswer: req.body.rightAnswer,
         loginUser: req.body.loginUser
     };
 
@@ -261,7 +262,7 @@ router.put('/blank/change/status', function(req, res, next) {
 });
 
 router.delete('/blank/delete', function(req, res, next) {
-    let service = new commonService.commonInvoke('deleteKnowledgeChoiceExercises');
+    let service = new commonService.commonInvoke('deleteKnowledgeBlankExercises');
     let technologyID = req.query.technologyID;
     let knowledgeID = req.query.knowledgeID;
     let exercisesID = req.query.exercisesID;

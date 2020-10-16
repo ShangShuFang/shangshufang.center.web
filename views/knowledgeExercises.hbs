@@ -40,12 +40,6 @@
                 <i class="la la-reply"></i>
                 返回
               </a>
-              {{!-- <button class="btn btn-brand btn-elevate btn-icon-sm"
-                      ng-click="onSave()"
-                      ng-disabled="model.documentList.length === 0">
-                <i class="la la-save"></i>
-                提交
-              </button> --}}
             </div>
           </div>
         </div>
@@ -60,19 +54,19 @@
           <div class="kt-portlet__body">
             <ul class="nav nav-tabs nav-tabs-line" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#kt_tabs_1">选择题</a>
+                <a class="nav-link active" data-toggle="tab" href="#kt_tabs_1">选择题（<span ng-bind="model.choiceQuestion.totalCount"></span>）</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#kt_tabs_2" role="tab">填空题</a>
+                <a class="nav-link" data-toggle="tab" href="#kt_tabs_2" role="tab">填空题（<span ng-bind="model.fillInBlankQuestion.totalCount"></span>）</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#kt_tabs_3" role="tab">编程题</a>
+                <a class="nav-link" data-toggle="tab" href="#kt_tabs_3" role="tab">编程题（<span ng-bind="model.programmeQuestion.totalCount"></span>）</a>
               </li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="kt_tabs_1">
                 <div class="exercises-select-list">
-                  <div style="margin-left: 25px;">
+                  <div>
                     <button type="button" 
                             class="btn btn-sm" 
                             ng-class="{'btn-primary': model.choiceQuestion.dataStatus == 'NULL', 'btn-outline-hover-primary': model.choiceQuestion.dataStatus != 'NULL'}" 
@@ -214,7 +208,7 @@
                   </ol>
                 </div>
                 <div class="kt-margin-t-15">
-                  <span style="margin-left: 25px;">该知识点当前共有</span>
+                  <span>该知识点当前共有</span>
                   <span ng-bind="model.choiceQuestion.totalCount"></span>
                   <span>个选择题</span>
                 </div>
@@ -227,25 +221,59 @@
               </div>
               <div class="tab-pane" id="kt_tabs_2">
                 <div class="exercises-select-list">
+                  <div>
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.fillInBlankQuestion.dataStatus == 'NULL', 'btn-outline-hover-primary': model.fillInBlankQuestion.dataStatus != 'NULL'}" 
+                            ng-click="onFilterBlankQuestion('NULL')">全部</button>
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.fillInBlankQuestion.dataStatus == 'P', 'btn-outline-hover-primary': model.fillInBlankQuestion.dataStatus != 'P'}" 
+                            ng-click="onFilterBlankQuestion('P')">待审批</button>
+                    <button type="button" 
+                            class="btn btn-sm" 
+                            ng-class="{'btn-primary': model.fillInBlankQuestion.dataStatus == 'A', 'btn-outline-hover-primary': model.fillInBlankQuestion.dataStatus != 'A'}" 
+                            ng-click="onFilterBlankQuestion('A')">审批通过</button>
+                    <button type="button" 
+                            ng-class="{'btn-primary': model.fillInBlankQuestion.dataStatus == 'D', 'btn-outline-hover-primary': model.fillInBlankQuestion.dataStatus != 'D'}" 
+                            class="btn btn-sm" 
+                            ng-click="onFilterBlankQuestion('D')">审批未通过</button>
+                  </div>
                   <ol>
-                    <li class="kt-margin-t-10" ng-repeat = "question in model.fillInBlankQuestionList">
+                    <li class="kt-margin-t-10" ng-repeat = "question in model.fillInBlankQuestion.dataList">
                       <div class="form-group kt-margin-b-0  ">
                         <strong ng-if="question.exercisesTitle == ''">请设置题目标题</strong>
                         <strong ng-if="question.exercisesTitle != ''" ng-bind="question.exercisesTitle" class="retain-white-enter"></strong>
+                        <span ng-if="question.isNew == false" 
+                              class="kt-badge kt-badge--inline" 
+                              ng-class="{'kt-badge--primary': question.dataStatus == 'P', 'kt-badge--success': question.dataStatus == 'A', 'kt-badge--danger': question.dataStatus == 'D'}" 
+                              ng-bind="question.dataStatusText"></span>
                         <div>
                           <label ng-if="question.exercisesSource == ''" class="kt-font-sm">请设置题目来源</label>
                           <label ng-if="question.exercisesSource != ''" class="kt-font-sm" ng-bind="question.exercisesSource">请设置题目来源</label>
                         </div>
+                        <div class="kt-font-sm" ng-if="!question.isNew">
+                            <label ng-bind="question.createUser"></label>
+                            <label>于</label>
+                            <label ng-bind="question.createTime"></label>
+                            <label>添加</label>
+                            &nbsp;&nbsp;
+                            <label ng-bind="question.updateUser" ng-if="question.createTime != question.updateTime"></label>
+                            <label ng-if="question.createTime != question.updateTime">于</label>
+                            <label ng-bind="question.updateTime" ng-if="question.createTime != question.updateTime"></label>
+                            <label ng-if="question.createTime != question.updateTime">更新</label>
+                          </div>
 
-                        <input type="text" class="form-control" style="width: 35%; display:inline" disabled="disabled" ng-model="question.answer" placeholder="请设置正确答案">
-                        <strong ng-if="question.answer != ''" class="kt-font-danger">（正确答案）</strong>
+                        <input type="text" class="form-control" style="width: 35%; display:inline" disabled="disabled" ng-model="question.rightAnswer" placeholder="请设置正确答案">
+                        <strong ng-if="question.rightAnswer != ''" class="kt-font-danger">（正确答案）</strong>
 
                       </div>
                       <div class="kt-margin-t-10">
                         <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == false" ng-click="toggleFillInQuestionEdit(question, true)">编辑</a>
                         <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == true" ng-click="toggleFillInQuestionEdit(question, false)">取消编辑</a>
-                        <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == true" ng-click="toggleFillInQuestionEdit(question, false)">提交</a>
-                        {{!-- <a href="javascript:" class="kt-link--danger" ng-click="onRemoveFillInQuestion(question)">删除</a> --}}
+                        <a href="javascript:" class="kt-link--brand" ng-if="question.isShowEdit == true" ng-click="saveFillInQuestion(question)">保存</a>
+                        <a href="javascript:" class="kt-link--danger" ng-if="question.isNew == false" ng-click="onShowApproveDialog('B', question)">审批</a>
+                        <a href="javascript:" class="kt-link--danger" ng-click="onRemoveFillInQuestion(question)">删除</a>
                       </div>
                       <div class="exercises-select-edit kt-margin-t-10" ng-if="question.isShowEdit == true">
                         <form class="kt-form kt-form--label-right">
@@ -264,7 +292,7 @@
                           <div class="form-group row kt-margin-b-0-">
 														<label for="example-text-input" class="col-1 col-form-label text-left">正确答案：</label>
 														<div class="col-10">
-                              <input type="text" class="form-control" maxlength="500" ng-model="question.answer" placeholder="请设置正确答案">
+                              <input type="text" class="form-control" maxlength="500" ng-model="question.rightAnswer" placeholder="请设置正确答案">
 														</div>
 													</div>
                         </form>
@@ -272,10 +300,16 @@
                     </li>
                   </ol>
                 </div>
+                <div class="kt-margin-t-15">
+                  <span>该知识点当前共有</span>
+                  <span ng-bind="model.fillInBlankQuestion.totalCount"></span>
+                  <span>个填空题</span>
+                </div>
                 <div class="row">
                   <div class="col-md-12 text-center">
+                    <button class="btn btn-outline-hover-success" ng-if="model.fillInBlankQuestion.pageNumber < model.fillInBlankQuestion.maxPageNumber" ng-click="onLoadMoreBlankQuestion()">加载更多</button>
                     <button class="btn btn-warning" ng-click="onCreateFillInQuestion()">添加填空题</button>
-                    <button class="btn btn-primary">提交填空题</button>
+                    
                   </div>
                 </div>
 
@@ -300,7 +334,7 @@
                       </button> &nbsp;
                       <button class="btn btn-brand btn-elevate btn-icon-sm"
                               ng-click="onSave()"
-                              ng-disabled="model.documentList.length === 0">
+                              ng-disabled="model.programmeQuestion.dataList.length === 0">
                         <i class="la la-save"></i>
                         提交
                       </button>
@@ -323,7 +357,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="document in model.documentList">
+                              <tr ng-repeat="document in model.programmeQuestion.dataList">
                                 <td>
                                   <div class="kt-widget4">
                                     <div class="kt-widget4__item">
@@ -472,13 +506,13 @@
             <div class="kt-portlet__body">
               <div id="file-upload-document" class="fileUploadContent"></div>
               <br>
-              <input type="url" class="form-control" name="answerGitUrl" ng-model="model.answerGitUrl" placeholder="习题参考答案Git地址" required>
+              <input type="url" class="form-control" name="answerGitUrl" ng-model="model.programmeQuestion.answerGitUrl" placeholder="习题参考答案Git地址" required>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
             <button type="button" class="btn btn-primary"
-                    ng-disabled="myForm.answerGitUrl.$pristine || (myForm.answerGitUrl.$dirty && myForm.answerGitUrl.$invalid) || model.documentUrl.length === 0"
+                    ng-disabled="myForm.answerGitUrl.$pristine || (myForm.answerGitUrl.$dirty && myForm.answerGitUrl.$invalid) || model.programmeQuestion.documentUrl.length === 0"
                     ng-click="onChangeDocumentList()" >确定</button>
           </div>
         </form>

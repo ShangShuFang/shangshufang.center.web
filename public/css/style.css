@@ -173,3 +173,7 @@ body {
 .retain-white-enter {
     white-space: pre-wrap;
 }
+
+.exercises-select-list ol li {
+    margin-left: -25px;
+}

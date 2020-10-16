@@ -134,7 +134,9 @@
                 <th>技术名称</th>
                 <th>学习阶段</th>
                 <th>技术点名称</th>
-                <th>习题数量</th>
+                <th>选择题数量</th>
+                <th>填空题数量</th>
+                <th>编程题数量</th>
                 <th>使用公司</th>
                 <th>当前状态</th>
                 <th>操作</th>
@@ -146,9 +148,10 @@
                 <td ng-bind="data.technologyName"></td>
                 <td ng-bind="data.learningPhaseName"></td>
                 <td ng-bind="data.knowledgeName"></td>
-                <td class="text-center" ng-bind="data.knowledgeExercisesCount"></td>
+                <td class="text-center" ng-bind="data.choiceExercisesCount"></td>
+                <td class="text-center" ng-bind="data.blankExercisesCount"></td>
+                <td class="text-center" ng-bind="data.programExercisesCount"></td>
                 <td class="center" ng-bind="data.usingCompanyCount">
-<!--                  <button type="button" class="btn btn-warning btn-elevate btn-circle btn-icon" ng-bind="data.usingCompanyCount"></button>-->
                 </td>
                 <td class="center">
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
