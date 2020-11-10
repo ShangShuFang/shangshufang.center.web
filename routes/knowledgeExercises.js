@@ -286,7 +286,6 @@ router.delete('/blank/delete', function(req, res, next) {
 });
 //#endregion
 
-
 //#region 编程题
 router.get('/program/files', function(req, res, next) {
     let service = new commonService.commonInvoke('knowledgeProgramExercisesList');
