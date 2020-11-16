@@ -201,4 +201,30 @@ router.get('/learningPhase', (req, res, next) => {
   });
 });
 
+router.get('/course', (req, res, next) => {
+	let service = new commonService.commonInvoke('courseSimpleList');
+	let universityCode = req.query.universityCode;
+	let schoolID = req.query.schoolID;
+	let teacherID = req.query.teacherID;
+	let technologyID = req.query.technologyID;
+	let parameter = `${universityCode}/${schoolID}/${teacherID}/${technologyID}`;
+
+  service.queryWithParameter(parameter,  (result) => {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 module.exports = router;

@@ -1,0 +1,488 @@
+<link href="/css/github-markdown.css" rel="stylesheet" type="text/css" />
+<div class="kt-container kt-grid__item kt-grid__item--fluid" ng-app="pageApp" ng-controller="pageCtrl">
+  <div class="kt-portlet">
+    <div class="kt-subheader kt-grid__item">
+      <div class="kt-container">
+        <div class="kt-subheader__main">
+        </div>
+      </div>
+    </div>
+    <div class="text-center kt-margin-t-15">
+      <h3 ng-bind="model.title"></h3>
+    </div>
+    <form class="kt-form kt-form--label-right">
+      <div class="kt-portlet__body">
+        <div class="form-group row kt-margin-b-0">
+          <label for="example-text-input" class="col-1 col-form-label">下发时间：</label>
+          <div class="col-10">
+            <label for="example-text-input" class="col-form-label text-left" ng-bind="model.createTime"></label>
+          </div>
+        </div>
+        <div class="form-group row kt-margin-b-0">
+          <label for="example-text-input" class="col-1 col-form-label">学生：</label>
+          <div class="col-10">
+            <label for="example-text-input" class="col-form-label text-left" ng-bind="model.studentName"></label>
+          </div>
+        </div>
+        <div class="form-group row kt-margin-b-0">
+          <label for="example-text-input" class="col-1 col-form-label">状态：</label>
+          <div class="col-10">
+            <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                   ng-class="{'kt-badge--primary': model.exercisesStatus == 'P', 'kt-badge--warning': model.exercisesStatus == 'C', 'kt-badge--danger': model.exercisesStatus == 'R', 'kt-badge--success': model.exercisesStatus == 'S'}"
+                   ng-bind="model.exercisesStatusText" style="margin-top: 8px;"></label>
+          </div>
+        </div>
+        <div class="form-group row kt-margin-b-0">
+          <label for="example-text-input" class="col-1 col-form-label">提交时间：</label>
+          <div class="col-10">
+            <label for="example-text-input" class="col-form-label text-left" ng-bind="model.submitTime"></label>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="exercises-list">
+      <div class="choice-list" ng-if="model.singleChoiceList.length > 0 || model.multipleChoiceList.length > 0">
+        <h4 class="kt-padding-l-25">选择题</h4>
+        <ol>
+          <li ng-repeat="choice in model.singleChoiceList" ng-class="{'kt-margin-t-15' : choice.correctResult == 'P', 'kt-margin-t-10' : choice.correctResult != 'P'}">
+            <div>
+              <strong class="retain-white-enter markdown-body" ng-bind-html="choice.exercisesTitleHtml"></strong>
+            </div>
+            <div>
+              <small>习题来源：</small>
+              <small ng-bind="choice.exercisesSource"></small>
+            </div>
+            <div class="kt-margin-t-5">
+              <small>考察知识点：</small>
+              <small ng-bind="choice.knowledgeName"></small>
+            </div>
+            <div class="kt-margin-t-10">
+              <div class="kt-radio-list">
+                <label class="kt-radio kt-radio--disabled"
+                       ng-repeat="option in choice.optionList">
+                  <input type="radio"
+                         name="\{{choice.courseExercisesDetailID}}"
+                         disabled="disabled"
+                         ng-checked="option.optionID == choice.selectedOptionID"
+                         value="\{{option.optionID}}"> \{{option.optionText}}
+                  <span></span>
+                </label>
+              </div>
+            </div>
+            <div class="kt-margin-t-15" ng-if="model.exercisesStatus != 'P'">
+              <label>批改结果：</label>
+              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                     ng-class="{'kt-badge--success': choice.correctResult == 'Y', 'kt-badge--danger': choice.correctResult == 'N'}">
+                <span ng-if="choice.correctResult == 'Y'"> <i class="fa fa-check"></i> 正确</span>
+                <span ng-if="choice.correctResult == 'N'"> <i class="fa fa-times"></i> 错误</span>
+              </label>
+            </div>
+          </li>
+
+          <li ng-repeat="choice in model.multipleChoiceList" class="kt-margin-t-5-">
+            <div>
+              <strong class="retain-white-enter markdown-body" ng-bind-html="choice.exercisesTitleHtml"></strong>
+            </div>
+            <div>
+              <small>习题来源：</small>
+              <small ng-bind="choice.exercisesSource"></small>
+            </div>
+            <div class="kt-margin-t-5">
+              <small>考察知识点：</small>
+              <small ng-bind="choice.knowledgeName"></small>
+            </div>
+            <div class="kt-margin-t-10">
+              <div class="kt-checkbox-list">
+                <label class="kt-checkbox" ng-repeat="option in choice.optionList">
+                  <input type="checkbox"
+                         name="\{{choice.courseExercisesDetailID}}"
+                         value="\{{option.optionID}}"
+                         ng-checked="choice.selectedOption.indexOf(option.optionID) >= 0"
+                         disabled="disabled"> \{{option.optionText}}
+                  <span></span>
+                </label>
+              </div>
+            </div>
+            <div class="kt-margin-t-15" ng-if="model.exercisesStatus != 'P'">
+              <label>批改结果：</label>
+              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                     ng-class="{'kt-badge--success': choice.correctResult == 'Y', 'kt-badge--danger': choice.correctResult == 'N'}">
+                <span ng-if="choice.correctResult == 'Y'"> <i class="fa fa-check"></i> 正确</span>
+                <span ng-if="choice.correctResult == 'N'"> <i class="fa fa-times"></i> 错误</span>
+              </label>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+      <div class="blank-list kt-margin-t-25" ng-if="model.blankList.length > 0">
+        <h4 class="kt-padding-l-25">填空题</h4>
+        <ol>
+          <li ng-repeat="blank in model.blankList" class=" kt-margin-t-5">
+            <div class="title">
+              <strong class="retain-white-enter markdown-body" ng-bind-html="blank.exercisesTitleHtml"></strong>
+            </div>
+            <div class="source kt-margin-t-5-">
+              <small>习题来源：</small>
+              <small ng-bind="blank.exercisesSource"></small>
+            </div>
+            <div class="knowledge kt-margin-t-10">
+              <small>考察知识点：</small>
+              <small ng-bind="blank.knowledgeName"></small>
+            </div>
+            <div class="answer kt-margin-t-15">
+              <label style="border-bottom: 1px solid #cccccc; width: 360px" ng-bind="blank.fillInContent"></label>
+            </div>
+            <div class="kt-margin-t-10" ng-if="model.exercisesStatus != 'P'">
+              <label>批改结果：</label>
+              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                     ng-class="{'kt-badge--success': blank.correctResult == 'Y', 'kt-badge--danger': blank.correctResult == 'N'}">
+                <span ng-if="blank.correctResult == 'Y'"> <i class="fa fa-check"></i> 正确</span>
+                <span ng-if="blank.correctResult == 'N'"> <i class="fa fa-times"></i> 错误</span>
+              </label>
+            </div>
+          </li>
+        </ol>
+
+      </div>
+      <div class="program-list kt-margin-t-25" ng-if="model.programList.length > 0">
+        <h4 class="kt-padding-l-25">编程题</h4>
+        <ol>
+          <li ng-repeat="program in model.programList">
+            <div class="title kt-margin-t-10" ng-if="program.exercisesSourceType == 1">
+              <strong class="retain-white-enter markdown-body" ng-bind-html="program.exercisesTitleHtml"></strong>
+            </div>
+            <div class="title kt-margin-t-10" ng-if="program.exercisesSourceType == 0">
+              <strong>请按照以下文件中的要求编写程序：</strong> <br>
+              <a ng-href="\{{program.exercisesDocUri}}" class="kt-link kt-link--brand kt-margin-t-5" target="_blank" ng-bind="program.exercisesTitle"></a>
+            </div>
+            <div class="source kt-margin-t-5-" ng-if="program.exercisesSourceType == 1">
+              <small>习题来源：</small>
+              <small ng-bind="program.exercisesSource">题目来源</small>
+            </div>
+            <div class="knowledge kt-margin-t-5">
+              <small>考察知识点：</small>
+              <small ng-bind="program.knowledgeName"></small>
+            </div>
+            <div class="source-code kt-margin-t-5">
+              <label style="font-size: 1rem;">练习代码：</label>
+              <a ng-href="\{{program.sourceCodeUrl}}"
+                 class="kt-link kt-link--brand kt-margin-t-10"
+                 target="_blank"
+                 ng-if="model.exercisesStatus != 'P'">
+                <i class="fa fa-code"></i>
+                查看学生代码
+              </a>
+            </div>
+            <div class="kt-margin-t-5" ng-if="program.correctResult != 'P'">
+              <label>批改结果：</label>
+              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                     ng-class="{'kt-badge--primary': program.correctResult == 'W', 'kt-badge--danger': program.correctResult == 'R', 'kt-badge--success': program.correctResult == 'Y'}">
+                <span ng-if="program.correctResult == 'W'">待批改</span>
+                <span ng-if="program.correctResult == 'R'">待修改</span>
+                <span ng-if="program.correctResult == 'Y'"> <i class="fa fa-check"></i> 通过</span>
+              </label>
+            </div>
+            <div class="kt-margin-t-5" ng-if="program.correctResult != 'P' && program.correctResult != 'W'">
+              <label>批改明细：</label>
+              <span class="kt-badge kt-badge--inline kt-badge--pill"
+                    ng-class="{'kt-badge--success': program.compilationResult == 'S', 'kt-badge--danger': program.compilationResult == 'N'}">
+                <i class="fa fa-check" ng-if="program.compilationResult == 'S'"></i>
+                <i class="fa fa-times" ng-if="program.compilationResult == 'N'"></i>&nbsp;
+                编译
+              </span>
+              <span class="kt-badge kt-badge--inline kt-badge--pill"
+                    ng-class="{'kt-badge--success': program.runResult == 'S', 'kt-badge--danger': program.runResult == 'N'}">
+                <i class="fa fa-check" ng-if="program.runResult == 'S'"></i>
+                <i class="fa fa-times" ng-if="program.runResult == 'N'"></i>&nbsp;
+                运行
+              </span>
+              <span class="kt-badge kt-badge--inline kt-badge--pill"
+                    ng-class="{'kt-badge--success': program.codeStandardResult == 'S', 'kt-badge--warning': program.codeStandardResult == 'N'}">
+                <i class="fa fa-check" ng-if="program.codeStandardResult == 'S'"></i>
+                <i class="fa fa-exclamation" ng-if="program.codeStandardResult == 'N'"></i>&nbsp;
+                代码规范
+              </span>
+            </div>
+            <div>
+              <a href="javascript:" ng-if="program.correctResult == 'W' || program.correctResult == 'R'" class="kt-link kt-link--danger kt-margin-r-5" ng-click="showMarkDialog(program)">
+                <i class="fa fa-edit"></i>
+                批改
+              </a>
+              <a href="javascript:" ng-if="program.correctResult == 'R' || program.correctResult == 'Y'" class="kt-link kt-link--brand" ng-click="showMarkHistoryDialog(program)">
+                <i class="fa fa-search"></i>
+                批改历史
+              </a>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="kt_modal_review" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">程序批改: \{{reviewModel.title}} </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body shs-form-label">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="kt-section">
+                <h3 class="kt-section__title">
+                  练习批改
+                </h3>
+                <div class="kt-section__content">
+                  <div class="row">
+                    <div class="col-3 text-right">
+                      <span>编译结果：</span>
+                    </div>
+                    <div class="col-9">
+                      <div class="kt-radio-inline">
+                        <label class="kt-radio">
+                          <input type="radio" name="compilation" value="S"
+                                 ng-checked="reviewModel.compilationResult == 'S'"
+                                 ng-model="reviewModel.compilationResult"> 成功
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="compilation" value="N"
+                                 ng-checked="reviewModel.compilationResult == 'N'"
+                                 ng-model="reviewModel.compilationResult"> 失败
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row kt-margin-t-15">
+                    <div class="col-3 text-right">
+                      <span>运行结果：</span>
+                    </div>
+                    <div class="col-9">
+                      <div class="kt-radio-inline">
+                        <label class="kt-radio">
+                          <input type="radio" name="run" value="S"
+                                 ng-checked="reviewModel.runResult == 'S'"
+                                 ng-model="reviewModel.runResult"> 正确
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="run" value="N"
+                                 ng-checked="reviewModel.runResult == 'N'"
+                                 ng-model="reviewModel.runResult"> 错误
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row kt-margin-t-15">
+                    <div class="col-3 text-right">
+                      <a href="javascript:" class="kt-widget__username kt-font-brand kt-link kt-font-bold">代码规范：</a>
+                    </div>
+                    <div class="col-9">
+                      <div class="kt-radio-inline">
+                        <label class="kt-radio">
+                          <input type="radio" name="codeStandard" value="S"
+                                 ng-checked="reviewModel.codeStandardResult == 'S'"
+                                 ng-model="reviewModel.codeStandardResult">
+                          很好
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="codeStandard" value="N"
+                                 ng-checked="reviewModel.codeStandardResult == 'N'"
+                                 ng-model="reviewModel.codeStandardResult">
+                          不规范
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row kt-margin-t-15">
+                    <div class="col-3 text-right">
+                      <span>综合评定：</span>
+                    </div>
+                    <div class="col-9">
+                      <div class="kt-radio-inline">
+                        <label class="kt-radio">
+                          <input type="radio" name="result" value="S"
+                                 ng-checked="reviewModel.reviewResult == 'S'"
+                                 ng-model="reviewModel.reviewResult"> 通过
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" name="result" value="N"
+                                 ng-checked="reviewModel.reviewResult == 'N'"
+                                 ng-model="reviewModel.reviewResult"> 不通过
+                          <span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row kt-margin-t-15">
+                    <div class="col-3 text-right">
+                      <span>批改评语：</span>
+                    </div>
+                    <div class="col-9">
+                        <textarea class="form-control" name="reviewMemo" rows="5" maxlength="500"
+                                  ng-model="reviewModel.reviewMemo"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="kt-section">
+                <h3 class="kt-section__title">
+                  请选择代码存在的编码规范问题
+                </h3>
+                <div class="kt-section__content">
+                  <div class="kt-checkbox-list" style="margin-top: 15px">
+                    <label class="kt-checkbox kt-checkbox--tick kt-checkbox--danger"
+                           ng-repeat="codeStandard in reviewModel.codeStandardList">
+                      <input type="checkbox" name="codeStandard"
+                             ng-value="codeStandard.codeStandardID"
+                             ng-click="onCodeStandardClick($event)">
+                      \{{codeStandard.codeStandardName}}
+                      <span></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" id="btnReviewSubmit" ng-click="onReviewSubmit()">提交批改结果</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="kt_modal_review_history" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">程序批改历史: \{{reviewHistoryModel.title}} </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body shs-form-label kt-padding-25">
+          <div class="accordion accordion-light  accordion-toggle-arrow" id="accordionExample2">
+
+            <div class="card" ng-repeat="data in reviewHistoryModel.dataList">
+              <div class="card-header" id="head\{{$index}}">
+                <div class="card-title collapsed" data-toggle="collapse" data-target="#collapse\{{$index}}" aria-expanded="false" aria-controls="collapseOne2">
+                  <label class="col-form-label">
+                    <span class="ng-scope"> <i class="fa fa-edit"></i> \{{data.createTime}}</span><!-- end ngIf: program.correctResult == 'Y' -->
+                  </label>
+                  &nbsp;
+                  &nbsp;
+                  <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                         ng-class="{'kt-badge--success': data.reviewResult == 'S', 'kt-badge--danger': data.reviewResult == 'N'}">
+                    <span ng-if="data.reviewResult == 'S'"> 通过</span>
+                    <span ng-if="data.reviewResult == 'N'"> 待修改</span>
+                  </label>
+                </div>
+              </div>
+              <div id="collapse\{{$index}}" class="collapse" aria-labelledby="head\{{$index}}" data-parent="#accordionExample2" style="">
+                <div class="card-body kt-margin-b-0">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="kt-section">
+                        <h3 class="kt-section__title text-center">代码批改明细</h3>
+                      </div>
+                      <form class="kt-form kt-form--label-right">
+                        <div class="kt-portlet__body">
+                          <div class="form-group row kt-margin-b-5">
+                            <label for="example-text-input" class="col-2 col-form-label">编译结果：</label>
+                            <div class="col-10">
+                              <label for="example-text-input" class="col-form-label">
+                                <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill" ng-if="data.compilationResult == 'S'">
+                                  <i class="fa fa-check"></i>&nbsp;
+                                  成功
+                                </span>
+                                <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill" ng-if="data.compilationResult == 'N'">
+                                  <i class="fa fa-check"></i>&nbsp;
+                                  失败
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="form-group row kt-margin-b-5">
+                            <label for="example-text-input" class="col-2 col-form-label">运行结果：</label>
+                            <div class="col-10">
+                              <label for="example-text-input" class="col-form-label">
+                                <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill" ng-if="data.runResult == 'S'">
+                                  <i class="fa fa-check"></i>&nbsp;
+                                  正确
+                                </span>
+                                <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill" ng-if="data.runResult == 'N'">
+                                  <i class="fa fa-check"></i>&nbsp;
+                                  错误
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="form-group row kt-margin-b-5">
+                            <label for="example-text-input" class="col-2 col-form-label">代码规范：</label>
+                            <div class="col-10">
+                              <label for="example-text-input" class="col-form-label">
+                               <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill" ng-if="data.codeStandardResult == 'S'">
+                                  <i class="fa fa-check"></i>&nbsp;
+                                  很好
+                                </span>
+                                <span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill" ng-if="data.codeStandardResult == 'N'">
+                                  <i class="fa fa-exclamation"></i>&nbsp;
+                                  不规范
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="form-group row kt-margin-b-5">
+                            <label for="example-text-input" class="col-2 col-form-label">批改评语：</label>
+                            <div class="col-10">
+                              <p class="col-form-label retain-white-enter" ng-bind="data.reviewMemo"></p>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="kt-section">
+                        <h3 class="kt-section__title text-center">代码不规范的问题</h3>
+                      </div>
+                      <div class="kt-section__content">
+                        <div class="kt-list-timeline">
+                          <div class="kt-list-timeline__items">
+                            <div class="kt-list-timeline__item" ng-repeat="codeStandard in data.codeStandardErrorList">
+                              <span class="kt-list-timeline__badge kt-list-timeline__badge--danger"></span>
+                              <span class="kt-list-timeline__text" ng-bind="codeStandard.codeStandardName"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<input type="hidden" value="{{courseExercisesID}}" id="hidden_courseExercisesID">
+<script src="/js/views/knowledgeExercisesDetail.js" type="text/javascript"></script>

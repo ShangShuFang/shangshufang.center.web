@@ -19,6 +19,8 @@ let technologyCategoryRouter = require('./routes/technologyCategory');
 let knowledgeRouter = require('./routes/knowledge');
 let learningPathRouter = require('./routes/learningPath');
 let knowledgeExercisesRouter = require('./routes/knowledgeExercises');
+let knowledgeExercisesListRouter = require('./routes/knowledgeExercisesList');
+let knowledgeExercisesDetailRouter = require('./routes/knowledgeExercisesDetail');
 let codeStandardRouter = require('./routes/codeStandard');
 let comprehensiveExercisesRouter = require('./routes/comprehensiveExercises');
 let projectExercisesRouter = require('./routes/projectExercises');
@@ -62,6 +64,10 @@ app.use('/technology', technologyRouter);
 app.use('/technology/category', technologyCategoryRouter);
 app.use('/knowledge', knowledgeRouter);
 app.use('/knowledge/exercises', knowledgeExercisesRouter);
+
+app.use('/knowledge/exercises/list', knowledgeExercisesListRouter);
+app.use('/knowledge/exercises/detail', knowledgeExercisesDetailRouter);
+
 app.use('/codeStandard', codeStandardRouter);
 app.use('/exercises/comprehensive', comprehensiveExercisesRouter);
 app.use('/exercises/project', projectExercisesRouter);

@@ -21,6 +21,11 @@ Constants.ACCOUNT_ROLE = {
   TEACHER: 'T',
   STUDENT: 'S'
 };
+const REVIEW_RESULT = {
+  INIT: 'P',
+  PASS: 'S',
+  NOT_PASS: 'N'
+};
 Constants.COOKIE_LOGIN_USER = 'shs.cms.user';
 Constants.UPLOAD_SERVICE_URI='http://localhost:8000/upload';
 
