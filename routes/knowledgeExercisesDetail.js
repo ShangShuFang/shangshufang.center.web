@@ -92,7 +92,6 @@ router.get('/review/program', function (req, res, next) {
         msg: result.msg
       });
     }else{
-
       res.json({
         err: false,
         code: result.code,

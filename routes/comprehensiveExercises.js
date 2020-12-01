@@ -4,7 +4,7 @@ let commonService = require('../service/commonService');
 let router = express.Router();
 
 router.get('/', function(req, res, next) {
-    res.render('comprehensiveExercises', { title: '综合练习' });
+    res.render('comprehensiveExercises', { title: '就业测评' });
 });
 
 router.get('/list', (req, res, next) => {
@@ -26,7 +26,7 @@ router.get('/list', (req, res, next) => {
                 msg: result.msg
             });
         } else {
-            let dataContent = commonService.buildRenderData('综合练习', pageNumber, result);
+            let dataContent = commonService.buildRenderData('就业测评', pageNumber, result);
             res.json({
                 err: false,
                 code: result.code,

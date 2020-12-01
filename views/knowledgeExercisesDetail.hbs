@@ -175,15 +175,6 @@
                 查看学生代码
               </a>
             </div>
-            <div class="kt-margin-t-5" ng-if="program.correctResult != 'P'">
-              <label>批改结果：</label>
-              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
-                     ng-class="{'kt-badge--primary': program.correctResult == 'W', 'kt-badge--danger': program.correctResult == 'R', 'kt-badge--success': program.correctResult == 'Y'}">
-                <span ng-if="program.correctResult == 'W'">待批改</span>
-                <span ng-if="program.correctResult == 'R'">待修改</span>
-                <span ng-if="program.correctResult == 'Y'"> <i class="fa fa-check"></i> 通过</span>
-              </label>
-            </div>
             <div class="kt-margin-t-5" ng-if="program.correctResult != 'P' && program.correctResult != 'W'">
               <label>批改明细：</label>
               <span class="kt-badge kt-badge--inline kt-badge--pill"
@@ -204,6 +195,15 @@
                 <i class="fa fa-exclamation" ng-if="program.codeStandardResult == 'N'"></i>&nbsp;
                 代码规范
               </span>
+            </div>
+            <div class="kt-margin-t-5" ng-if="program.correctResult != 'P'">
+              <label>批改结果：</label>
+              <label class="col-form-label text-left kt-badge kt-badge--inline kt-badge--pill"
+                     ng-class="{'kt-badge--primary': program.correctResult == 'W', 'kt-badge--danger': program.correctResult == 'R', 'kt-badge--success': program.correctResult == 'Y'}">
+                <span ng-if="program.correctResult == 'W'">待批改</span>
+                <span ng-if="program.correctResult == 'R'">待修改</span>
+                <span ng-if="program.correctResult == 'Y'"> <i class="fa fa-check"></i> 通过</span>
+              </label>
             </div>
             <div>
               <a href="javascript:" ng-if="program.correctResult == 'W' || program.correctResult == 'R'" class="kt-link kt-link--danger kt-margin-r-5" ng-click="showMarkDialog(program)">
@@ -408,7 +408,7 @@
                                   成功
                                 </span>
                                 <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill" ng-if="data.compilationResult == 'N'">
-                                  <i class="fa fa-check"></i>&nbsp;
+                                  <i class="fa fa-times"></i>&nbsp;
                                   失败
                                 </span>
                               </label>
@@ -423,7 +423,7 @@
                                   正确
                                 </span>
                                 <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill" ng-if="data.runResult == 'N'">
-                                  <i class="fa fa-check"></i>&nbsp;
+                                  <i class="fa fa-times"></i>&nbsp;
                                   错误
                                 </span>
                               </label>
@@ -480,7 +480,6 @@
       </div>
     </div>
   </div>
-
 
 </div>
 
