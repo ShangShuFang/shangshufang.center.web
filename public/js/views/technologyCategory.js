@@ -67,7 +67,7 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
           // }
           $scope.listModel.totalCount = response.data.dataContent.totalCount;
           $scope.listModel.dataList = response.data.dataContent.dataList;
-          $scope.listModel.pageNumber = response.data.dataContent.currentPageNum;
+          $scope.listModel.pageNumber = parseInt(response.data.dataContent.currentPageNum);
           $scope.listModel.maxPageNumber = Math.ceil(response.data.dataContent.totalCount / response.data.dataContent.pageSize);
           $scope.listModel.paginationArray = response.data.dataContent.paginationArray;
           $scope.listModel.prePageNum = response.data.dataContent.prePageNum === undefined ? -1 : response.data.dataContent.prePageNum;
