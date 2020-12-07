@@ -256,6 +256,12 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
 	};
 
 	$scope.changeChoiceQuestion = function (choiceQuestion) {
+		choiceQuestion.choiceOptions.forEach((option) => {
+			if (option['selectedAnswer'] !== undefined) {
+				delete option.selectedAnswer;
+			}
+		})
+
 		let optionsJson = JSON.stringify(choiceQuestion.choiceOptions);
 		//数据保存，并提示保存结果
 		$http.put('/knowledge/exercises/choice/change', {
