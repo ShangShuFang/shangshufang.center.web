@@ -181,9 +181,10 @@ router.get('/category', (req, res, next) => {
 });
 
 router.get('/learningPhase', (req, res, next) => {
+  let technologyID = req.query.technologyID;
   let service = new commonService.commonInvoke('learningPhase');
 
-  service.queryWithParameter('',  (result) => {
+  service.queryWithParameter(technologyID,  (result) => {
     if (result.err) {
       res.json({
         err: true,

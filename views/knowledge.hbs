@@ -84,7 +84,7 @@
                       <i class="flaticon2-down"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-                      <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhaseChange(0, '所有阶段')">所有阶段</a>
+                      <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhaseChange(0, '所有分组')">所有分组</a>
                       <div class="dropdown-divider"></div>
                       <a ng-repeat="data in model.learningPhaseList"
                          class="dropdown-item"
@@ -132,7 +132,7 @@
               <thead>
               <tr role="row">
                 <th>技术名称</th>
-                <th>学习阶段</th>
+                <th>知识点分组</th>
                 <th>技术点名称</th>
                 <th>可用选择题数量</th>
                 <th>可用填空题数量</th>
@@ -256,7 +256,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-2 col-form-label">学习阶段</label>
+                    <label for="example-text-input" class="col-2 col-form-label">知识点分组</label>
                     <div class="col-10">
                       <div class="dropdown search-form-dropdown" ng-if="model.add">
                         <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -264,7 +264,7 @@
                           <i class="flaticon2-down"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-                          <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhase4Edit(0, '请选择学习阶段')">请选择学习阶段</a>
+                          <a class="dropdown-item" href="javascript:;" ng-click="onLearningPhase4Edit(0, '请选择知识点分组')">请选择知识点分组</a>
                           <div class="dropdown-divider"></div>
                           <a ng-repeat="data in model.learningPhaseList4Edit"
                              class="dropdown-item"

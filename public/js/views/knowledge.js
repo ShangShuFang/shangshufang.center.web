@@ -5,7 +5,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         selectedTechnology: { technologyID: 0, technologyName: '所有技术' },
         technologyList: [],
 
-        selectedLearningPhase: { learningPhaseID: 0, learningPhaseName: '所有阶段' },
+        selectedLearningPhase: { learningPhaseID: 0, learningPhaseName: '所有分组' },
         learningPhaseList: [],
 
         selectedDataStatus: { statusCode: 'N', statusName: '所有状态' },
@@ -35,7 +35,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         technologyList4Edit: [],
         selectedTechnology4Edit: { technologyID: 0, technologyName: '请选择所属技术' },
 
-        selectedLearningPhase4Edit: { learningPhaseID: 0, learningPhaseName: '请选择学习阶段' },
+        selectedLearningPhase4Edit: { learningPhaseID: 0, learningPhaseName: '请选择知识点分组' },
         learningPhaseList4Edit: [],
 
         knowledgeName: '',
@@ -59,7 +59,6 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     $scope.initPage = function() {
         commonUtility.setNavActive();
         $scope.loadSearchTechnologyList();
-        $scope.loadLearningPhaseList();
         $scope.loadData();
     };
 
@@ -79,17 +78,35 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         });
     };
 
-    $scope.loadLearningPhaseList = function() {
-        $http.get('/common/learningPhase').then(function successCallback(response) {
+    $scope.loadLearningPhaseList = function(technologyID, groupName) {
+        if (technologyID === 0) {
+            switch (groupName) {
+                case 'S':
+                    $scope.model.learningPhaseList = [];
+                    $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '所有分组'};
+                    break;
+                case 'E':
+                    $scope.model.learningPhaseList4Edit = [];
+                    $scope.model.selectedLearningPhase4Edit = {learningPhaseID: 0, learningPhaseName: '请选择知识点分组' };
+                    break;
+            }
+            return false;
+        }
+        $http.get(`/common/learningPhase?technologyID=${technologyID}`).then(function successCallback(response) {
             if (response.data.err) {
                 bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
                 return false;
             }
-            if (commonUtility.isEmptyList(response.data.dataList)) {
-                return false;
+            switch (groupName) {
+                case 'S':
+                    $scope.model.learningPhaseList = response.data.dataList;
+                    $scope.model.selectedLearningPhase = {learningPhaseID: 0, learningPhaseName: '所有分组'};
+                    break;
+                case 'E':
+                    $scope.model.learningPhaseList4Edit = response.data.dataList;
+                    $scope.model.selectedLearningPhase4Edit = {learningPhaseID: 0, learningPhaseName: '请选择知识点分组' };
+                    break;
             }
-            $scope.model.learningPhaseList = response.data.dataList;
-            $scope.model.learningPhaseList4Edit = response.data.dataList;
         }, function errorCallback(response) {
             bootbox.alert(localMessage.NETWORK_ERROR);
         });
@@ -148,6 +165,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     };
 
     $scope.onTechnologyChange = function(technologyID, technologyName) {
+        $scope.loadLearningPhaseList(technologyID, 'S');
         if ($scope.model.selectedTechnology.technologyID === technologyID) {
             return false;
         }
@@ -183,6 +201,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     };
 
     $scope.onTechnologyChange4Edit = function(technologyID, technologyName) {
+        $scope.loadLearningPhaseList(technologyID, 'E');
         $scope.model.knowledgeNameIsInValid = Constants.CHECK_INVALID.DEFAULT;
         $scope.model.selectedTechnology4Edit = { technologyID: technologyID, technologyName: technologyName };
     };
