@@ -40,7 +40,10 @@ router.get('/data', function (req, res, next) {
           data.originalSourceCodeUrl = data.submitSourceCodeUrl;
           if (data.exercisesSourceType === 0) {
             data.exercisesDocUri = data.exercisesTitle;
-            data.exercisesTitle = data.exercisesTitle.substr(data.exercisesTitle.lastIndexOf('/') + 1);
+            if (data.exercisesTitle !== null) {
+              data.exercisesTitle = data.exercisesTitle.substr(data.exercisesTitle.lastIndexOf('/') + 1);
+            }
+
           } else {
             data.exercisesTitleHtml = marked(data.exercisesTitle);
           }
