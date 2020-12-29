@@ -1,14 +1,30 @@
 let pageApp = angular.module('pageApp', []);
 pageApp.controller('pageCtrl', function($scope, $http) {
     $scope.model = {
-        selectedTechnology: { technologyID: 0, technologyName: '选择技术' },
-        technologyList: [],
+        selectedExamType: { examTypeCode: 0, examTypeName: '全部类型' },
+        examTypeList: [
+            { examTypeCode: 1, examTypeName: '服务端' },
+            { examTypeCode: 2, examTypeName: '前端' },
+            { examTypeCode: 3, examTypeName: '数据库' },
+            { examTypeCode: 4, examTypeName: '全栈' }
+        ],
+
+        selectedDifficultyLevel: { difficultyLevelCode: 0, difficultyLevelName: '全部难度' },
+        difficultyLevelList: [
+            { difficultyLevelCode: 1, difficultyLevelName: '入门' },
+            { difficultyLevelCode: 2, difficultyLevelName: '简单' },
+            { difficultyLevelCode: 3, difficultyLevelName: '中等' },
+            { difficultyLevelCode: 4, difficultyLevelName: '较难' },
+            { difficultyLevelCode: 5, difficultyLevelName: '困难' }
+        ],
+
         selectedDataStatus: { statusCode: 'NULL', statusName: '所有状态' },
         dataStatusList: [
             { statusCode: 'P', statusName: '待审核' },
             { statusCode: 'A', statusName: '启用' },
             { statusCode: 'D', statusName: '禁用' }
         ],
+
         fromIndex: 0,
         toIndex: 0,
         pageNumber: 1,
@@ -23,13 +39,11 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     $scope.editModel = {
         exercisesID: 0,
         optionType: 'add',
-        selectedTechnology: { technologyID: 0, technologyName: '选择技术' },
-        technologyList: [],
-        exercisesName: '',
-        documentUrl: '',
-        answerGitUrl: '',
-        memo: '',
-        isShowUpload: false,
+        title: '',//标题
+        examKnowledge: '',//考察点
+        examType: '1',//类型
+        difficultyLevel: '1',//难度
+        exercisesContent: '',//详细内容
         loginUser: commonUtility.getLoginUser()
     };
 
@@ -42,41 +56,22 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     //region 页面初始化
     $scope.initPage = function() {
         commonUtility.setNavActive();
-        $scope.initTechnologyList();
         $scope.loadData();
     };
 
-    $scope.initTechnologyList = function() {
-        $http.get('/common/technology').then(function successCallback(response) {
-            if (response.data.err) {
-                bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
-                return false;
-            }
-            if (response.data.dataList === null) {
-                return false;
-            }
-            $scope.model.technologyList = response.data.dataList;
-            $scope.editModel.technologyList = response.data.dataList;
-        }, function errorCallback(response) {
-            bootbox.alert(localMessage.NETWORK_ERROR);
-        });
-    };
-
-    $scope.initUploadPlugin = function() {
-        let uploadDocumentDir = { "dir1": "exercises", "dir2": `T${$scope.editModel.selectedTechnology.technologyID}`, "dir3": `comprehensive` };
-        let uploadDocumentServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadDocumentDir);
-        uploadUtils.initUploadPlugin('#file-upload', uploadDocumentServerUrl, ['pdf'], false, function(opt, data) {
-            $scope.editModel.documentUrl = data.fileUrlList[0];
-            $scope.$apply();
-            layer.msg(localMessage.UPLOAD_SUCCESS);
-        });
-    };
-
-    $scope.onTechnologyChange = function(technologyID, technologyName) {
-        if ($scope.model.selectedTechnology.technologyID === technologyID) {
+    $scope.onExamTypeChange = function(examTypeCode, examTypeName) {
+        if ($scope.model.selectedExamType.examTypeCode === examTypeCode) {
             return false;
         }
-        $scope.model.selectedTechnology = { technologyID: technologyID, technologyName: technologyName };
+        $scope.model.selectedExamType = { examTypeCode: examTypeCode, examTypeName: examTypeName };
+        $scope.loadData();
+    };
+
+    $scope.onDifficultyLevelChange = function(difficultyLevelCode, difficultyLevelName) {
+        if ($scope.model.selectedDifficultyLevel.difficultyLevelCode === difficultyLevelCode) {
+            return false;
+        }
+        $scope.model.selectedDifficultyLevel = { difficultyLevelCode: difficultyLevelCode, difficultyLevelName: difficultyLevelName };
         $scope.loadData();
     };
 
@@ -88,20 +83,12 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         $scope.loadData();
     };
 
-    $scope.onTechnologyChange4Edit = function(technologyID, technologyName) {
-        $scope.editModel.selectedTechnology = { technologyID: technologyID, technologyName: technologyName };
-        uploadUtils.destroyUploadPlugin('#file-upload');
-        if (technologyID !== 0) {
-            $scope.initUploadPlugin();
-            $scope.editModel.documentUrl = "";
-            $('#file-upload').show();
-        } else {
-            $('#file-upload').hide();
-        }
-    };
-
     $scope.loadData = function() {
-        $http.get(`/exercises/comprehensive/list?pageNumber=${$scope.model.pageNumber}&technologyID=${$scope.model.selectedTechnology.technologyID}&dataStatus=${$scope.model.selectedDataStatus.statusCode}`)
+        $http.get('/exercises/comprehensive/list'
+            .concat(`?pageNumber=${$scope.model.pageNumber}`)
+            .concat(`&examType=${$scope.model.selectedExamType.examTypeCode}`)
+            .concat(`&difficultyLevel=${$scope.model.selectedDifficultyLevel.difficultyLevelCode}`)
+            .concat(`&dataStatus=${$scope.model.selectedDataStatus.statusCode}`))
             .then(function successCallback(response) {
                 if (response.data.err) {
                     bootbox.alert(localMessage.formatMessage(response.data.code, response.data.msg));
@@ -147,40 +134,33 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     };
 
     $scope.onShowEditModal = function(data) {
-        if (commonUtility.isEmpty(data)) {
-            uploadUtils.destroyUploadPlugin('#file-upload');
-            $('#file-upload').hide();
-            $scope.editModel.exercisesID = 0;
-            $scope.editModel.selectedTechnology = { technologyID: 0, technologyName: '选择技术' };
-            $scope.editModel.exercisesName = '';
-            $scope.editModel.answerGitUrl = '';
-            $scope.editModel.documentUrl = '';
-            $scope.editModel.memo = '';
+        if (data === undefined) {
             $scope.editModel.optionType = 'add';
+            $scope.editModel.title = '';
+            $scope.editModel.examKnowledge = '';
+            $scope.editModel.examType = '1';
+            $scope.editModel.difficultyLevel = '1';
+            $scope.editModel.exercisesContent = '';
         } else {
+            $scope.editModel.optionType = 'upd';
             $scope.editModel.exercisesID = data.exercisesID;
-            $scope.editModel.selectedTechnology = { technologyID: data.technologyID, technologyName: data.technologyName };
-            $scope.editModel.exercisesName = data.exercisesName;
-            $scope.editModel.answerGitUrl = data.answerUrl;
-            $scope.editModel.documentUrl = data.documentUrl;
-            $scope.editModel.memo = data.memo;
-            uploadUtils.destroyUploadPlugin('#file-upload');
-            $scope.initUploadPlugin();
-            $('#file-upload').show();
-            $scope.editModel.optionType = 'change';
+            $scope.editModel.title = data.exercisesTitle;
+            $scope.editModel.examKnowledge = data.examKnowledge;
+            $scope.editModel.examType = data.examType.toString();
+            $scope.editModel.difficultyLevel = data.difficultyLevel.toString();
+            $scope.editModel.exercisesContent = data.exercisesDescription;
         }
 
-
-        $('#kt_modal_upload').modal('show');
+        $('#kt_modal_edit').modal('show');
     };
 
     $scope.add = function() {
         $http.post('/exercises/comprehensive', {
-            exercisesName: $scope.editModel.exercisesName,
-            technologyID: $scope.editModel.selectedTechnology.technologyID,
-            answerUrl: $scope.editModel.answerGitUrl,
-            documentUrl: $scope.editModel.documentUrl,
-            memo: $scope.editModel.memo,
+            exercisesTitle: $scope.editModel.title,
+            examKnowledge: $scope.editModel.examKnowledge,
+            examType: $scope.editModel.examType,
+            difficultyLevel: $scope.editModel.difficultyLevel,
+            exercisesDescription: $scope.editModel.exercisesContent,
             loginUser: $scope.editModel.loginUser.adminID
         }).then(function successCallback(response) {
             if (response.data.err) {
@@ -188,7 +168,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 return false;
             }
             $scope.loadData();
-            $('#kt_modal_upload').modal('hide');
+            $('#kt_modal_edit').modal('hide');
         }, function errorCallback(response) {
             bootbox.alert(localMessage.NETWORK_ERROR);
         });
@@ -197,10 +177,11 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     $scope.change = function() {
         $http.put('/exercises/comprehensive', {
             exercisesID: $scope.editModel.exercisesID,
-            exercisesName: $scope.editModel.exercisesName,
-            answerUrl: $scope.editModel.answerGitUrl,
-            documentUrl: $scope.editModel.documentUrl,
-            memo: $scope.editModel.memo,
+            exercisesTitle: $scope.editModel.title,
+            examKnowledge: $scope.editModel.examKnowledge,
+            examType: $scope.editModel.examType,
+            difficultyLevel: $scope.editModel.difficultyLevel,
+            exercisesDescription: $scope.editModel.exercisesContent,
             loginUser: $scope.editModel.loginUser.adminID
         }).then(function successCallback(response) {
             if (response.data.err) {
@@ -208,7 +189,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 return false;
             }
             $scope.loadData();
-            $('#kt_modal_upload').modal('hide');
+            $('#kt_modal_edit').modal('hide');
         }, function errorCallback(response) {
             bootbox.alert(localMessage.NETWORK_ERROR);
         });
@@ -224,7 +205,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
 
     $scope.onShowStatusModal = function(data) {
         $scope.statusModel.exercisesID = data.exercisesID;
-        $scope.statusModel.modalTitle = `状态修改：${data.exercisesName}`;
+        $scope.statusModel.modalTitle = `状态修改：${data.exercisesTitle}`;
         $('#kt_modal_status').modal('show');
     };
 
@@ -247,7 +228,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
 
     $scope.onDelete = function(data) {
             bootbox.confirm({
-                message: `您确定要删除${data.exercisesName}吗？`,
+                message: `您确定要删除【${data.exercisesTitle}】吗？`,
                 buttons: {
                     confirm: {
                         label: '确认',

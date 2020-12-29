@@ -11,12 +11,11 @@ router.get('/list', (req, res, next) => {
     let service = new commonService.commonInvoke('comprehensiveExercisesList');
     let pageNumber = req.query.pageNumber;
     let pageSize = sysConfig.pageSize;
-    let directionID = 0;
-    let categoryID = 0;
-    let technologyID = req.query.technologyID;
+    let examType = req.query.examType;
+    let difficultyLevel = req.query.difficultyLevel;
     let dataStatus = req.query.dataStatus;
 
-    let parameter = `${pageNumber}/${pageSize}/${directionID}/${categoryID}/${technologyID}/${dataStatus}`;
+    let parameter = `${pageNumber}/${pageSize}/${examType}/${difficultyLevel}/${dataStatus}`;
 
     service.queryWithParameter(parameter, (result) => {
         if (result.err) {
@@ -40,11 +39,11 @@ router.get('/list', (req, res, next) => {
 router.post('/', (req, res, next) => {
     let service = new commonService.commonInvoke('addComprehensiveExercises');
     let data = {
-        exercisesName: req.body.exercisesName,
-        technologyID: req.body.technologyID,
-        documentUrl: req.body.documentUrl,
-        answerUrl: req.body.answerUrl,
-        memo: req.body.memo,
+        exercisesTitle: req.body.exercisesTitle,
+        examKnowledge: req.body.examKnowledge,
+        examType: req.body.examType,
+        difficultyLevel: req.body.difficultyLevel,
+        exercisesDescription: req.body.exercisesDescription,
         loginUser: req.body.loginUser
     };
 
@@ -69,10 +68,11 @@ router.put('/', (req, res, next) => {
     let service = new commonService.commonInvoke('changeComprehensiveExercises');
     let data = {
         exercisesID: req.body.exercisesID,
-        exercisesName: req.body.exercisesName,
-        answerUrl: req.body.answerUrl,
-        documentUrl: req.body.documentUrl,
-        memo: req.body.memo,
+        exercisesTitle: req.body.exercisesTitle,
+        examKnowledge: req.body.examKnowledge,
+        examType: req.body.examType,
+        difficultyLevel: req.body.difficultyLevel,
+        exercisesDescription: req.body.exercisesDescription,
         loginUser: req.body.loginUser
     };
 

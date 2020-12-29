@@ -40,8 +40,8 @@
         <div class="kt-portlet__head-wrapper">
           <div class="kt-portlet__head-actions">
             <button type="button" class="btn btn-brand btn-elevate btn-icon-sm" ng-click="onShowEditModal()">
-              <i class="flaticon-upload"></i>
-              上传
+              <i class="fa fa-plus"></i>
+              添加
             </button>
           </div>
         </div>
@@ -49,7 +49,7 @@
     </div>
     <div class="kt-portlet__body">
       <!--begin: search form -->
-      <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+      <div class="kt-form kt-form--label-right kt-margin-t-20- kt-margin-b-10">
         <div class="row align-items-center">
           <div class="col-xl-8 order-2 order-xl-1">
             <div class="row align-items-center">
@@ -58,17 +58,38 @@
                   <div class="dropdown search-form-dropdown">
                     <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                      <span ng-bind="model.selectedTechnology.technologyName"></span>
+                      <span ng-bind="model.selectedExamType.examTypeName"></span>
                       <i class="flaticon2-down"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-                      <a class="dropdown-item" href="javascript:;" ng-click="onTechnologyChange(0, '所有技术')">所有技术</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onExamTypeChange(0, '全部类型')">全部类型</a>
                       <div class="dropdown-divider"></div>
-                      <a ng-repeat="data in model.technologyList"
+                      <a ng-repeat="data in model.examTypeList"
                          class="dropdown-item"
-                         href="javascript:;"
-                         ng-click="onTechnologyChange(data.technologyID, data.technologyName)"
-                         ng-bind="data.technologyName"></a>
+                         href="javascript:"
+                         ng-click="onExamTypeChange(data.examTypeCode, data.examTypeName)"
+                         ng-bind="data.examTypeName"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                <div class="kt-form__group kt-form__group--inline width-full">
+                  <div class="dropdown search-form-dropdown">
+                    <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                      <span ng-bind="model.selectedDifficultyLevel.difficultyLevelName"></span>
+                      <i class="flaticon2-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+                      <a class="dropdown-item" href="javascript:" ng-click="onDifficultyLevelChange(0, '全部难度')">全部难度</a>
+                      <div class="dropdown-divider"></div>
+                      <a ng-repeat="data in model.difficultyLevelList"
+                         class="dropdown-item"
+                         href="javascript:"
+                         ng-click="onDifficultyLevelChange(data.difficultyLevelCode, data.difficultyLevelName)"
+                         ng-bind="data.difficultyLevelName"></a>
                     </div>
                   </div>
                 </div>
@@ -87,7 +108,7 @@
                       <div class="dropdown-divider"></div>
                       <a ng-repeat="data in model.dataStatusList"
                          class="dropdown-item"
-                         href="javascript:;"
+                         href="javascript:"
                          ng-click="onDataStatusChange(data.statusCode, data.statusName)"
                          ng-bind="data.statusName"></a>
                     </div>
@@ -109,24 +130,24 @@
                    id="kt_table_1" role="grid" aria-describedby="kt_table_1_info" style="width: 1313px;">
               <thead>
               <tr class="center" role="row">
-                <th>技术名称</th>
-                <th>习题名称</th>
-                <th>上传人</th>
-                <th>上传时间</th>
+                <th>标题</th>
+                <th>考察点</th>
+                <th>考察方向</th>
+                <th>难度级别</th>
+                <th>添加人</th>
+                <th>添加时间</th>
                 <th>当前状态</th>
                 <th>操作</th>
               </tr>
               </thead>
-
               <tbody>
               <tr class="center" ng-repeat="data in model.dataList">
-                <td ng-bind="data.technologyName"></td>
-                <td>
-                  <a ng-href="\{{data.documentUrl}}" target="_blank" ng-bind="data.exercisesName"></a>
-                </td>
-                <td ng-bind="data.updateUser"></td>
-                <td ng-bind="data.updateTime"></td>
-
+                <td ng-bind="data.exercisesTitle"></td>
+                <td ng-bind="data.examKnowledge"></td>
+                <td ng-bind="data.examTypeText"></td>
+                <td ng-bind="data.difficultyLevelText"></td>
+                <td ng-bind="data.createUser"></td>
+                <td ng-bind="data.createTime"></td>
                 <td>
                   <span class="kt-badge kt-badge--inline kt-badge--pill"
                         ng-class="{'kt-badge--primary': data.dataStatus == 'P', 'kt-badge--success': data.dataStatus == 'A', 'kt-badge--danger': data.dataStatus == 'D'}"
@@ -135,14 +156,13 @@
                 </td>
                 <td>
                   <span class="dropdown">
-                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
+                    <a href="javascript:" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="true">
                       <i class="la la-ellipsis-h"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" ng-href="\{{data.answerUrl}}" target="_blank"><i class="la la-search"></i> 参考示例</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowEditModal(data)"><i class="la la-edit"></i> 编辑</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onShowStatusModal(data)"><i class="la la-leaf"></i> 状态修改</a>
-                      <a class="dropdown-item" href="javascript:;" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onShowEditModal(data)"><i class="la la-edit"></i> 编辑</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onShowStatusModal(data)"><i class="la la-leaf"></i> 状态修改</a>
+                      <a class="dropdown-item" href="javascript:" ng-click="onDelete(data)"><i class="la la-remove"></i> 删除</a>
                     </div>
                   </span>
                 </td>
@@ -189,56 +209,116 @@
       <!--end: Datatable -->
 
       <!--begin: upload modal -->
-      <div class="modal fade" id="kt_modal_upload" tabindex="-1" role="dialog">
+      <div class="modal fade" id="kt_modal_edit" tabindex="-1" role="dialog">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <form class="kt-form kt-form--label-right" name="myForm" novalidate>
                 <div class="modal-header">
-                  <h5 class="modal-title">上传PDF文档</h5>
+                  <h5 class="modal-title">新增就业测评</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   </button>
                 </div>
                 <div class="modal-body">
                   <div class="kt-portlet__body kt-padding-t-0">
-
-                    <div class="dropdown search-form-dropdown" ng-if="editModel.optionType == 'add'">
-                      <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false">
-                        <span ng-bind="editModel.selectedTechnology.technologyName"></span>
-                        <i class="flaticon2-down"></i>
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
-                        <a class="dropdown-item" href="javascript:;" ng-click="onTechnologyChange4Edit(0, '选择技术')">选择技术</a>
-                        <div class="dropdown-divider"></div>
-                        <a ng-repeat="data in editModel.technologyList"
-                          class="dropdown-item"
-                          href="javascript:;"
-                          ng-click="onTechnologyChange4Edit(data.technologyID, data.technologyName)"
-                          ng-bind="data.technologyName"></a>
+                    <form class="kt-form kt-form--label-right">
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">标题</label>
+                        <div class="col-10">
+                          <input class="form-control"
+                                 name="title"
+                                 ng-model="editModel.title"
+                                 maxlength="50"
+                                 type="text"
+                                 required>
+                        </div>
                       </div>
-                    </div>
-                    <input type="text" class="form-control" name="technologyName" ng-model="editModel.selectedTechnology.technologyName" readonly ng-if="editModel.optionType == 'change'">
-                    <br>
-                    <input type="text" class="form-control" name="exercisesName" maxlength="50" ng-model="editModel.exercisesName" placeholder="综合练习名称" required>
-                    <br>
-                    <input type="url" class="form-control" name="answerGitUrl" maxlength="200" ng-model="editModel.answerGitUrl" placeholder="习题参考答案Git地址" required>
-                    <br>
-                    <textarea class="form-control" name="memo" rows="5" maxlength="150"  ng-model="editModel.memo" placeholder="综合习题备注说明" required></textarea>
-                    <br>
-                    <div id="file-upload" class="fileUploadContent"></div>
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">考察点</label>
+                        <div class="col-10">
+                          <input class="form-control"
+                                 name="examKnowledge"
+                                 ng-model="editModel.examKnowledge"
+                                 type="text"
+                                 maxlength="500"
+                                 required>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">类型</label>
+                        <div class="col-10">
+                          <div class="kt-radio-inline">
+                            <label class="kt-radio">
+                              <input type="radio" checked="checked" value="1" name="examType" ng-model="editModel.examType"> 服务端
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="2" name="examType" ng-model="editModel.examType"> 前端
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="3" name="examType" ng-model="editModel.examType"> 数据库
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="4" name="examType" ng-model="editModel.examType"> 全栈
+                              <span></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">难度级别</label>
+                        <div class="col-10">
+                          <div class="kt-radio-inline">
+                            <label class="kt-radio">
+                              <input type="radio" checked="checked" value="1" name="difficultyLevel" ng-model="editModel.difficultyLevel"> 入门
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="2" name="difficultyLevel" ng-model="editModel.difficultyLevel"> 简单
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="3" name="difficultyLevel" ng-model="editModel.difficultyLevel"> 中等
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="4" name="difficultyLevel" ng-model="editModel.difficultyLevel"> 较难
+                              <span></span>
+                            </label>
+                            <label class="kt-radio">
+                              <input type="radio" value="5" name="difficultyLevel" ng-model="editModel.difficultyLevel"> 困难
+                              <span></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">详细内容</label>
+                        <div class="col-10">
+                          <textarea class="form-control"
+                                    rows="5"
+                                    name="exercisesContent"
+                                    ng-model="editModel.exercisesContent"
+                                    maxlength="500"
+                                    required></textarea>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                   <button type="button" class="btn btn-primary"
-                          ng-disabled="(myForm.answerGitUrl.$pristine && editModel.optionType.add)
-                          || (myForm.answerGitUrl.$dirty && myForm.answerGitUrl.$invalid) 
-                          || (myForm.exercisesName.$pristine && editModel.optionType.add)
-                          || (myForm.exercisesName.$dirty && myForm.exercisesName.$invalid) 
-                          || (myForm.memo.$pristine && editModel.optionType.add)
-                          || (myForm.memo.$dirty && myForm.memo.$invalid) 
-                          || editModel.documentUrl.length === 0 
-                          || editModel.selectedTechnology.technologyID === 0"
+                          ng-disabled="
+                             (myForm.title.$pristine && editModel.optionType == 'add')
+                          || (myForm.title.$dirty && myForm.title.$invalid)
+
+                          || (myForm.examKnowledge.$pristine && editModel.optionType == 'add')
+                          || (myForm.examKnowledge.$dirty && myForm.examKnowledge.$invalid)
+
+                          || (myForm.exercisesContent.$pristine && editModel.optionType == 'add')
+                          || (myForm.exercisesContent.$dirty && myForm.exercisesContent.$invalid)"
                           ng-click="onSubmit()">提交</button>
                 </div>
               </form>
