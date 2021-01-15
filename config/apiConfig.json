@@ -124,7 +124,8 @@
       "courseExercisesList": "/api/v1/course/exercises/list/new",
       "studentCourseExercises": "/api/v1/course/exercises/any",
       "markCourseProgramExercises": "/api/v1/course/exercises/mark/program",
-      "programReviewList": "/api/v1/course/exercises/list/review/program"
+      "programReviewList": "/api/v1/course/exercises/list/review/program",
+      "studentList": "/api/v1/user/student/list"
     }
   }
 }

@@ -11,6 +11,7 @@ let universityRouter = require('./routes/university');
 let schoolRouter = require('./routes/school');
 let majorRouter = require('./routes/major');
 let universityAccountRouter = require('./routes/universityAccount');
+let studentRegisterRouter = require('./routes/student');
 let companyRouter = require('./routes/company');
 let companyAccountRouter = require('./routes/companyAccount');
 let directionRouter = require('./routes/direction');
@@ -57,6 +58,9 @@ app.use('/university', universityRouter);
 app.use('/school', schoolRouter);
 app.use('/major', majorRouter);
 app.use('/universityAccount', universityAccountRouter);
+app.use('/student', studentRegisterRouter);
+
+
 app.use('/company', companyRouter);
 app.use('/companyAccount', companyAccountRouter);
 app.use('/direction', directionRouter);
