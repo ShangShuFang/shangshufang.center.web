@@ -125,7 +125,9 @@
       "studentCourseExercises": "/api/v1/course/exercises/any",
       "markCourseProgramExercises": "/api/v1/course/exercises/mark/program",
       "programReviewList": "/api/v1/course/exercises/list/review/program",
-      "studentList": "/api/v1/user/student/list"
+      "studentList": "/api/v1/user/student/list",
+      "studentComprehensiveExercisesList": "/api/v1/student/exercises/comprehensive/list",
+      "correctStudentComprehensiveExercises": "/api/v1/student/exercises/comprehensive/change/status"
     }
   }
 }

@@ -93,6 +93,27 @@ router.get('/major', (req, res, next) => {
   });
 });
 
+router.get('/programmingLanguage', function(req, res, next) {
+  let service = new commonService.commonInvoke('programmingLanguage');
+
+  service.queryWithParameter('', function(result) {
+    if (result.err) {
+      res.json({
+        err: true,
+        code: result.code,
+        msg: result.msg
+      });
+    } else {
+      res.json({
+        err: false,
+        code: result.code,
+        msg: result.msg,
+        dataList: result.content.responseData
+      });
+    }
+  });
+});
+
 router.get('/company', (req, res, next) => {
   let service = new commonService.commonInvoke('companyList');
   let parameter = `1/9999/0/0/NULL`;
