@@ -52,7 +52,9 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     gitUrl: '',
     dataStatus: '',
     correctResult: '',
-    reviewMemo: ''
+    reviewMemo: '',
+    createTime: '',
+    updateTime: ''
   };
 
   //region 页面初始化
@@ -269,6 +271,8 @@ pageApp.controller('pageCtrl', function ($scope, $http) {
     $scope.correctModel.dataStatus = data.dataStatus;
     $scope.correctModel.correctResult = data.dataStatus;
     $scope.correctModel.reviewMemo = data.reviewMemo;
+    $scope.correctModel.createTime = data.createTime;
+    $scope.correctModel.updateTime = data.updateTime;
     $('#correct_modal').modal('show');
   }
 
