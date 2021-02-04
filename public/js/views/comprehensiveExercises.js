@@ -44,6 +44,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
         examType: '1',//类型
         difficultyLevel: '1',//难度
         exercisesContent: '',//详细内容
+        documentUrl: '',
         loginUser: commonUtility.getLoginUser()
     };
 
@@ -56,7 +57,25 @@ pageApp.controller('pageCtrl', function($scope, $http) {
     //region 页面初始化
     $scope.initPage = function() {
         commonUtility.setNavActive();
+        $scope.initUploadPlugin();
         $scope.loadData();
+    };
+
+    $scope.initUploadPlugin = function () {
+        let uploadDirectionDir = {"dir1": "projectDoc"};
+        let uploadServerUrl = commonUtility.buildSystemRemoteUri(Constants.UPLOAD_SERVICE_URI, uploadDirectionDir);
+
+        //uploadUtils.destroyUploadPlugin('#file-upload-document');
+        uploadUtils.initUploadPlugin('#file-upload-document', uploadServerUrl, ['pdf'], false, function (opt,data) {
+            $scope.editModel.documentUrl = data.fileUrlList[0];
+            $scope.$apply();
+            layer.msg(localMessage.UPLOAD_SUCCESS);
+            $('#kt_modal_upload').modal('hide');
+        });
+    };
+
+    $scope.onUpload = function () {
+        $('#kt_modal_upload').modal('show');
     };
 
     $scope.onExamTypeChange = function(examTypeCode, examTypeName) {
@@ -141,6 +160,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             $scope.editModel.examType = '1';
             $scope.editModel.difficultyLevel = '1';
             $scope.editModel.exercisesContent = '';
+            $scope.editModel.documentUrl = '';
         } else {
             $scope.editModel.optionType = 'upd';
             $scope.editModel.exercisesID = data.exercisesID;
@@ -149,6 +169,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             $scope.editModel.examType = data.examType.toString();
             $scope.editModel.difficultyLevel = data.difficultyLevel.toString();
             $scope.editModel.exercisesContent = data.exercisesDescription;
+            $scope.editModel.documentUrl = data.documentUrl;
         }
 
         $('#kt_modal_edit').modal('show');
@@ -161,6 +182,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             examType: $scope.editModel.examType,
             difficultyLevel: $scope.editModel.difficultyLevel,
             exercisesDescription: $scope.editModel.exercisesContent,
+            documentUrl: $scope.editModel.documentUrl,
             loginUser: $scope.editModel.loginUser.adminID
         }).then(function successCallback(response) {
             if (response.data.err) {
@@ -182,6 +204,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
             examType: $scope.editModel.examType,
             difficultyLevel: $scope.editModel.difficultyLevel,
             exercisesDescription: $scope.editModel.exercisesContent,
+            documentUrl: $scope.editModel.documentUrl,
             loginUser: $scope.editModel.loginUser.adminID
         }).then(function successCallback(response) {
             if (response.data.err) {
@@ -255,7 +278,7 @@ pageApp.controller('pageCtrl', function($scope, $http) {
                 }
             });
         }
-        //endregion
+    //endregion
 
     $scope.initPage();
 });

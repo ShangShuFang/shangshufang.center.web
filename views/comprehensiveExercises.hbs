@@ -304,6 +304,18 @@
                                     required></textarea>
                         </div>
                       </div>
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-2 col-form-label">详细文档</label>
+                        <div class="col-10">
+                          <a ng-href="\{{editModel.documentUrl}}"
+                             class="kt-link kt-link--danger"
+                             style="margin-top: 10px"
+                             target="_blank"
+                             ng-if="editModel.documentUrl.length > 0"
+                             ng-bind="editModel.documentUrl.substr(editModel.documentUrl.lastIndexOf('/')+1)"></a>
+                          <button type="button" class="btn btn-secondary btn-sm" ng-click="onUpload()">上传</button>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -402,6 +414,30 @@
         </div>
       </div>
       <!--end: status modal -->
+
+      <div class="modal fade" id="kt_modal_upload" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form class="kt-form kt-form--label-right" name="brandForm" novalidate>
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">上传详细文档（PDF）</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="kt-portlet__body">
+                  <div id="file-upload-document" class="fileUploadContent"></div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </div>

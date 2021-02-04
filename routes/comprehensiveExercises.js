@@ -44,6 +44,7 @@ router.post('/', (req, res, next) => {
         examType: req.body.examType,
         difficultyLevel: req.body.difficultyLevel,
         exercisesDescription: req.body.exercisesDescription,
+        documentUrl: req.body.documentUrl,
         loginUser: req.body.loginUser
     };
 
@@ -73,6 +74,7 @@ router.put('/', (req, res, next) => {
         examType: req.body.examType,
         difficultyLevel: req.body.difficultyLevel,
         exercisesDescription: req.body.exercisesDescription,
+        documentUrl: req.body.documentUrl,
         loginUser: req.body.loginUser
     };
 
